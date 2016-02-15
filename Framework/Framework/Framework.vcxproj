@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{30277383-0A20-4DD7-B2F6-10F7D5A78677}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Framework</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include\irrKlang;$(SolutionDir)\Dependencies\include\LuaBridge;$(SolutionDir)\Dependencies\include\Lua;$(SolutionDir)\Dependencies\include\GL;$(SolutionDir)\Dependencies\include\GLFW;$(SolutionDir)\Common\Source</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Dependencies\lib;$(SolutionDir)$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;irrKlang.lib;lua5.1.lib;glew32.lib;glfw3.lib;opengl32.lib;winmm.lib;Common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include\irrKlang;$(SolutionDir)\Dependencies\include\LuaBridge;$(SolutionDir)\Dependencies\include\Lua;$(SolutionDir)\Dependencies\include\GL;$(SolutionDir)\Dependencies\include\GLFW;$(SolutionDir)\Common\Source</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Dependencies\lib;$(SolutionDir)$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;irrKlang.lib;lua5.1.lib;glew32.lib;glfw3.lib;opengl32.lib;winmm.lib;Common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\AIComponent.cpp" />
+    <ClCompile Include="Source\AxisAlignedBoundingBox.cpp" />
+    <ClCompile Include="Source\Branch.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\CameraComponent.cpp" />
+    <ClCompile Include="Source\CharBuffer.cpp" />
+    <ClCompile Include="Source\Client.cpp" />
+    <ClCompile Include="Source\CollisionComponent.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\EntityHero.cpp" />
+    <ClCompile Include="Source\EntityNPC.cpp" />
+    <ClCompile Include="Source\EntityPlayer.cpp" />
+    <ClCompile Include="Source\EntityTest.cpp" />
+    <ClCompile Include="Source\EntityWall.cpp" />
+    <ClCompile Include="Source\EntityWorldObject.cpp" />
+    <ClCompile Include="Source\GraphicsComponent.cpp" />
+    <ClCompile Include="Source\Gui.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
+    <ClCompile Include="Source\HealthComponent.cpp" />
+    <ClCompile Include="Source\InformationComponent.cpp" />
+    <ClCompile Include="Source\InputHandler.cpp" />
+    <ClCompile Include="Source\LoadOBJ.cpp" />
+    <ClCompile Include="Source\LoadTGA.cpp" />
+    <ClCompile Include="Source\LuaReader.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\MeshBuilder.cpp" />
+    <ClCompile Include="Source\MessageBoard.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\PhysicsComponent.cpp" />
+    <ClCompile Include="Source\ServerManager.cpp" />
+    <ClCompile Include="Source\shader.cpp" />
+    <ClCompile Include="Source\SoundManager.cpp" />
+    <ClCompile Include="Source\StateAGDevGame.cpp" />
+    <ClCompile Include="Source\StateAGDevHighscore.cpp" />
+    <ClCompile Include="Source\StateAGDevInstructions.cpp" />
+    <ClCompile Include="Source\StateAGDevMenu.cpp" />
+    <ClCompile Include="Source\StateAGDevOptions.cpp" />
+    <ClCompile Include="Source\StateAIAssignment.cpp" />
+    <ClCompile Include="Source\StateConnect.cpp" />
+    <ClCompile Include="Source\StateHandler.cpp" />
+    <ClCompile Include="Source\StateHost.cpp" />
+    <ClCompile Include="Source\StateMainmenu.cpp" />
+    <ClCompile Include="Source\StateMultiplayerGame.cpp" />
+    <ClCompile Include="Source\StateMultiplayerMenu.cpp" />
+    <ClCompile Include="Source\StateProgressCheck.cpp" />
+    <ClCompile Include="Source\StateSplash.cpp" />
+    <ClCompile Include="Source\StateTest.cpp" />
+    <ClCompile Include="Source\Tree.cpp" />
+    <ClCompile Include="Source\View.cpp" />
+    <ClCompile Include="Source\WaypointComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\AIComponent.h" />
+    <ClInclude Include="Source\AxisAlignedBoundingBox.h" />
+    <ClInclude Include="Source\Branch.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\CameraComponent.h" />
+    <ClInclude Include="Source\CharBuffer.h" />
+    <ClInclude Include="Source\Client.h" />
+    <ClInclude Include="Source\CollisionComponent.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityHero.h" />
+    <ClInclude Include="Source\EntityNPC.h" />
+    <ClInclude Include="Source\EntityPlayer.h" />
+    <ClInclude Include="Source\EntityTest.h" />
+    <ClInclude Include="Source\EntityWall.h" />
+    <ClInclude Include="Source\EntityWorldObject.h" />
+    <ClInclude Include="Source\GraphicsComponent.h" />
+    <ClInclude Include="Source\Gui.h" />
+    <ClInclude Include="Source\GuiButton.h" />
+    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\HealthComponent.h" />
+    <ClInclude Include="Source\InformationComponent.h" />
+    <ClInclude Include="Source\InputHandler.h" />
+    <ClInclude Include="Source\LoadOBJ.h" />
+    <ClInclude Include="Source\LoadTGA.h" />
+    <ClInclude Include="Source\LuaReader.h" />
+    <ClInclude Include="Source\Material.h" />
+    <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\MeshBuilder.h" />
+    <ClInclude Include="Source\MessageBoard.h" />
+    <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\Networking.h" />
+    <ClInclude Include="Source\PhysicsComponent.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\SceneHandler.h" />
+    <ClInclude Include="Source\ServerManager.h" />
+    <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\SoundManager.h" />
+    <ClInclude Include="Source\State.h" />
+    <ClInclude Include="Source\StateAGDevGame.h" />
+    <ClInclude Include="Source\StateAGDevHighscore.h" />
+    <ClInclude Include="Source\StateAGDevInstructions.h" />
+    <ClInclude Include="Source\StateAGDevMenu.h" />
+    <ClInclude Include="Source\StateAGDevOptions.h" />
+    <ClInclude Include="Source\StateAIAssignment.h" />
+    <ClInclude Include="Source\StateConnect.h" />
+    <ClInclude Include="Source\StateHandler.h" />
+    <ClInclude Include="Source\StateHost.h" />
+    <ClInclude Include="Source\StateMainmenu.h" />
+    <ClInclude Include="Source\StateMultiplayerGame.h" />
+    <ClInclude Include="Source\StateMultiplayerMenu.h" />
+    <ClInclude Include="Source\StateProgressCheck.h" />
+    <ClInclude Include="Source\StateSplash.h" />
+    <ClInclude Include="Source\StateTest.h" />
+    <ClInclude Include="Source\Tree.h" />
+    <ClInclude Include="Source\View.h" />
+    <ClInclude Include="Source\WaypointComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{d23da893-7a6d-4572-8875-a8be67e33092}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\GPass.fragmentshader" />
+    <None Include="Shaders\GPass.vertexshader" />
+    <None Include="Shaders\Shadow.fragmentshader" />
+    <None Include="Shaders\Shadow.vertexshader" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

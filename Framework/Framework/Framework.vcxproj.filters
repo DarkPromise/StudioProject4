@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\MVC">
+      <UniqueIdentifier>{3a0313f2-df57-4212-8577-91a8371bc0ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MVC">
+      <UniqueIdentifier>{30a6286f-3a02-48bc-80b0-7852570e0bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{7be1319c-7676-4e6d-81b1-01a4abe7187c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lua">
+      <UniqueIdentifier>{43802086-dd90-477c-8737-6a53d9bdacd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{915ad5c6-7d08-433c-9a66-0d19cf48543f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound">
+      <UniqueIdentifier>{e5a80906-73fb-4bda-a3ab-2e7f1fe3206e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input Handling">
+      <UniqueIdentifier>{33be4fa8-086c-4cd5-813d-53c2d546a26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Handling">
+      <UniqueIdentifier>{be059598-b2b6-414e-a084-6b763109a8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Handling">
+      <UniqueIdentifier>{0bb5af93-249f-4018-a4ed-ea8bc2ee74ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{8c31c2e9-1369-44a5-a7b7-893d2e552bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mesh">
+      <UniqueIdentifier>{0a30a56b-8e5c-4f28-b0b9-2daa4e2b145d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{59aa75b9-5d85-4df2-892e-9af7e3bff90b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input Handling">
+      <UniqueIdentifier>{996e2f6c-e273-4040-b2ea-3506df7e57b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Handling\Game States">
+      <UniqueIdentifier>{c8d08c36-f527-40a0-9087-5d7fcccae6f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Handling\Game States">
+      <UniqueIdentifier>{4e69a226-72de-46c4-993a-c6af3ce8325c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Loaders">
+      <UniqueIdentifier>{64d65416-0578-4ed5-8b1e-e3f9894fef27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Loaders">
+      <UniqueIdentifier>{29e8505e-8f53-427b-a86d-1e5aa386616b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{fb8944b8-b837-4c80-a48c-426c766ca6a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{edd48680-d4b6-4dd4-8216-fc13bd8615eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{3ab2b63f-8e30-4aa2-b974-54a6278d9092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{1b7a28ec-6c98-4927-afeb-4172fceaf710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui">
+      <UniqueIdentifier>{e03f8bf1-e72c-4e70-a324-bd6306f5a18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui">
+      <UniqueIdentifier>{a53147cc-9df1-4868-8b41-5194bcd49a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AABB">
+      <UniqueIdentifier>{de4318d9-5ea3-461b-bc8c-2ad692529aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AABB">
+      <UniqueIdentifier>{072f1db6-b1f3-46af-9122-c99002441061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Char Buffer">
+      <UniqueIdentifier>{ad8c71f7-4b40-4e63-925a-89b8097abd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Char Buffer">
+      <UniqueIdentifier>{d979bee8-4785-4d25-8d0c-fdff56ba32f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Handling\Game States\Multiplayer Assignment">
+      <UniqueIdentifier>{6f4dcee3-a7a0-4d1e-a9d9-18eac4f510c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Handling\Game States\Multiplayer Assignment">
+      <UniqueIdentifier>{510d70ea-5046-4a68-949e-4682916a9f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Networking">
+      <UniqueIdentifier>{4b128468-634b-424e-aa12-8150fbf70f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Networking">
+      <UniqueIdentifier>{537718e2-bfc3-4914-b734-bb9d14ef1f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Handling\Game States\AI Assignment">
+      <UniqueIdentifier>{a9ca23b7-b1c7-4710-9d0b-1dfc7226440c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Handling\Game States\AI Assignment">
+      <UniqueIdentifier>{36b51bc7-2131-4d9e-9a23-3bdd68f55f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Message Board">
+      <UniqueIdentifier>{46a8c026-b8c4-4c08-9aee-bba4b53dfb09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Message Board">
+      <UniqueIdentifier>{00d5a92b-0a68-403e-a09e-01f849e30465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{777f061c-825a-4e19-a536-7d3fc5297f85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{224cf98d-6e9a-4390-a360-9484be440f0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Handling\Game States\AGDev Assignment">
+      <UniqueIdentifier>{290a5712-bea0-4498-b4bb-21650b189e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Handling\Game States\AGDev Assignment">
+      <UniqueIdentifier>{674cb417-97b2-48b4-98de-0681cbd95937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene Handling %28Not Touching%29">
+      <UniqueIdentifier>{4a2465a3-16ca-4447-9640-f65e7ff59f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene Handling %28Not Touching%29\Scenes">
+      <UniqueIdentifier>{ff42cf98-c258-4ac2-9771-7fdd40cb3f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound">
+      <UniqueIdentifier>{2bf98060-6935-4129-9894-c95111782cf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Handling %28Not Touching%29">
+      <UniqueIdentifier>{193f3f5a-63f7-4020-95e3-489affa19955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Handling %28Not Touching%29\Scenes">
+      <UniqueIdentifier>{60e6865a-b101-4e9c-bf0c-1c6a37559e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Octree">
+      <UniqueIdentifier>{d766994f-6bdf-4923-9ece-4e28f9bcf406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Octree">
+      <UniqueIdentifier>{84f480ae-6463-4583-9e12-c84425817b3a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputHandler.cpp">
+      <Filter>Source Files\Input Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\View.cpp">
+      <Filter>Source Files\MVC</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Source Files\MVC</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Controller.cpp">
+      <Filter>Source Files\MVC</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LuaReader.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundManager.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateHandler.cpp">
+      <Filter>Source Files\State Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\shader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshBuilder.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateSplash.cpp">
+      <Filter>Source Files\State Handling\Game States</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadOBJ.cpp">
+      <Filter>Source Files\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadTGA.cpp">
+      <Filter>Source Files\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphicsComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InformationComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityTest.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateTest.cpp">
+      <Filter>Source Files\State Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiButton.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AxisAlignedBoundingBox.cpp">
+      <Filter>Source Files\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMainmenu.cpp">
+      <Filter>Source Files\State Handling\Game States</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CharBuffer.cpp">
+      <Filter>Source Files\Char Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateHost.cpp">
+      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMultiplayerGame.cpp">
+      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMultiplayerMenu.cpp">
+      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Client.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ServerManager.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateConnect.cpp">
+      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HealthComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AIComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicsComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateProgressCheck.cpp">
+      <Filter>Source Files\State Handling\Game States\AI Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAIAssignment.cpp">
+      <Filter>Source Files\State Handling\Game States\AI Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityHero.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityWall.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WaypointComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MessageBoard.cpp">
+      <Filter>Source Files\Message Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityPlayer.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAGDevMenu.cpp">
+      <Filter>Source Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAGDevGame.cpp">
+      <Filter>Source Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Branch.cpp">
+      <Filter>Source Files\Octree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tree.cpp">
+      <Filter>Source Files\Octree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityWorldObject.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityNPC.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAGDevInstructions.cpp">
+      <Filter>Source Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAGDevOptions.cpp">
+      <Filter>Source Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateAGDevHighscore.cpp">
+      <Filter>Source Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Header Files\MVC</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\View.h">
+      <Filter>Header Files\MVC</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Controller.h">
+      <Filter>Header Files\MVC</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputHandler.h">
+      <Filter>Header Files\Input Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LuaReader.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundManager.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateHandler.h">
+      <Filter>Header Files\State Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\shader.hpp">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshBuilder.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateSplash.h">
+      <Filter>Header Files\State Handling\Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Header Files\Scene Handling %28Not Touching%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\State.h">
+      <Filter>Header Files\State Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneHandler.h">
+      <Filter>Header Files\Scene Handling %28Not Touching%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadOBJ.h">
+      <Filter>Header Files\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadTGA.h">
+      <Filter>Header Files\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphicsComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InformationComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityTest.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateTest.h">
+      <Filter>Header Files\State Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiButton.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AxisAlignedBoundingBox.h">
+      <Filter>Header Files\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMainmenu.h">
+      <Filter>Header Files\State Handling\Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CharBuffer.h">
+      <Filter>Header Files\Char Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMultiplayerGame.h">
+      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMultiplayerMenu.h">
+      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateHost.h">
+      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Client.h">
+      <Filter>Header Files\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Networking.h">
+      <Filter>Header Files\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ServerManager.h">
+      <Filter>Header Files\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateConnect.h">
+      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AIComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HealthComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicsComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateProgressCheck.h">
+      <Filter>Header Files\State Handling\Game States\AI Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAIAssignment.h">
+      <Filter>Header Files\State Handling\Game States\AI Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityHero.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityWall.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WaypointComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MessageBoard.h">
+      <Filter>Header Files\Message Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityPlayer.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAGDevMenu.h">
+      <Filter>Header Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAGDevGame.h">
+      <Filter>Header Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Branch.h">
+      <Filter>Header Files\Octree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tree.h">
+      <Filter>Header Files\Octree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityWorldObject.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityNPC.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAGDevInstructions.h">
+      <Filter>Header Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAGDevHighscore.h">
+      <Filter>Header Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateAGDevOptions.h">
+      <Filter>Header Files\State Handling\Game States\AGDev Assignment</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\GPass.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\GPass.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Shadow.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Shadow.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
