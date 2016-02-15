@@ -27,16 +27,22 @@ void CameraComponent::Update(double dt)
 		if (infoC)
 		{
 			LookAround(dt);
-
 			Vector3 newCamPos = infoC->getPosition() - infoC->getDirection().Normalized() * 30.f;
 			newCamPos.y = infoC->getPosition().y + 40.f;
 			m_Camera->setCameraPos(newCamPos);
 			Vector3 newCamTarget = infoC->getPosition() + infoC->getDirection().Normalized() * 40.f;
 			m_Camera->setCameraTarget(newCamTarget);
 		}
-
 		break;
 	case Camera::CM_THIRD_PERSON_FOLLOW_ENTITY:
+		if (infoC)
+		{
+			Vector3 newCamPos = infoC->getPosition();
+			newCamPos.z = infoC->getPosition().z + 100.f;
+			m_Camera->setCameraPos(newCamPos);
+			Vector3 newCamTarget = infoC->getPosition();
+			m_Camera->setCameraTarget(newCamTarget);
+		}
 		break;
 	}
 }

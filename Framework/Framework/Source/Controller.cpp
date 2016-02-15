@@ -65,7 +65,7 @@ void Controller::RunGameLoop()
 	}
 
 	// Setting the first state to render to be the Splash Screen
-	m_cStateHandler->ChangeState(new StateMainmenu("Mainmenu State", theView));
+	m_cStateHandler->ChangeState(new StateSplash("Splash State", theView));
 
 	while(LoopTheGame)
 	{

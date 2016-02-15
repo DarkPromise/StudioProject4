@@ -21,7 +21,6 @@ public:
 
 	void setCameraDirection(Vector3 direction);
 	Vector3 getCameraDirection();
-
 private:
 	Camera * m_Camera;
 	Vector3 m_v3CamDir;

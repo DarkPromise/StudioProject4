@@ -33,6 +33,8 @@ private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
+
+	Entity * testEntity;
 };
 
 #endif
