@@ -8,6 +8,8 @@
 
 #include "Camera.h"
 
+#include "GridMap.h"
+
 class StateTest : public State
 {
 public:
@@ -25,6 +27,8 @@ public:
 	void HandleEvents(StateHandler * stateHandler);
 	void HandleEvents(StateHandler * stateHandler, const int key, const bool status = true);
 	void Draw(StateHandler * stateHandler);
+
+	GridMap * testMap;
 private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;

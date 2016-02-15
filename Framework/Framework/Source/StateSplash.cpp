@@ -1,6 +1,7 @@
 #include "StateSplash.h"
 #include "View.h"
 #include "StateAGDevMenu.h"
+#include "StateTest.h"
 
 StateSplash::~StateSplash()
 {
@@ -122,6 +123,6 @@ void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 	}
 	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateTest("Test State", theView));
 	}
 }

@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera()
-: m_v3CamPos(Vector3(0.f,0.f,-100.f))
+: m_v3CamPos(Vector3(0.f,0.f,100.f))
 , m_v3CamTarget(Vector3(0.f,0.f,0.f))
 , m_v3CamUp(Vector3(0.f,1.f,0.f))
 , m_pitch(0.f)

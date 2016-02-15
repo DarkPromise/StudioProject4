@@ -26,6 +26,9 @@ void StateTest::Init()
 
 	theView->getInputHandler()->resetMousePosition(theView);
 	theView->getInputHandler()->setMouseEnabled(false);
+
+	testMap = new GridMap();
+	testMap->Init(64, 32, 5);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -44,13 +47,13 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
 	{
 		Vector3 newPos = theCamera->getCameraPos();
-		newPos.z += 1.f;
+		newPos.z -= 1.f;
 		theCamera->setCameraPos(newPos);
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 	{
 		Vector3 newPos = theCamera->getCameraPos();
-		newPos.z -= 1.f;
+		newPos.z += 1.f;
 		theCamera->setCameraPos(newPos);
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
@@ -88,6 +91,11 @@ void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const b
 
 void StateTest::Cleanup()
 {
+	if (testMap)
+	{
+		delete testMap;
+	}
+
 	if (theCamera)
 	{
 		delete theCamera;
@@ -116,6 +124,11 @@ void StateTest::Resume()
 
 void StateTest::Draw(StateHandler * stateHandler)
 {
+	if (testMap)
+	{
+		testMap->RenderGrids(theView, true);
+	}
+
 	if (!m_meshList.empty())
 	{
 		for (int i = 0; i < m_meshList.size(); i++)
@@ -123,5 +136,6 @@ void StateTest::Draw(StateHandler * stateHandler)
 			theView->RenderMesh(m_meshList[i],false,false);
 		}
 	}
+
 	theView->SwapBuffers();
 }

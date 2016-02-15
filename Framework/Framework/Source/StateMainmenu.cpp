@@ -30,7 +30,7 @@ void StateMainmenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("Advanced Game Dev", "AGDev Assignment", 0.5f, 0.5f, 48.f);
+	newGui = new GuiButton("Advanced Game Dev", "TEST", 0.5f, 0.5f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("AGDevBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
