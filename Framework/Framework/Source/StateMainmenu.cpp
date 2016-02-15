@@ -2,8 +2,6 @@
 #include "View.h"
 #include "LoadTGA.h"
 
-#include "StateAIAssignment.h"
-#include "StateMultiplayerMenu.h"
 #include "StateSplash.h"
 
 StateMainmenu::~StateMainmenu()
@@ -32,15 +30,7 @@ void StateMainmenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("Multiplayer", "Multiplayer Assignment", 0.5f, 0.25f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("MultiplayerBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
-	m_guiList.push_back(newGui);
-
-	newGui = new GuiButton("Artificial Intelliegence", "AI Assignment", 0.5f, 0.5f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("AIBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
-	m_guiList.push_back(newGui);
-
-	newGui = new GuiButton("Advanced Game Dev", "AGDev Assignment", 0.5f, 0.75f, 48.f);
+	newGui = new GuiButton("Advanced Game Dev", "AGDev Assignment", 0.5f, 0.5f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("AGDevBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
@@ -141,12 +131,6 @@ void StateMainmenu::UpdateSelection(StateHandler * stateHandler)
 					{
 						switch (MENU_BUTTONS(i))
 						{
-						case MULTIPLAYER_BUTTON:
-							stateHandler->ChangeState(new StateMultiplayerMenu("Multiplayer Menu state", this->theView));
-							break;
-						case AI_BUTTON:
-							stateHandler->ChangeState(new StateAIAssignment("AI State", this->theView));
-							break;
 						case AGDEV_BUTTON:
 							m_bStartFade = true;
 							break;

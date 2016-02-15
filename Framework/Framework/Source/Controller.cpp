@@ -2,7 +2,6 @@
 
 #include "StateTest.h"
 #include "StateSplash.h"
-#include "StateProgressCheck.h"
 #include "StateMainmenu.h"
 
 Controller::Controller(Model * theModel, View * theView)

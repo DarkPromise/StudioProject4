@@ -4,14 +4,14 @@
 #include "State.h"
 #include "GuiButton.h"
 
+#define TEXT_FONT 0
+
 class StateMainmenu : public State
 {
 public:
 	enum MENU_BUTTONS
 	{
-		MULTIPLAYER_BUTTON = 0,
-		AI_BUTTON,
-		AGDEV_BUTTON,
+		AGDEV_BUTTON = 0
 	};
 
 	StateMainmenu(std::string name, View * theView) : State(name, theView)

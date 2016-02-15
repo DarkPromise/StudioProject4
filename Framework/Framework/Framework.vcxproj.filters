@@ -90,23 +90,11 @@
     <Filter Include="Source Files\Char Buffer">
       <UniqueIdentifier>{d979bee8-4785-4d25-8d0c-fdff56ba32f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\State Handling\Game States\Multiplayer Assignment">
-      <UniqueIdentifier>{6f4dcee3-a7a0-4d1e-a9d9-18eac4f510c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\State Handling\Game States\Multiplayer Assignment">
-      <UniqueIdentifier>{510d70ea-5046-4a68-949e-4682916a9f0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Networking">
       <UniqueIdentifier>{4b128468-634b-424e-aa12-8150fbf70f81}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Networking">
       <UniqueIdentifier>{537718e2-bfc3-4914-b734-bb9d14ef1f81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\State Handling\Game States\AI Assignment">
-      <UniqueIdentifier>{a9ca23b7-b1c7-4710-9d0b-1dfc7226440c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\State Handling\Game States\AI Assignment">
-      <UniqueIdentifier>{36b51bc7-2131-4d9e-9a23-3bdd68f55f26}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Message Board">
       <UniqueIdentifier>{46a8c026-b8c4-4c08-9aee-bba4b53dfb09}</UniqueIdentifier>
@@ -221,23 +209,11 @@
     <ClCompile Include="Source\CharBuffer.cpp">
       <Filter>Source Files\Char Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateHost.cpp">
-      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMultiplayerGame.cpp">
-      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMultiplayerMenu.cpp">
-      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Client.cpp">
       <Filter>Source Files\Networking</Filter>
     </ClCompile>
     <ClCompile Include="Source\ServerManager.cpp">
       <Filter>Source Files\Networking</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateConnect.cpp">
-      <Filter>Source Files\State Handling\Game States\Multiplayer Assignment</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component.cpp">
       <Filter>Source Files\Components</Filter>
@@ -250,15 +226,6 @@
     </ClCompile>
     <ClCompile Include="Source\PhysicsComponent.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateProgressCheck.cpp">
-      <Filter>Source Files\State Handling\Game States\AI Assignment</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateAIAssignment.cpp">
-      <Filter>Source Files\State Handling\Game States\AI Assignment</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EntityHero.cpp">
-      <Filter>Source Files\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityWall.cpp">
       <Filter>Source Files\Entity</Filter>
@@ -397,15 +364,6 @@
     <ClInclude Include="Source\CharBuffer.h">
       <Filter>Header Files\Char Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateMultiplayerGame.h">
-      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMultiplayerMenu.h">
-      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateHost.h">
-      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Client.h">
       <Filter>Header Files\Networking</Filter>
     </ClInclude>
@@ -415,9 +373,6 @@
     <ClInclude Include="Source\ServerManager.h">
       <Filter>Header Files\Networking</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateConnect.h">
-      <Filter>Header Files\State Handling\Game States\Multiplayer Assignment</Filter>
-    </ClInclude>
     <ClInclude Include="Source\AIComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -426,15 +381,6 @@
     </ClInclude>
     <ClInclude Include="Source\PhysicsComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateProgressCheck.h">
-      <Filter>Header Files\State Handling\Game States\AI Assignment</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateAIAssignment.h">
-      <Filter>Header Files\State Handling\Game States\AI Assignment</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EntityHero.h">
-      <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Source\EntityWall.h">
       <Filter>Header Files\Entity</Filter>

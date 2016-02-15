@@ -95,7 +95,6 @@
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\Controller.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
-    <ClCompile Include="Source\EntityHero.cpp" />
     <ClCompile Include="Source\EntityNPC.cpp" />
     <ClCompile Include="Source\EntityPlayer.cpp" />
     <ClCompile Include="Source\EntityTest.cpp" />
@@ -124,14 +123,8 @@
     <ClCompile Include="Source\StateAGDevInstructions.cpp" />
     <ClCompile Include="Source\StateAGDevMenu.cpp" />
     <ClCompile Include="Source\StateAGDevOptions.cpp" />
-    <ClCompile Include="Source\StateAIAssignment.cpp" />
-    <ClCompile Include="Source\StateConnect.cpp" />
     <ClCompile Include="Source\StateHandler.cpp" />
-    <ClCompile Include="Source\StateHost.cpp" />
     <ClCompile Include="Source\StateMainmenu.cpp" />
-    <ClCompile Include="Source\StateMultiplayerGame.cpp" />
-    <ClCompile Include="Source\StateMultiplayerMenu.cpp" />
-    <ClCompile Include="Source\StateProgressCheck.cpp" />
     <ClCompile Include="Source\StateSplash.cpp" />
     <ClCompile Include="Source\StateTest.cpp" />
     <ClCompile Include="Source\Tree.cpp" />
@@ -150,7 +143,6 @@
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Controller.h" />
     <ClInclude Include="Source\Entity.h" />
-    <ClInclude Include="Source\EntityHero.h" />
     <ClInclude Include="Source\EntityNPC.h" />
     <ClInclude Include="Source\EntityPlayer.h" />
     <ClInclude Include="Source\EntityTest.h" />
@@ -184,14 +176,8 @@
     <ClInclude Include="Source\StateAGDevInstructions.h" />
     <ClInclude Include="Source\StateAGDevMenu.h" />
     <ClInclude Include="Source\StateAGDevOptions.h" />
-    <ClInclude Include="Source\StateAIAssignment.h" />
-    <ClInclude Include="Source\StateConnect.h" />
     <ClInclude Include="Source\StateHandler.h" />
-    <ClInclude Include="Source\StateHost.h" />
     <ClInclude Include="Source\StateMainmenu.h" />
-    <ClInclude Include="Source\StateMultiplayerGame.h" />
-    <ClInclude Include="Source\StateMultiplayerMenu.h" />
-    <ClInclude Include="Source\StateProgressCheck.h" />
     <ClInclude Include="Source\StateSplash.h" />
     <ClInclude Include="Source\StateTest.h" />
     <ClInclude Include="Source\Tree.h" />

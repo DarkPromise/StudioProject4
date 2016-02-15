@@ -1,6 +1,4 @@
 #include "ServerManager.h"
-#include "StateHost.h"
-#include "StateMultiplayerGame.h"
 
 ServerManager::ServerManager()
 : m_iNumberOfThreads(0) // Default 0 Threads
@@ -229,18 +227,18 @@ void ServerManager::Ping(PacketInfo packet, StateMultiplayerGame * state)
 			}
 			else if (newPacket.packetID == PACKET_NEW)
 			{
-				state->createNewEntity();
+				//state->createNewEntity();
 			}
 			else if (newPacket.packetID == PACKET_UPDATE)
 			{
-				auto infoC = state->getOtherPlayer()->getComponent<InformationComponent>();
-				//infoC->setAcceleration(newPacket.m_fAcceleration);
-				infoC->setDirection(newPacket.m_v3Direction);
-				//infoC->setForce(newPacket.m_fForce);
-				infoC->setName(newPacket.m_sName);
-				infoC->setPosition(newPacket.m_v3Position);
-				infoC->setRotation(newPacket.m_v3Rotation);
-				infoC->setSize(newPacket.m_fSize);
+				//auto infoC = state->getOtherPlayer()->getComponent<InformationComponent>();
+				////infoC->setAcceleration(newPacket.m_fAcceleration);
+				//infoC->setDirection(newPacket.m_v3Direction);
+				////infoC->setForce(newPacket.m_fForce);
+				//infoC->setName(newPacket.m_sName);
+				//infoC->setPosition(newPacket.m_v3Position);
+				//infoC->setRotation(newPacket.m_v3Rotation);
+				//infoC->setSize(newPacket.m_fSize);
 			}
 		}
 	}
@@ -376,7 +374,7 @@ void ServerManager::AddNewClient(SOCKET s)
 	WSAEventSelect(ClientSocket, NewEvent, FD_READ | FD_CLOSE);
 	g_EventArray[m_clientList.size()] = NewEvent;
 	m_clientList.push_back(newClient);
-	this->m_parentState->createNewEntity();
+	//this->m_parentState->createNewEntity();
 
 	for (int i = 1; i < m_clientList.size(); i++)
 	{
