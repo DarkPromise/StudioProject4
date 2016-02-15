@@ -21,9 +21,13 @@ public:
 
 	void setCameraDirection(Vector3 direction);
 	Vector3 getCameraDirection();
+
+	void setCameraOffset(Vector3 offset);
+	Vector3 getCameraOffset();
 private:
 	Camera * m_Camera;
 	Vector3 m_v3CamDir;
+	Vector3 m_v3CamOffset;
 };
 
 #endif

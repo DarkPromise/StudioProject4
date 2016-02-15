@@ -3,6 +3,8 @@
 
 CameraComponent::CameraComponent()
 : m_Camera(nullptr)
+, m_v3CamDir(Vector3(0.f, 0.f, 0.f))
+, m_v3CamOffset(Vector3(0.f, 0.f, 0.f))
 {
 
 }
@@ -37,8 +39,7 @@ void CameraComponent::Update(double dt)
 	case Camera::CM_THIRD_PERSON_FOLLOW_ENTITY:
 		if (infoC)
 		{
-			Vector3 newCamPos = infoC->getPosition();
-			newCamPos.z = infoC->getPosition().z + 100.f;
+			Vector3 newCamPos = infoC->getPosition() + m_v3CamOffset;
 			m_Camera->setCameraPos(newCamPos);
 			Vector3 newCamTarget = infoC->getPosition();
 			m_Camera->setCameraTarget(newCamTarget);
@@ -79,4 +80,14 @@ void CameraComponent::LookAround(double dt)
 		curDirection = rotation * curDirection;
 		infoC->setDirection(curDirection);
 	}
+}
+
+void CameraComponent::setCameraOffset(Vector3 offset)
+{
+	this->m_v3CamOffset = offset;
+}
+
+Vector3 CameraComponent::getCameraOffset()
+{
+	return this->m_v3CamOffset;
 }

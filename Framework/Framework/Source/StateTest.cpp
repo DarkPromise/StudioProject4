@@ -28,7 +28,7 @@ void StateTest::Init()
 	theView->getInputHandler()->setMouseEnabled(false);
 
 	testMap = new GridMap();
-	testMap->Init(64, 32, 5);
+	testMap->Init(64, 32, 10);
 
 	// Init Test Entity
 	testEntity = new EntityTest();
@@ -37,6 +37,7 @@ void StateTest::Init()
 	informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
 	testEntity->addComponent(informationComponent);
 	auto cameraComponent = new CameraComponent(theCamera);
+	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 40.f));
 	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
 	testEntity->addComponent(cameraComponent);
 }
