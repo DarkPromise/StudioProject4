@@ -15,6 +15,7 @@ class StateTest : public State
 public:
 	StateTest(std::string name, View * theView) 
 		: State(name, theView)
+		, moveDelay(0.f)
 	{
 		this->theView = theView;
 	}
@@ -36,6 +37,7 @@ private:
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
 	Entity * testEntity;
+	float moveDelay;
 };
 
 #endif

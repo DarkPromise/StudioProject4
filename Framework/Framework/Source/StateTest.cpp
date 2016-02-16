@@ -70,99 +70,80 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	}
 
 	// PLAYER UPDATE
-	auto infoC = testEntity->getComponent<InformationComponent>();
+	auto infoC	 = testEntity->getComponent<InformationComponent>();
 	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
 	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
 	infoC->Update(dt);
 	//std::cout << "Player Index [" << (int)indexX << "," << testMap->getMapHeight() - (int)indexY << "]" << std::endl;
 
-	static bool keyRight	= false;
-	static bool keyLeft		= false;
-	static bool keyUp		= false;
-	static bool keyDown		= false;
-
-	if (!keyRight && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D))
+	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D))
 	{
-		keyRight = true;
-		auto * infoComponent = testEntity->getComponent<InformationComponent>();
-		if (infoComponent)
+		if (infoC && moveDelay == 0)
 		{
 			if ((indexX + 1 < testMap->getMapWidth()))
 			{
 				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() != Grid::TILE_WALL)
 				{
-					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
+					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
 				}
 			}
 		}
 	}
 
-	else if (keyRight && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D))
+	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
 	{
-		keyRight = false;
-	}
-
-	if (!keyLeft && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
-	{
-		keyLeft = true;
-		auto * infoComponent = testEntity->getComponent<InformationComponent>();
-		if (infoComponent)
+		if (infoC && moveDelay == 0)
 		{
 			if ((indexX - 1 >= 0))
 			{
 				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getTileID() != Grid::TILE_WALL)
 				{
-					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
+					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
 				}
 			}
 		}
 	}
 
-	else if (keyLeft && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
+	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
 	{
-		keyLeft = false;
-	}
-
-	if (!keyUp && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
-	{
-		keyUp = true;
-		auto * infoComponent = testEntity->getComponent<InformationComponent>();
-		if (infoComponent)
+		if (infoC && moveDelay == 0)
 		{
 			if (((testMap->getMapHeight() - (int)indexY - 1) >= 0))
 			{
 				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
 				{
-					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
+					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
 				}
 			}
 		}
 	}
 
-	else if (keyUp && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
+	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 	{
-		keyUp = false;
-	}
-
-	if (!keyDown && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
-	{
-		keyDown = true;
-		auto * infoComponent = testEntity->getComponent<InformationComponent>();
-		if (infoComponent)
+		if (infoC && moveDelay == 0)
 		{
 			if (((testMap->getMapHeight() - (int)indexY + 1) < testMap->getMapHeight()))
 			{
 				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
 				{
-					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
+					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
 				}
 			}
 		}
 	}
 
-	else if (keyDown && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 	{
-		keyDown = false;
+		moveDelay += 0.05;
+		if (moveDelay >= 1)
+		{
+			moveDelay = 0;
+		}
+	}
+
+	else
+	{
+		moveDelay = 0;
 	}
 
 	theView->Update(dt);
