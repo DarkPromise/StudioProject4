@@ -29,8 +29,15 @@ void Grid::addTile(int tileID)
 	this->m_iTileID = tileID;
 	switch (tileID)
 	{
+	case 0:
+		newMesh = MeshBuilder::GenerateQuad("Tile 0", Color(1.f, 1.f, 1.f), m_iTileSize);
+		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile12.tga");
+		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
+		m_cGridTiles.push_back(newMesh);
+		break;
 	case 1:
-		newMesh = MeshBuilder::GenerateQuad("Tile 1", Color(1.f, 1.f, 1.f), 10.f);
+		newMesh = MeshBuilder::GenerateQuad("Tile 1", Color(1.f, 1.f, 1.f), m_iTileSize);
+		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);
 		break;
