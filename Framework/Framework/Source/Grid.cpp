@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "LoadTGA.h"
 
 Grid::Grid(int tileSize)
 : m_iTileSize(tileSize)

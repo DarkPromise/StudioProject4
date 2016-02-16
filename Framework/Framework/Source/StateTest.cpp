@@ -20,8 +20,8 @@ void StateTest::Init()
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(testMesh);
 
-	testMesh = MeshBuilder::GenerateAxes("Axes", 1000.f, 1000.f, 1000.f);
-	m_meshList.push_back(testMesh);
+	/*testMesh = MeshBuilder::GenerateAxes("Axes", 1000.f, 1000.f, 1000.f);
+	m_meshList.push_back(testMesh);*/
 
 	testMesh = MeshBuilder::GenerateCube("Cube", Color(0.f, 0.f, 1.f), 10.f);
 	m_meshList.push_back(testMesh);
