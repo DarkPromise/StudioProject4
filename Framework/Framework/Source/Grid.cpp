@@ -25,6 +25,7 @@ Grid::~Grid()
 void Grid::addTile(int tileID)
 {
 	Mesh * newMesh;
+	this->m_iTileID = tileID;
 	switch (tileID)
 	{
 	case 1:

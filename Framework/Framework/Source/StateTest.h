@@ -13,7 +13,8 @@
 class StateTest : public State
 {
 public:
-	StateTest(std::string name, View * theView) : State(name, theView)
+	StateTest(std::string name, View * theView) 
+		: State(name, theView)
 	{
 		this->theView = theView;
 	}
@@ -34,7 +35,6 @@ private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
-
 	Entity * testEntity;
 };
 
