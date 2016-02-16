@@ -4,9 +4,10 @@
 
 #include "StateAGDevMenu.h"
 
+
 StateAGDevHighscore::~StateAGDevHighscore()
 {
-
+	highscore.reset();
 }
 
 State * StateAGDevHighscore::getInstance()
@@ -35,18 +36,7 @@ void StateAGDevHighscore::Init()
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
 	m_meshList.push_back(newMesh);
 
-	// Highscore
-
-	std::fstream scoreFile("Data//highscore.txt");
-	std::string line;
-	if (scoreFile.is_open())
-	{
-		while (std::getline(scoreFile, line))
-		{
-			m_sCurrHighscore = line;
-		}
-		scoreFile.close();
-	}
+	highscore.ReadFromTextFile();
 }
 
 void StateAGDevHighscore::Update(StateHandler * stateHandler, double dt)
@@ -105,6 +95,12 @@ void StateAGDevHighscore::RenderBackground()
 
 void StateAGDevHighscore::RenderHighscore()
 {
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Current Highscore", Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - 170.f, (float)theView->getWindowHeight() * 0.35f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], m_sCurrHighscore, Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - (m_sCurrHighscore.length() * 10.f), ((float)theView->getWindowHeight() * 0.2f));
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Highscore", Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - 170.f, (float)theView->getWindowHeight() * 0.35f);
+	for (int i = 0; i < 5; ++i)
+	{
+		int temp = i;
+		std::ostringstream scoring;
+		scoring << temp + 1 << "." << highscore.record[i].getName() << " " << highscore.record[i].getTiming().getMin() << ":" << highscore.record[i].getTiming().getSec();
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], scoring.str(), Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - (scoring.str().length() * 10.f), ((float)theView->getWindowHeight() * 0.2f * i));
+	}
 }

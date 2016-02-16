@@ -1,1 +1,5 @@
-0
+4 20 BLZIT
+999 0 NIL  
+999 0 NIL  
+999 0 NIL  
+999 0 NIL  

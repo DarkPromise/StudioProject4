@@ -3,16 +3,17 @@
 
 #include "State.h"
 #include "MeshBuilder.h"
+#include "Highscore.h"
 
 #include <string>
 #include <fstream>
-
+#include <sstream>
 #define TEXT_FONT 0
 
 class StateAGDevHighscore : public State
 {
 public:
-	StateAGDevHighscore(std::string name, View * theView) : State(name, theView)
+	StateAGDevHighscore(std::string name, View * theView) : State(name, theView), tempName("     ")
 	{
 		this->theView = theView;
 	}
@@ -33,10 +34,12 @@ public:
 	void RenderHighscore();
 
 	// Highscore
-	std::string m_sCurrHighscore;
+	//std::string m_sCurrHighscore;
 private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;
+	Highscore highscore;
+	std::string tempName;
 };
 
 #endif

@@ -106,6 +106,7 @@
     <ClCompile Include="Source\Gui.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\HealthComponent.cpp" />
+    <ClCompile Include="Source\Highscore.cpp" />
     <ClCompile Include="Source\InformationComponent.cpp" />
     <ClCompile Include="Source\InputHandler.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\MessageBoard.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\PhysicsComponent.cpp" />
+    <ClCompile Include="Source\Record.cpp" />
     <ClCompile Include="Source\ServerManager.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
@@ -129,6 +131,7 @@
     <ClCompile Include="Source\StateMainmenu.cpp" />
     <ClCompile Include="Source\StateSplash.cpp" />
     <ClCompile Include="Source\StateTest.cpp" />
+    <ClCompile Include="Source\Timing.cpp" />
     <ClCompile Include="Source\Tree.cpp" />
     <ClCompile Include="Source\View.cpp" />
     <ClCompile Include="Source\WaypointComponent.cpp" />
@@ -157,6 +160,7 @@
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\HealthComponent.h" />
+    <ClInclude Include="Source\Highscore.h" />
     <ClInclude Include="Source\InformationComponent.h" />
     <ClInclude Include="Source\InputHandler.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
@@ -169,6 +173,7 @@
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\Networking.h" />
     <ClInclude Include="Source\PhysicsComponent.h" />
+    <ClInclude Include="Source\Record.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneHandler.h" />
     <ClInclude Include="Source\ServerManager.h" />
@@ -184,6 +189,7 @@
     <ClInclude Include="Source\StateMainmenu.h" />
     <ClInclude Include="Source\StateSplash.h" />
     <ClInclude Include="Source\StateTest.h" />
+    <ClInclude Include="Source\Timing.h" />
     <ClInclude Include="Source\Tree.h" />
     <ClInclude Include="Source\View.h" />
     <ClInclude Include="Source\WaypointComponent.h" />
