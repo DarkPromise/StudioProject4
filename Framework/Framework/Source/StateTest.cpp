@@ -108,6 +108,9 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	// Player Update
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	infoC->Update(dt);
+	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+	std::cout << "Player Index [" << indexX << "," << indexY << "]" << std::endl;
 
 	theView->Update(dt);
 	theView->viewStack.LoadIdentity();
