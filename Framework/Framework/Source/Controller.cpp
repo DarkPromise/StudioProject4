@@ -57,7 +57,7 @@ void Controller::RunGameLoop()
 
 	if (theView->CreateGLWindow(title.c_str(), width, height, 32))
 	{
-		std::cout << "OpenGL Window Created" << std::endl;
+		std::cout << "OpenGL Window Created\n" << std::endl;
 	}
 	else
 	{

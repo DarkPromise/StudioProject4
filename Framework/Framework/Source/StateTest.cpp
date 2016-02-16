@@ -28,7 +28,12 @@ void StateTest::Init()
 	theView->getInputHandler()->setMouseEnabled(false);
 
 	testMap = new GridMap();
-	testMap->Init(64, 32, 10);
+	testMap->Init(32, 26, 32);
+	testMap->LoadData("MapData//MainMenu_Background.csv","MapData//MainMenu_Foreground.csv");
+
+	/*testMesh = MeshBuilder::GenerateTileMap("Test", Color(0.f, 0.f, 0.f), testMap->backgroundData , 32, 32, 32.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tileset_MAINMENU.tga");
+	m_meshList.push_back(testMesh);*/
 
 	// Init Test Entity
 	testEntity = new EntityTest();
@@ -37,7 +42,7 @@ void StateTest::Init()
 	informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
 	testEntity->addComponent(informationComponent);
 	auto cameraComponent = new CameraComponent(theCamera);
-	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 40.f));
+	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 300.f));
 	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
 	testEntity->addComponent(cameraComponent);
 }
@@ -155,6 +160,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 	if (testMap)
 	{
 		testMap->RenderGrids(theView, true);
+		//testMap->getTileMap()[BACKGROUND_TILES]
 	}
 
 	if (!m_meshList.empty())

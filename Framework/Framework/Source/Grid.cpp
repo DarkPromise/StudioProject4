@@ -2,6 +2,8 @@
 
 Grid::Grid(int tileSize)
 : m_iTileSize(tileSize)
+, m_iTileID(-1)
+, m_v3GridPos(Vector3(0.f,0.f,0.f))
 {
 	m_cGridAABB.setMaxMin(Vector3((float)tileSize * 0.5f, (float)tileSize * 0.5f, 0.f), Vector3((float)-tileSize * 0.5f, (float)-tileSize * 0.5f, 0.f));
 	m_cGridTiles.push_back(MeshBuilder::GenerateBoundingBox("GridBB", m_cGridAABB.Max, m_cGridAABB.Min,Color(0.f,0.f,1.f)));
@@ -42,4 +44,29 @@ void Grid::setTileSize(int tileSize)
 int Grid::getTileSize()
 {
 	return this->m_iTileSize;
+}
+
+std::vector<Mesh*> Grid::getGridTiles()
+{
+	return this->m_cGridTiles;
+}
+
+void Grid::setTileID(int id)
+{
+	this->m_iTileID = id;
+}
+
+int Grid::getTileID()
+{
+	return this->m_iTileID;
+}
+
+void Grid::setGridPos(Vector3 gridPos)
+{
+	this->m_v3GridPos = gridPos;
+}
+
+Vector3 Grid::getGridPos()
+{
+	return this->m_v3GridPos;
 }

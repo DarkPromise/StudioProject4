@@ -21,26 +21,18 @@ void StateSplash::Init()
 	// Create Meshes
 	Mesh * newMesh;
 	newMesh = MeshBuilder::GenerateQuad("Splash BG", Color(1.f, 1.f, 1.f), 1.f);
-	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Logo", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Logo.tga");
-	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
-	m_bStartFadeIn = true;
-	m_bStartFadeOut = false;
+	m_bStartFadeOut = true;
 	m_dFadeDelay = 0.0;
 }
 
 void StateSplash::Update(StateHandler * stateHandler, double dt)
 {
-	if (m_bStartFadeIn)
-	{
-		FadeInEffect(dt);
-	}
-
 	m_dFadeDelay += dt;
 
 	if (m_dFadeDelay > 1.5)
@@ -99,22 +91,6 @@ void StateSplash::RenderBackground()
 	theView->Render2DMesh(m_meshList[0], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 }
 
-void StateSplash::FadeInEffect(double dt)
-{
-	if (m_meshList[0]->alpha < 1)
-	{
-		for (Mesh * mesh : m_meshList)
-		{
-			mesh->alpha += 2.f * dt;
-		}
-	}
-	else
-	{
-		m_bStartFadeIn = false;
-		m_bStartFadeOut = true;
-	}
-}
-
 void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 {	
 	for (Mesh * mesh : m_meshList)
@@ -123,6 +99,6 @@ void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 	}
 	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateTest("Test State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("Menu State", theView));
 	}
 }

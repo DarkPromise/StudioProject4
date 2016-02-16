@@ -6,6 +6,7 @@
 #include "StateAGDevInstructions.h"
 #include "StateAGDevHighscore.h"
 #include "StateAGDevOptions.h"
+#include "StateTest.h"
 
 StateAGDevMenu::~StateAGDevMenu()
 {
@@ -218,6 +219,6 @@ void StateAGDevMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
 
 	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateAGDevGame("AGDev Game State", theView));
+		stateHandler->ChangeState(new StateTest("Test Game State", theView));
 	}
 }

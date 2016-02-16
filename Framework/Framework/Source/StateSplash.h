@@ -37,7 +37,6 @@ private:
 
 	// Fade Effect
 	double m_dFadeDelay;
-	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
 };
 
