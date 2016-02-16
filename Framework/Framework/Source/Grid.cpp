@@ -29,7 +29,7 @@ void Grid::addTile(int tileID)
 	this->m_iTileID = tileID;
 	switch (tileID)
 	{
-	case TILE_WALL:
+	case 1:
 		newMesh = MeshBuilder::GenerateQuad("Tile 1", Color(1.f, 1.f, 1.f), 10.f);
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);

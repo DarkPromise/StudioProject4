@@ -14,11 +14,6 @@ public:
 	Grid(int tileSize);
 	~Grid();
 
-	enum TILE_TYPE
-	{
-		TILE_WALL = 1,
-	};
-
 	// Set and Get Functions
 	void addTile(int tileID);
 	Mesh * getMesh(int index = 0);
