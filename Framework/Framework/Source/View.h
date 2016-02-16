@@ -110,6 +110,7 @@ public:
 	void RenderGui(Gui * gui, Mesh * textMesh);
 	void RenderBuffer(CharBuffer * buffer, Mesh * textMesh);
 	void RenderTreeBranch(Branch * branch);
+	void RenderSprites(Mesh* mesh, int ID, const float size, const float x, const float y);
 
 	int getWindowWidth();
 	int getWindowHeight();

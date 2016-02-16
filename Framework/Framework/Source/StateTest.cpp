@@ -37,14 +37,20 @@ void StateTest::Init()
 
 	// Init Test Entity
 	testEntity = new EntityTest();
+	
 	auto informationComponent = new InformationComponent();
 	informationComponent->setName("Test");
 	informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
 	testEntity->addComponent(informationComponent);
+	
 	auto cameraComponent = new CameraComponent(theCamera);
 	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 300.f));
 	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
 	testEntity->addComponent(cameraComponent);
+
+	auto graphicsComponent = new GraphicsComponent();
+	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Ground", Color(1.f, 0.f, 0.f), 10.f));
+	testEntity->addComponent(graphicsComponent);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -103,6 +109,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		}
 	}
 
+	// Player Update
+	auto infoC = testEntity->getComponent<InformationComponent>();
+	infoC->Update(dt);
+
 	theView->Update(dt);
 	theView->viewStack.LoadIdentity();
 	theView->viewStack.LookAt(
@@ -124,6 +134,11 @@ void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const b
 
 void StateTest::Cleanup()
 {
+	if (testEntity)
+	{
+		delete testEntity;
+	}
+
 	if (testMap)
 	{
 		delete testMap;
@@ -155,6 +170,25 @@ void StateTest::Resume()
 
 }
 
+void StateTest::renderPlayer()
+{
+	theView->modelStack.PushMatrix();
+	theView->modelStack.Translate(this->testEntity->getComponent<InformationComponent>()->getPosition().x, this->testEntity->getComponent<InformationComponent>()->getPosition().y, this->testEntity->getComponent<InformationComponent>()->getPosition().z);
+	theView->modelStack.Rotate(this->testEntity->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
+	theView->RenderMesh(this->testEntity->getComponent<GraphicsComponent>()->getMesh(this->testEntity->getComponent<GraphicsComponent>()->getResLevel()), false, false);
+	theView->modelStack.PopMatrix();
+
+	auto collisionC = this->testEntity->getComponent<CollisionComponent>();
+	if (collisionC)
+	{
+		theView->modelStack.PushMatrix();
+		theView->modelStack.Translate(this->testEntity->getComponent<InformationComponent>()->getPosition().x, this->testEntity->getComponent<InformationComponent>()->getPosition().y, this->testEntity->getComponent<InformationComponent>()->getPosition().z);
+		theView->modelStack.Rotate(this->testEntity->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
+		theView->RenderMesh(collisionC->getMesh(), false, false);
+		theView->modelStack.PopMatrix();
+	}
+}
+
 void StateTest::Draw(StateHandler * stateHandler)
 {
 	if (testMap)
@@ -171,5 +205,6 @@ void StateTest::Draw(StateHandler * stateHandler)
 		}
 	}
 
+	renderPlayer();
 	theView->SwapBuffers();
 }
