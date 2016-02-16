@@ -22,9 +22,20 @@ Grid::~Grid()
 	m_cGridTiles.~vector();
 }
 
-void Grid::addTile(Mesh * mesh)
+void Grid::addTile(int tileID)
 {
-	m_cGridTiles.push_back(mesh);
+	Mesh * newMesh;
+	switch (tileID)
+	{
+	case 1:
+		newMesh = MeshBuilder::GenerateQuad("Tile 1", Color(1.f, 1.f, 1.f), m_iTileSize);
+		m_cGridTiles.push_back(newMesh);
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	}
 }
 
 Mesh * Grid::getMesh(int index)

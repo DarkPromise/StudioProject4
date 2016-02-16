@@ -17,16 +17,6 @@ GridMap::~GridMap()
 	collisionData.clear();
 	collisionData.~vector();
 
-	if (!m_cTileMap.empty())
-	{
-		for (int i = 0; i < m_cTileMap.size(); i++)
-		{
-			delete m_cTileMap[i];
-		}
-	}
-	m_cTileMap.clear();
-	m_cTileMap.~vector();
-
 	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
 	{
 		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
@@ -47,19 +37,19 @@ void GridMap::Init(int xSize, int ySize, int tileSize)
 	Grid * newGrid;
 
 	// Set the size of the vectors
-	m_cGridMap.resize(xSize);
-	for (unsigned int i = 0; i < xSize; i++)
+	m_cGridMap.resize(ySize);
+	for (unsigned int i = 0; i < ySize; i++)
 	{
-		m_cGridMap[i].resize(ySize);
+		m_cGridMap[i].resize(xSize);
 	}
 
 	// Populate the vector array with empty Grids
-	for (unsigned int i = 0; i < xSize; i++) // - Axis
+	for (unsigned int i = 0; i < ySize; i++)
 	{
-		for (unsigned int j = 0; j < ySize; j++)
+		for (unsigned int j = 0; j < xSize; j++)
 		{
 			newGrid = new Grid(tileSize);
-			newGrid->setGridPos(Vector3(i * tileSize, j * tileSize, 0.f));
+			newGrid->setGridPos(Vector3(j * tileSize, (ySize - i) * tileSize, 0.f)); // ySize - i to flip it around
 			m_cGridMap[i][j] = newGrid;
 		}
 	}
@@ -99,14 +89,41 @@ void GridMap::RenderGrids(View * theView, bool renderBB)
 			{
 				theView->modelStack.PushMatrix();
 				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0);
-				theView->RenderMesh(m_cGridMap[i][j]->getMesh(), false, false);
+				theView->RenderMesh(m_cGridMap[i][j]->getMesh(BOUNDING_BOX), false, false);
 				theView->modelStack.PopMatrix();
 			}
+		}
+	}
+}
+
+void GridMap::RenderBackground(View * theView)
+{
+	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
+	{
+		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
+		{
 			if (m_cGridMap[i][j]->getGridTiles().size() > 1)
 			{
 				theView->modelStack.PushMatrix();
-				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0);
-				theView->RenderMesh(m_cGridMap[i][j]->getMesh(1), false, false);
+				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, m_cGridMap[i][j]->getGridPos().z);
+				theView->RenderMesh(m_cGridMap[i][j]->getMesh(BACKGROUND_TILE), false, false);
+				theView->modelStack.PopMatrix();
+			}
+		}
+	}
+}
+
+void GridMap::RenderForeground(View * theView)
+{
+	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
+	{
+		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
+		{
+			if (m_cGridMap[i][j]->getGridTiles().size() > 2)
+			{
+				theView->modelStack.PushMatrix();
+				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0.1f);
+				theView->RenderMesh(m_cGridMap[i][j]->getMesh(FOREGROUND_TILE), false, false);
 				theView->modelStack.PopMatrix();
 			}
 		}
@@ -118,25 +135,20 @@ std::vector<std::vector<Grid*>> GridMap::getGridMap()
 	return this->m_cGridMap;
 }
 
-std::vector<Mesh*> GridMap::getTileMap()
-{
-	return this->m_cTileMap;
-}
-
 bool GridMap::LoadData(std::string backgroundCSV, std::string foregroundCSV)
 {
-	if (LoadForegroundMap(foregroundCSV))
+	if (LoadBackgroundMap(backgroundCSV))
 	{
-		std::cout << foregroundCSV << " has been loaded. " << std::endl;
-		if (LoadBackgroundMap(backgroundCSV))
+		std::cout << backgroundCSV << " has been loaded. " << std::endl;
+		if (LoadForegroundMap(foregroundCSV))
 		{
-			std::cout << backgroundCSV << " has been loaded. " << std::endl << std::endl;
+			std::cout << foregroundCSV << " has been loaded. " << std::endl << std::endl;
 			return true;
 		}
-		std::cout << "Failed to load background" << std::endl;
+		std::cout << "Failed to load foreground" << std::endl;
 		return false;
 	}
-	std::cout << "Failed to load foreground" << std::endl;
+	std::cout << "Failed to load background" << std::endl;
 	return false;
 }
 
@@ -144,6 +156,7 @@ bool GridMap::LoadBackgroundMap(const std::string mapName)
 {
 	int theLineCounter = 0;
 	int theMaxNumOfColumns = 0;
+	int Index = -1;
 
 	std::ifstream file(mapName.c_str());
 	if (file.is_open())
@@ -154,7 +167,7 @@ bool GridMap::LoadBackgroundMap(const std::string mapName)
 			std::string aLineOfText = "";
 			getline(file, aLineOfText);
 
-			if (theLineCounter >= m_iNumTilesHeight)
+			if (theLineCounter > m_iNumTilesHeight)
 				break;
 
 			// If this line is not a comment line, then process it
@@ -179,13 +192,17 @@ bool GridMap::LoadBackgroundMap(const std::string mapName)
 
 					std::string token;
 					std::istringstream iss(aLineOfText);
-					while (getline(iss, token, ',') && (theColumnCounter<m_iNumTilesWidth))
+					while (getline(iss, token, ',') && (theColumnCounter < m_iNumTilesWidth))
 					{
-						backgroundData[theLineCounter][theColumnCounter++] = atoi(token.c_str());
+						if (atoi(token.c_str()) > 0)
+						{
+							this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
+						}
+						backgroundData[Index+1][theColumnCounter++] = atoi(token.c_str());
 					}
+					Index++;
 				}
 			}
-
 			theLineCounter++;
 		}
 	}
@@ -196,6 +213,7 @@ bool GridMap::LoadForegroundMap(const std::string mapName)
 {
 	int theLineCounter = 0;
 	int theMaxNumOfColumns = 0;
+	int Index = -1;
 
 	std::ifstream file(mapName.c_str());
 	if (file.is_open())
@@ -234,13 +252,17 @@ bool GridMap::LoadForegroundMap(const std::string mapName)
 				else
 				{
 					int theColumnCounter = 0;
-
 					std::string token;
 					std::istringstream iss(aLineOfText);
 					while (getline(iss, token, ',') && (theColumnCounter<m_iNumTilesWidth))
 					{
-						foregroundData[theLineCounter][theColumnCounter++] = atoi(token.c_str());
+						if (atoi(token.c_str()) > 0)
+						{
+							this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
+						}
+						foregroundData[Index+1][theColumnCounter++] = atoi(token.c_str());
 					}
+					Index++;
 				}
 			}
 
@@ -248,4 +270,34 @@ bool GridMap::LoadForegroundMap(const std::string mapName)
 		}
 	}
 	return true;
+}
+
+void GridMap::setTileSize(int tileSize)
+{
+	this->m_iTileSize = tileSize;
+}
+
+int GridMap::getTileSize()
+{
+	return this->m_iTileSize;
+}
+
+void GridMap::setMapWidth(int width)
+{
+	this->m_iNumTilesWidth = width;
+}
+
+int GridMap::getMapWidth()
+{
+	return this->m_iNumTilesWidth;
+}
+
+void GridMap::setMapHeight(int height)
+{
+	this->m_iNumTilesHeight = height;
+}
+
+int GridMap::getMapHeight()
+{
+	return this->m_iNumTilesHeight;
 }

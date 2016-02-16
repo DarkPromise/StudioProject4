@@ -15,7 +15,7 @@ public:
 	~Grid();
 
 	// Set and Get Functions
-	void addTile(Mesh * mesh);
+	void addTile(int tileID);
 	Mesh * getMesh(int index = 0);
 	std::vector<Mesh*> getGridTiles();
 

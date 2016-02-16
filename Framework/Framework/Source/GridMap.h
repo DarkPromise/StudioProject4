@@ -11,8 +11,9 @@
 
 #include "Grid.h"
 
-#define BACKGROUND_TILES 0
-#define FOREGROUND_TILES 1
+#define BOUNDING_BOX 0
+#define BACKGROUND_TILE 1
+#define FOREGROUND_TILE 2
 
 class GridMap
 {
@@ -28,11 +29,18 @@ public:
 
 	// Rendering Function
 	void RenderGrids(View * theView, bool renderBB = false);
+	void RenderBackground(View * theView);
+	void RenderForeground(View * theView);
 
 	// Setters and Getters
 	std::vector<std::vector<Grid*>> getGridMap();
 	std::vector<Mesh*> getTileMap();
-
+	void setTileSize(int tileSize);
+	int getTileSize();
+	void setMapWidth(int width);
+	int getMapWidth();
+	void setMapHeight(int height);
+	int getMapHeight();
 public:
 	std::vector<std::vector<int> > backgroundData;	// 2D vector to store background values
 	std::vector<std::vector<int> > foregroundData;	// 2D vector to store foreground values
@@ -42,7 +50,6 @@ private:
 	bool LoadForegroundMap(const std::string fileName);	// Loads values from foreground csv into vector
 private:
 	std::vector<std::vector<Grid*>> m_cGridMap;
-	std::vector<Mesh*> m_cTileMap;
 
 	int m_iTileSize;
 	int m_iNumTilesWidth;

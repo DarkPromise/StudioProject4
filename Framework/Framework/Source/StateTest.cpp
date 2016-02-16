@@ -28,12 +28,8 @@ void StateTest::Init()
 	theView->getInputHandler()->setMouseEnabled(false);
 
 	testMap = new GridMap();
-	testMap->Init(32, 26, 32);
+	testMap->Init(32, 25, 32);
 	testMap->LoadData("MapData//MainMenu_Background.csv","MapData//MainMenu_Foreground.csv");
-
-	/*testMesh = MeshBuilder::GenerateTileMap("Test", Color(0.f, 0.f, 0.f), testMap->backgroundData , 32, 32, 32.f);
-	testMesh->textureArray[0] = LoadTGA("Images//Tileset_MAINMENU.tga");
-	m_meshList.push_back(testMesh);*/
 
 	// Init Test Entity
 	testEntity = new EntityTest();
@@ -193,8 +189,12 @@ void StateTest::Draw(StateHandler * stateHandler)
 {
 	if (testMap)
 	{
+		theView->modelStack.PushMatrix();
+		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
 		testMap->RenderGrids(theView, true);
-		//testMap->getTileMap()[BACKGROUND_TILES]
+		testMap->RenderBackground(theView);
+		theView->modelStack.PopMatrix();
+		renderPlayer();
 	}
 
 	if (!m_meshList.empty())
@@ -204,7 +204,5 @@ void StateTest::Draw(StateHandler * stateHandler)
 			theView->RenderMesh(m_meshList[i],false,false);
 		}
 	}
-
-	renderPlayer();
 	theView->SwapBuffers();
 }
