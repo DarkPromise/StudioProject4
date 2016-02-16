@@ -14,6 +14,12 @@ public:
 	Grid(int tileSize);
 	~Grid();
 
+	enum TILE_TYPE
+	{
+		TILE_FLOOR = 1,
+		TILE_WALL = 2,
+	};
+
 	// Set and Get Functions
 	void addTile(int tileID);
 	Mesh * getMesh(int index = 0);

@@ -89,7 +89,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if ((indexX + 1 < testMap->getMapWidth()))
 			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() != 1)
+				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() != Grid::TILE_WALL)
 				{
 					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
 				}
@@ -110,7 +110,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if ((indexX - 1 >= 0))
 			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getTileID() != 1)
+				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getTileID() != Grid::TILE_WALL)
 				{
 					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
 				}
@@ -131,7 +131,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if (((testMap->getMapHeight() - (int)indexY - 1) >= 0))
 			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getTileID() != 1)
+				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
 				{
 					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
 				}
@@ -152,7 +152,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if (((testMap->getMapHeight() - (int)indexY + 1) < testMap->getMapHeight()))
 			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getTileID() != 1)
+				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
 				{
 					infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
 				}

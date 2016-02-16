@@ -194,7 +194,7 @@ bool GridMap::LoadBackgroundMap(const std::string mapName)
 					std::istringstream iss(aLineOfText);
 					while (getline(iss, token, ',') && (theColumnCounter < m_iNumTilesWidth))
 					{
-						if (atoi(token.c_str()) > -1)
+						if (atoi(token.c_str()) > 0)
 						{
 							this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
 						}
@@ -256,7 +256,7 @@ bool GridMap::LoadForegroundMap(const std::string mapName)
 					std::istringstream iss(aLineOfText);
 					while (getline(iss, token, ',') && (theColumnCounter<m_iNumTilesWidth))
 					{
-						if (atoi(token.c_str()) > -1)
+						if (atoi(token.c_str()) > 0)
 						{
 							this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
 						}
