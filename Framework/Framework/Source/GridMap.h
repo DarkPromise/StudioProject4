@@ -28,7 +28,7 @@ public:
 	virtual void Update(double dt);
 
 	// Rendering Function
-	void RenderGrids(View * theView, bool renderBB = false);
+	void RenderGrids(View * theView, Mesh * textMesh, bool renderBB = false);
 	void RenderBackground(View * theView);
 	void RenderForeground(View * theView);
 

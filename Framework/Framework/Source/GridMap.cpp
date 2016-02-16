@@ -79,7 +79,7 @@ void GridMap::Update(double dt)
 
 }
 
-void GridMap::RenderGrids(View * theView, bool renderBB)
+void GridMap::RenderGrids(View * theView, Mesh * textMesh, bool renderBB)
 {
 	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
 	{

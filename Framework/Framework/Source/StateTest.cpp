@@ -16,6 +16,10 @@ void StateTest::Init()
 	theView->LoadPerspectiveCamera(90.0);
 
 	Mesh * testMesh;
+	testMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
+	testMesh->textureID = LoadTGA("Fonts//source.tga");
+	m_meshList.push_back(testMesh);
+
 	testMesh = MeshBuilder::GenerateAxes("Axes", 1000.f, 1000.f, 1000.f);
 	m_meshList.push_back(testMesh);
 
@@ -36,7 +40,8 @@ void StateTest::Init()
 	
 	auto informationComponent = new InformationComponent();
 	informationComponent->setName("Test");
-	informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
+	//informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
+	informationComponent->setPosition(testMap->getGridMap()[24][0]->getGridPos());
 	testEntity->addComponent(informationComponent);
 	
 	auto cameraComponent = new CameraComponent(theCamera);
@@ -64,14 +69,22 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		m_meshList[1]->alpha = 0.f;
 	}
 
+	// Player Update
+	auto infoC = testEntity->getComponent<InformationComponent>();
+	infoC->Update(dt);
+	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+	std::cout << "Player Index [" << (int)indexX << "," << testMap->getMapHeight() - (int)indexY << "]" << std::endl;
+
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D))
 	{
 		auto * infoComponent = testEntity->getComponent<InformationComponent>();
 		if (infoComponent)
 		{
-			Vector3 newPosition = infoComponent->getPosition();
-			newPosition.x += 1.f;
-			infoComponent->setPosition(newPosition);
+			if ((indexX + 1 < testMap->getMapWidth()))
+			{
+				infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
+			}
 		}
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
@@ -79,9 +92,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		auto * infoComponent = testEntity->getComponent<InformationComponent>();
 		if (infoComponent)
 		{
-			Vector3 newPosition = infoComponent->getPosition();
-			newPosition.x -= 1.f;
-			infoComponent->setPosition(newPosition);
+			if ((indexX - 1 >= 0))
+			{
+				infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
+			}
 		}
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
@@ -89,9 +103,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		auto * infoComponent = testEntity->getComponent<InformationComponent>();
 		if (infoComponent)
 		{
-			Vector3 newPosition = infoComponent->getPosition();
-			newPosition.y += 1.f;
-			infoComponent->setPosition(newPosition);
+			if (((testMap->getMapHeight() - (int)indexY - 1) >= 0))
+			{
+				infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
+			}
 		}
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
@@ -99,18 +114,12 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		auto * infoComponent = testEntity->getComponent<InformationComponent>();
 		if (infoComponent)
 		{
-			Vector3 newPosition = infoComponent->getPosition();
-			newPosition.y -= 1.f;
-			infoComponent->setPosition(newPosition);
+			if (((testMap->getMapHeight() - (int)indexY + 1) < testMap->getMapHeight()))
+			{
+				infoComponent->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
+			}
 		}
 	}
-
-	// Player Update
-	auto infoC = testEntity->getComponent<InformationComponent>();
-	infoC->Update(dt);
-	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-	std::cout << "Player Index [" << indexX << "," << indexY << "]" << std::endl;
 
 	theView->Update(dt);
 	theView->viewStack.LoadIdentity();
@@ -194,17 +203,20 @@ void StateTest::Draw(StateHandler * stateHandler)
 	{
 		theView->modelStack.PushMatrix();
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
-		testMap->RenderGrids(theView, true);
+		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderBackground(theView);
-		theView->modelStack.PopMatrix();
 		renderPlayer();
+		theView->modelStack.PopMatrix();
 	}
 
 	if (!m_meshList.empty())
 	{
 		for (int i = 0; i < m_meshList.size(); i++)
 		{
-			theView->RenderMesh(m_meshList[i],false,false);
+			if (i != 0)
+			{
+				theView->RenderMesh(m_meshList[i], false, false);
+			}
 		}
 	}
 	theView->SwapBuffers();
