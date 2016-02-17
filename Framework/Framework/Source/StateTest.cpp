@@ -16,12 +16,6 @@ void StateTest::Init()
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(testMesh);
 
-	/*testMesh = MeshBuilder::GenerateAxes("Axes", 1000.f, 1000.f, 1000.f);
-	m_meshList.push_back(testMesh);*/
-
-	testMesh = MeshBuilder::GenerateCube("Cube", Color(0.f, 0.f, 1.f), 10.f);
-	m_meshList.push_back(testMesh);
-
 	theCamera = new Camera();
 
 	theView->getInputHandler()->resetMousePosition(theView);
@@ -48,31 +42,19 @@ void StateTest::Init()
 	auto graphicsComponent = new GraphicsComponent();
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Player", Color(1.f, 0.f, 0.f), 32.f));
 	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//player.tga");
+	graphicsComponent->getMesh()->alpha = 0.7f;
 	testEntity->addComponent(graphicsComponent);
 
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
 
-	// BOXES
-	Entity * testGridObject;
-	for (int i = 10; i < 20; i++)
-	{
-		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-		graphicsComponent = new GraphicsComponent();
-		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-		testGridObject->addComponent(graphicsComponent);
-		testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
-	}
-	for (int j = 10; j < 20; j++)
-	{
-		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-		graphicsComponent = new GraphicsComponent();
-		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-		testGridObject->addComponent(graphicsComponent);
-		testMap->getGridMap()[j][10]->addGridEntity(testGridObject);
-	}
+	EntityGridObject * testGridObject;
+	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+	graphicsComponent = new GraphicsComponent();
+	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+	testGridObject->addComponent(graphicsComponent);
+	testMap->getGridMap()[22][2]->addGridEntity(testGridObject);
 
 	// KEY
 	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
@@ -80,7 +62,7 @@ void StateTest::Init()
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
 	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
 	testGridObject->addComponent(graphicsComponent);
-	testMap->getGridMap()[10][5]->addGridEntity(testGridObject);
+	testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -93,10 +75,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		cameraC->Update(dt);
 	}
 	
-	m_meshList[1]->alpha += dt;
-	if (m_meshList[1]->alpha > 2)
+	testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha += dt;
+	if (testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha > 2)
 	{
-		m_meshList[1]->alpha = 0.f;
+		testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha = 0.f;
 	}
 
 	// PLAYER UPDATE
@@ -226,7 +208,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 	{
 		theView->modelStack.PushMatrix();
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
-		testMap->RenderGrids(theView, m_meshList[0], true);
+		//testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderBackground(theView);
 		testMap->RenderGridEntities(theView);
 		renderPlayer();

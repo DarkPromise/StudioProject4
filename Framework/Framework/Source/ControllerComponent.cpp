@@ -41,19 +41,19 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 		// CONTROL PLAYER
 		if (m_dInputDelay > MOVEMENT_DELAY)
 		{
-			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_W))
+			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_UP))
 			{
 				MoveForward(currMap);
 			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_A))
+			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_LEFT))
 			{
 				MoveLeft(currMap);
 			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_S))
+			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_DOWN))
 			{
 				MoveBackwards(currMap);
 			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_D))
+			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_RIGHT))
 			{
 				MoveRight(currMap);
 			}

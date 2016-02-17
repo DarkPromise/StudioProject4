@@ -161,7 +161,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						 {
 						 case EntityGridObject::OBJECT_BOX:
 							 // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
-							 if ((m_cGridMap[pIndexY - 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY - 2][pIndexX]->getTileID() != Grid::TILE_WALL))
+							 if ((m_cGridMap[pIndexY - 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY - 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
 							 {
 								 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 								 {
@@ -188,7 +188,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						   {
 						   case EntityGridObject::OBJECT_BOX:
 							   // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
-							   if ((m_cGridMap[pIndexY + 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY + 2][pIndexX]->getTileID() != Grid::TILE_WALL))
+							   if ((m_cGridMap[pIndexY + 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY + 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
 							   {
 								   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 								   {
@@ -214,7 +214,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
 						   {
 						   case EntityGridObject::OBJECT_BOX:
-							   if ((m_cGridMap[pIndexY][pIndexX - 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX-2]->getTileID() != Grid::TILE_WALL))
+							   if ((m_cGridMap[pIndexY][pIndexX - 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX-2]->getTileID() == Grid::TILE_FLOOR))
 							   {
 								   if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 								   {
@@ -241,7 +241,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 							switch (EntityGridObject::OBJECT_TYPE(EntityType))
 							{
 							case EntityGridObject::OBJECT_BOX:
-								if ((m_cGridMap[pIndexY][pIndexX + 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX + 2]->getTileID() != Grid::TILE_WALL))
+								if ((m_cGridMap[pIndexY][pIndexX + 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX + 2]->getTileID() == Grid::TILE_FLOOR))
 								{
 									if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 									{

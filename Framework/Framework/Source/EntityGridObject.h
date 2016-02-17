@@ -10,7 +10,6 @@ public:
 	{
 		OBJECT_BOX = 0,
 		OBJECT_KEY,
-
 		OBJECT_UNDEFINED,
 	};
 	EntityGridObject();
