@@ -46,7 +46,8 @@ void StateTest::Init()
 	testEntity->addComponent(cameraComponent);
 
 	auto graphicsComponent = new GraphicsComponent();
-	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Ground", Color(1.f, 0.f, 0.f), 10.f));
+	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Player", Color(1.f, 0.f, 0.f), 32.f));
+	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//player.tga");
 	testEntity->addComponent(graphicsComponent);
 
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
@@ -201,16 +202,22 @@ void StateTest::renderGUI()
 		ss.precision(4);
 	}
 	ss << "TIME: " << gameTimer;
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 50.f, (float)theView->getWindowWidth() * 0.05f, (float)theView->getWindowHeight() * 0.9);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 32.f, (float)theView->getWindowWidth() * 0.05f, (float)theView->getWindowHeight() * 0.9);
 
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	if (controlC)
 	{
 		if (controlC->unlockDoorNextLevel)
 		{
-			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 40.f, (float)theView->getWindowWidth() * 0.65f, (float)theView->getWindowHeight() * 0.05);
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.65f, (float)theView->getWindowHeight() * 0.05);
 		}
 	}
+
+	std::ostringstream ss1;
+
+	EntityTest * testEntity2 = dynamic_cast<EntityTest*>(testEntity);
+	ss1 << "Key : " << std::boolalpha << testEntity2->m_bHasKey;
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str(), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
 }
 
 void StateTest::Draw(StateHandler * stateHandler)

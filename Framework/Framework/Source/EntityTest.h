@@ -10,8 +10,9 @@ public:
 	virtual ~EntityTest();
 
 	virtual void Update(double dt);
+
+	bool m_bHasKey;
 private:
-	
 };
 
 #endif

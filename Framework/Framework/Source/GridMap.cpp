@@ -1,5 +1,6 @@
 #include "GridMap.h"
 #include "EntityGridObject.h"
+#include "EntityTest.h"
 
 GridMap::GridMap()
 : m_iTileSize(0)
@@ -148,8 +149,10 @@ void GridMap::RenderGridEntities(View * theView)
 	}
 }
 
-bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType)
+bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * Player)
 {
+	EntityTest * thePlayer = dynamic_cast<EntityTest*>(Player);
+
 	switch (GRID_DIRECTION(direction))
 	{
 	case DIRECTION_UP:
@@ -166,6 +169,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 									 m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
 									 return true;
 								 }
+							 }
+							 break;
+						 case EntityGridObject::OBJECT_KEY:
+							 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+							 {
+								 m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
+								 thePlayer->m_bHasKey = true;
+								 return true;
 							 }
 							 break;
 						 }
@@ -187,6 +198,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 								   }
 							   }
 							   break;
+						   case EntityGridObject::OBJECT_KEY:
+							   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+							   {
+								   m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
+								   thePlayer->m_bHasKey = true;
+								   return true;
+							   }
+							   break;
 						   }
 						   break;
 	}
@@ -203,6 +222,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 									   m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
 									   return true;
 								   }
+							   }
+							   break;
+						   case EntityGridObject::OBJECT_KEY:
+							   if (m_cGridMap[pIndexY][pIndexX-1]->getGridEntity())
+							   {
+								   m_cGridMap[pIndexY][pIndexX-1]->deleteEntity();
+								   thePlayer->m_bHasKey = true;
+								   return true;
 							   }
 							   break;
 						   }
@@ -222,6 +249,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 										m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
 										return true;
 									}
+								}
+								break;
+							case EntityGridObject::OBJECT_KEY:
+								if (m_cGridMap[pIndexY][pIndexX+1]->getGridEntity())
+								{
+									m_cGridMap[pIndexY][pIndexX+1]->deleteEntity();
+									thePlayer->m_bHasKey = true;
+									return true;
 								}
 								break;
 							}

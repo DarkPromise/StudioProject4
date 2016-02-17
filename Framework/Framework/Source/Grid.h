@@ -41,6 +41,7 @@ public:
 	void addGridEntity(Entity * gridEntity);
 	Entity * getGridEntity();
 	void removeEntity();
+	void deleteEntity();
 private:
 	int m_iTileSize;
 	int m_iTileID;

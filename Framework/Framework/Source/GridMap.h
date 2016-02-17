@@ -55,7 +55,7 @@ public:
 	int getMapHeight();
 
 	//Special Functions
-	bool PushObjects(int pIndexX, int pIndexY, int direction, int EntityType);
+	bool PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * Player);
 
 public:
 	std::vector<std::vector<int> > backgroundData;	// 2D vector to store background values

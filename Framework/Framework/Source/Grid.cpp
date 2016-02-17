@@ -38,7 +38,7 @@ void Grid::addTile(int tileID)
 	{
 	case TILE_FLOOR:
 		newMesh = MeshBuilder::GenerateQuad("Tile 0", Color(1.f, 1.f, 1.f), m_iTileSize);
-		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile12.tga");
+		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile3.tga");
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);
 		break;
@@ -114,5 +114,11 @@ Entity * Grid::getGridEntity()
 
 void Grid::removeEntity()
 {
+	this->m_cGridEntity = nullptr;
+}
+
+void Grid::deleteEntity()
+{
+	delete this->m_cGridEntity;
 	this->m_cGridEntity = nullptr;
 }
