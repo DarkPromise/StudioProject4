@@ -1,6 +1,8 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#pragma warning(disable:4018)
+
 #include <iostream>
 
 class Entity;

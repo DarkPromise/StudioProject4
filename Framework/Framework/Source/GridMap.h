@@ -1,6 +1,9 @@
 #ifndef GRID_MAP_H
 #define GRID_MAP_H
 
+#pragma warning(disable:4244)
+#pragma warning(disable:4018)
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -18,6 +21,14 @@
 class GridMap
 {
 public:
+	enum GRID_DIRECTION
+	{
+		DIRECTION_UP = 0,
+		DIRECTION_DOWN,
+		DIRECTION_LEFT,
+		DIRECTION_RIGHT
+	};
+
 	GridMap();
 	GridMap(int xSize, int ySize, int tileSize = 32);
 	virtual ~GridMap();
@@ -31,6 +42,7 @@ public:
 	void RenderGrids(View * theView, Mesh * textMesh, bool renderBB = false);
 	void RenderBackground(View * theView);
 	void RenderForeground(View * theView);
+	void RenderGridEntities(View * theView);
 
 	// Setters and Getters
 	std::vector<std::vector<Grid*>> getGridMap();
@@ -41,6 +53,10 @@ public:
 	int getMapWidth();
 	void setMapHeight(int height);
 	int getMapHeight();
+
+	//Special Functions
+	bool PushObjects(int pIndexX, int pIndexY, int direction, int EntityType);
+
 public:
 	std::vector<std::vector<int> > backgroundData;	// 2D vector to store background values
 	std::vector<std::vector<int> > foregroundData;	// 2D vector to store foreground values

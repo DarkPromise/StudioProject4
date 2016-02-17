@@ -1,6 +1,8 @@
 #ifndef INFORMATION_COMPONENT_H
 #define INFORMATION_COMPONENT_H
 
+#pragma warning(disable:4244)
+
 #include "Component.h"
 
 #include <string>

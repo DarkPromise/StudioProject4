@@ -254,8 +254,6 @@ void View::Update(double dt)
 
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	// Resizing Changes
 	glGetIntegerv(GL_VIEWPORT, m_viewPort);
 	m_iWindow_Width = m_viewPort[VIEWPORT_WIDTH];
@@ -269,6 +267,8 @@ void View::Update(double dt)
 		LoadPerspectiveCamera(90.f);
 		break;
 	}
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void View::SwapBuffers()

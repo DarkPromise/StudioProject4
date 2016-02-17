@@ -24,7 +24,7 @@ public:
 	std::string getText();
 	void setText(std::string);
 	float getSize();
-	float getLength();
+	int getLength();
 	void highlightButton(bool highlight);
 	bool getHighlighted();
 private:

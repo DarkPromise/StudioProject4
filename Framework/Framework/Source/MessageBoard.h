@@ -1,6 +1,8 @@
 #ifndef MESSAGE_BOARD_H
 #define MESSAGE_BOARD_H
 
+#pragma warning(disable:4018)
+
 class Entity;
 
 #include <vector>

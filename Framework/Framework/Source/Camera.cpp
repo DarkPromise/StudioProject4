@@ -28,8 +28,8 @@ void Camera::Update(double dt, InputHandler * theInputHandler)
 {
 	if (!theInputHandler->isMouseEnabled())
 	{
-		this->m_yaw += theInputHandler->getDeltaX();
-		this->m_pitch += theInputHandler->getDeltaY();
+		this->m_yaw += (float)theInputHandler->getDeltaX();
+		this->m_pitch += (float)theInputHandler->getDeltaY();
 		limitValues();
 	}
 }

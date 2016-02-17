@@ -8,6 +8,8 @@
 #include "AxisAlignedBoundingBox.h"
 #include "MeshBuilder.h"
 
+class Entity;
+
 class Grid
 {
 public:
@@ -34,12 +36,18 @@ public:
 	void setGridPos(Vector3 gridPos);
 	Vector3 getGridPos();
 
+public:
+	void addGridEntity(Entity * gridEntity);
+	Entity * getGridEntity();
+	void removeEntity();
 private:
 	int m_iTileSize;
 	int m_iTileID;
 	BoundingBox m_cGridAABB;
 	std::vector<Mesh*> m_cGridTiles;
 	Vector3 m_v3GridPos;
+
+	Entity * m_cGridEntity;
 };
 
 #endif

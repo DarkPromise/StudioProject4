@@ -20,7 +20,7 @@ public:
 	virtual BoundingBox getBoundingBox() = 0;
 	virtual std::string getText() = 0;
 	virtual float getSize() = 0;
-	virtual float getLength() = 0;
+	virtual int getLength() = 0;
 	virtual void highlightButton(bool highlight) = 0;
 	virtual bool getHighlighted() = 0;
 

@@ -5,6 +5,7 @@
 #include "MeshBuilder.h"
 
 #include "EntityTest.h"
+#include "EntityGridObject.h"
 
 #include "Camera.h"
 

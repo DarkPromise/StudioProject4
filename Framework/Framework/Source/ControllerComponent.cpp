@@ -1,5 +1,5 @@
 #include "ControllerComponent.h"
-#include "Entity.h"
+#include "EntityGridObject.h"
 #include "glfw3.h"
 
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
@@ -71,11 +71,25 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
-		if (((currMap->getMapHeight() - (int)indexY - 1) >= 0))
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		if (playerIndexY - 1 >= 0)
 		{
-			if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() != Grid::TILE_WALL)
 			{
-				infoC->setPosition(currMap->getGridMap()[currMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
+				if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity() != nullptr)
+				{
+					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity());
+					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_UP, gridObject->getObjectType()))
+					{
+						infoC->setPosition(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos());
+					}
+				}
+				else
+				{
+					infoC->setPosition(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos());
+				}
 			}
 		}
 	}
@@ -89,14 +103,29 @@ void ControllerComponent::MoveBackwards(GridMap * currMap)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
-		if (((currMap->getMapHeight() - (int)indexY + 1) < currMap->getMapHeight()))
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		if ((currMap->getMapHeight() - (int)indexY + 1) < currMap->getMapHeight())
 		{
-			if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() != Grid::TILE_WALL)
 			{
-				infoC->setPosition(currMap->getGridMap()[currMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
+				if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity() != nullptr)
+				{
+					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity());
+					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_DOWN, gridObject->getObjectType()))
+					{
+						infoC->setPosition(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos());
+					}
+				}
+				else
+				{
+					infoC->setPosition(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos());
+				}
 			}
 		}
 	}
+
 	m_dInputDelay = 0.0;
 }
 
@@ -107,11 +136,25 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
-		if ((indexX - 1 >= 0))
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		if (playerIndexX - 1 >= 0)
 		{
-			if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getTileID() != Grid::TILE_WALL)
 			{
-				infoC->setPosition(currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
+				if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity() != nullptr)
+				{
+					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity());
+					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_LEFT, gridObject->getObjectType()))
+					{
+						infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridPos());
+					}
+				}
+				else
+				{
+					infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridPos());
+				}
 			}
 		}
 	}
@@ -125,11 +168,25 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
-		if ((indexX + 1 < currMap->getMapWidth()))
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		if (((int)indexX + 1) < currMap->getMapWidth())
 		{
-			if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() != Grid::TILE_WALL)
 			{
-				infoC->setPosition(currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
+				if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity() != nullptr)
+				{
+					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity());
+					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_RIGHT, gridObject->getObjectType()))
+					{
+						infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos());
+					}
+				}
+				else
+				{
+					infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos());
+				}
 			}
 		}
 	}

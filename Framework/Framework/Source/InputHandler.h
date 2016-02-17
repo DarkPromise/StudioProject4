@@ -1,6 +1,8 @@
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
+#pragma warning(disable:4018)
+
 #include <iostream>
 
 class View;

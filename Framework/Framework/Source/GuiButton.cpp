@@ -30,7 +30,7 @@ float GuiButton::getSize()
 	return this->m_fFontSize;
 }
 
-float GuiButton::getLength()
+int GuiButton::getLength()
 {
 	return this->m_sText.length();
 }

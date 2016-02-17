@@ -1,6 +1,8 @@
 #ifndef STATE_MAINMENU_H
 #define STATE_MAINMENU_H
 
+#pragma warning(disable:4018)
+
 #include "State.h"
 #include "GuiButton.h"
 

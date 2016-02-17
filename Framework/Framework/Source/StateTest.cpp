@@ -52,6 +52,27 @@ void StateTest::Init()
 
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
+
+	Entity * testGridObject;
+	// Init Test Box
+	for (int i = 10; i < 20; i++)
+	{
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
+	}
+	for (int j = 10; j < 20; j++)
+	{
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[j][10]->addGridEntity(testGridObject);
+	}
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -168,6 +189,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
 		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderBackground(theView);
+		testMap->RenderGridEntities(theView);
 		renderPlayer();
 		theView->modelStack.PopMatrix();
 	}

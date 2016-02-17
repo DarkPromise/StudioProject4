@@ -1,10 +1,12 @@
 #include "Grid.h"
 #include "LoadTGA.h"
+#include "EntityGridObject.h"
 
 Grid::Grid(int tileSize)
 : m_iTileSize(tileSize)
 , m_iTileID(-1)
 , m_v3GridPos(Vector3(0.f,0.f,0.f))
+, m_cGridEntity(nullptr)
 {
 	m_cGridAABB.setMaxMin(Vector3((float)tileSize * 0.5f, (float)tileSize * 0.5f, 0.f), Vector3((float)-tileSize * 0.5f, (float)-tileSize * 0.5f, 0.f));
 	m_cGridTiles.push_back(MeshBuilder::GenerateBoundingBox("GridBB", m_cGridAABB.Max, m_cGridAABB.Min,Color(0.f,0.f,1.f)));
@@ -12,6 +14,11 @@ Grid::Grid(int tileSize)
 
 Grid::~Grid()
 {
+	if (m_cGridEntity != nullptr)
+	{
+		delete m_cGridEntity;
+	}
+
 	if (!m_cGridTiles.empty())
 	{
 		for (int i = 0; i < m_cGridTiles.size(); i++)
@@ -88,4 +95,19 @@ void Grid::setGridPos(Vector3 gridPos)
 Vector3 Grid::getGridPos()
 {
 	return this->m_v3GridPos;
+}
+
+void Grid::addGridEntity(Entity * gridObject)
+{
+	this->m_cGridEntity = gridObject;
+}
+
+Entity * Grid::getGridEntity()
+{
+	return this->m_cGridEntity;
+}
+
+void Grid::removeEntity()
+{
+	this->m_cGridEntity = nullptr;
 }

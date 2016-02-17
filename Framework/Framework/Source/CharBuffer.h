@@ -1,6 +1,8 @@
 #ifndef CHAR_BUFFER_H
 #define CHAR_BUFFER_H
 
+#pragma warning(disable:4018)
+
 #include <iostream>
 #include <vector>
 #include <string>

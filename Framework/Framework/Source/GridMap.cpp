@@ -1,4 +1,5 @@
 #include "GridMap.h"
+#include "EntityGridObject.h"
 
 GridMap::GridMap()
 : m_iTileSize(0)
@@ -128,6 +129,106 @@ void GridMap::RenderForeground(View * theView)
 			}
 		}
 	}
+}
+
+void GridMap::RenderGridEntities(View * theView)
+{
+	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
+	{
+		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
+		{
+			if (m_cGridMap[i][j]->getGridEntity() != nullptr)
+			{
+				theView->modelStack.PushMatrix();
+				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0.1f);
+				theView->RenderMesh(m_cGridMap[i][j]->getGridEntity()->getComponent<GraphicsComponent>()->getMesh(), false, false);
+				theView->modelStack.PopMatrix();
+			}
+		}
+	}
+}
+
+bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType)
+{
+	switch (GRID_DIRECTION(direction))
+	{
+	case DIRECTION_UP:
+	{
+						 switch (EntityGridObject::OBJECT_TYPE(EntityType))
+						 {
+						 case EntityGridObject::OBJECT_BOX:
+							 // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
+							 if ((m_cGridMap[pIndexY - 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY - 2][pIndexX]->getTileID() != Grid::TILE_WALL))
+							 {
+								 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+								 {
+									 m_cGridMap[pIndexY - 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity());
+									 m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
+									 return true;
+								 }
+							 }
+							 break;
+						 }
+	}
+		break;
+	case DIRECTION_DOWN:
+	{
+						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
+						   {
+						   case EntityGridObject::OBJECT_BOX:
+							   // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
+							   if ((m_cGridMap[pIndexY + 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY + 2][pIndexX]->getTileID() != Grid::TILE_WALL))
+							   {
+								   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+								   {
+									   m_cGridMap[pIndexY + 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity());
+									   m_cGridMap[pIndexY + 1][pIndexX]->removeEntity();
+									   return true;
+								   }
+							   }
+							   break;
+						   }
+						   break;
+	}
+	case DIRECTION_LEFT:
+	{
+						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
+						   {
+						   case EntityGridObject::OBJECT_BOX:
+							   if ((m_cGridMap[pIndexY][pIndexX - 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX-2]->getTileID() != Grid::TILE_WALL))
+							   {
+								   if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
+								   {
+									   m_cGridMap[pIndexY][pIndexX - 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX-1]->getGridEntity());
+									   m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
+									   return true;
+								   }
+							   }
+							   break;
+						   }
+
+	}
+		break;
+	case DIRECTION_RIGHT:
+	{
+							switch (EntityGridObject::OBJECT_TYPE(EntityType))
+							{
+							case EntityGridObject::OBJECT_BOX:
+								if ((m_cGridMap[pIndexY][pIndexX + 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX + 2]->getTileID() != Grid::TILE_WALL))
+								{
+									if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
+									{
+										m_cGridMap[pIndexY][pIndexX + 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity());
+										m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
+										return true;
+									}
+								}
+								break;
+							}
+	}
+		break;
+	} // End of first switch statement
+	return false;
 }
 
 std::vector<std::vector<Grid*>> GridMap::getGridMap()

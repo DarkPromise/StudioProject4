@@ -1,6 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
 
+#pragma warning(disable:4244)
+
 #include "StateHandler.h"
 #include <string>
 
