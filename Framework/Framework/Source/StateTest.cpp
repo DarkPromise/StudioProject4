@@ -48,6 +48,7 @@ void StateTest::Init()
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
 
+	// BOXES
 	EntityGridObject * testGridObject;
 	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
 	graphicsComponent = new GraphicsComponent();
@@ -63,6 +64,13 @@ void StateTest::Init()
 	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
 	testGridObject->addComponent(graphicsComponent);
 	testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
+
+	// SWITCHES
+	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+	graphicsComponent = new GraphicsComponent();
+	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+	testGridObject->addComponent(graphicsComponent);
+	testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -191,14 +199,13 @@ void StateTest::renderGUI()
 	{
 		if (controlC->unlockDoorNextLevel)
 		{
-			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.65f, (float)theView->getWindowHeight() * 0.05);
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.05);
 		}
 	}
 
-	std::ostringstream ss1;
-
 	EntityTest * testEntity2 = dynamic_cast<EntityTest*>(testEntity);
-	ss1 << "Key : " << std::boolalpha << testEntity2->m_bHasKey;
+	std::ostringstream ss1;
+	ss1 << "KEY: " << std::boolalpha << testEntity2->m_bHasKey;
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str(), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
 }
 

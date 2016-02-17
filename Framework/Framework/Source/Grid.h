@@ -21,6 +21,7 @@ public:
 		TILE_FLOOR = 1,
 		TILE_WALL,
 		TILE_DOOR_NEXTLEVEL,
+		TILE_DOOR,
 	};
 
 	// Set and Get Functions
