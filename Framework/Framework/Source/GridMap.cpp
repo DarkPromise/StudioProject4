@@ -179,6 +179,13 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 								 return true;
 							 }
 							 break;
+
+						 case EntityGridObject::OBJECT_SWITCH:
+							 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+							 {
+								 m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
+							 }
+							 break;
 						 }
 	}
 		break;
@@ -206,9 +213,17 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 								   return true;
 							   }
 							   break;
+
+						   case EntityGridObject::OBJECT_SWITCH:
+							   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+							   {
+								   m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
+							   }
+							   break;
 						   }
-						   break;
+						   
 	}
+		break;
 	case DIRECTION_LEFT:
 	{
 						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
@@ -230,6 +245,13 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 								   m_cGridMap[pIndexY][pIndexX-1]->deleteEntity();
 								   thePlayer->m_bHasKey = true;
 								   return true;
+							   }
+							   break;
+
+						   case EntityGridObject::OBJECT_SWITCH:
+							   if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
+							   {
+								   m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
 							   }
 							   break;
 						   }
