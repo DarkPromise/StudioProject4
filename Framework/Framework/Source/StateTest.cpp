@@ -52,8 +52,8 @@ void StateTest::Init()
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
 
+	// BOXES
 	Entity * testGridObject;
-	// Init Test Box
 	for (int i = 10; i < 20; i++)
 	{
 		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
@@ -72,11 +72,19 @@ void StateTest::Init()
 		testGridObject->addComponent(graphicsComponent);
 		testMap->getGridMap()[j][10]->addGridEntity(testGridObject);
 	}
+
+	// KEY
+	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
+	graphicsComponent = new GraphicsComponent();
+	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
+	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
+	testGridObject->addComponent(graphicsComponent);
+	testMap->getGridMap()[10][5]->addGridEntity(testGridObject);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
-	gameTimer += dt * 0.1;
+	gameTimer += dt;
 	theCamera->Update(dt,theView->getInputHandler());
 	auto cameraC = testEntity->getComponent<CameraComponent>();
 	if (cameraC)

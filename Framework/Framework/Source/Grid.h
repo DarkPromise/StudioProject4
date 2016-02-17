@@ -19,7 +19,7 @@ public:
 	enum TILE_TYPE
 	{
 		TILE_FLOOR = 1,
-		TILE_WALL = 2,
+		TILE_WALL,
 		TILE_DOOR_NEXTLEVEL,
 	};
 
