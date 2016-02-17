@@ -25,6 +25,7 @@ public:
 
 	// Set and Get Functions
 	void addTile(int tileID);
+	void replaceTile(int tileID, int index = 0);
 	Mesh * getMesh(int index = 0);
 	std::vector<Mesh*> getGridTiles();
 
