@@ -7,6 +7,7 @@
 #include "StateAGDevHighscore.h"
 #include "StateAGDevOptions.h"
 #include "StateTest.h"
+#include "StateCredits.h"
 
 StateAGDevMenu::~StateAGDevMenu()
 {
@@ -44,20 +45,24 @@ void StateAGDevMenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("Start Button", "Start", 0.5f, 0.6f, 48.f);
+	newGui = new GuiButton("Start Button", "Start", 0.5f, 0.5f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("StartBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Instructions Button", "Instructions", 0.5f, 0.7f, 48.f);
+	newGui = new GuiButton("Instructions Button", "Instructions", 0.5f, 0.6f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("InstructionsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Highscores Button", "Highscores", 0.5f, 0.8f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("InstructionsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("Highscores Button", "Highscores", 0.5f, 0.7f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("HighscoreBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Options Button", "Options", 0.5f, 0.9f, 48.f);
+	newGui = new GuiButton("Options Button", "Options", 0.5f, 0.8f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OptionsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	m_guiList.push_back(newGui);
+
+	newGui = new GuiButton("Credits Button", "Credits", 0.5f, 0.9f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("CreditsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
 	m_bStartFadeIn = true;
@@ -178,6 +183,9 @@ void StateAGDevMenu::UpdateSelection(StateHandler * stateHandler)
 							break;
 						case OPTIONS_BUTTON:
 							stateHandler->ChangeState(new StateAGDevOptions("AGDev Options State", theView));
+							break;
+						case CREDITS_BUTTON:
+							stateHandler->ChangeState(new StateCredits("AGDev Credits State", theView));
 							break;
 						case EXIT_BUTTON:
 							//Theres no Exit button
