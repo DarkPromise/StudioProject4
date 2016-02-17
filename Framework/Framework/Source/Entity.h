@@ -15,6 +15,7 @@ class Component;
 #include "WaypointComponent.h"
 #include "CameraComponent.h"
 #include "CollisionComponent.h"
+#include "ControllerComponent.h"
 
 class Entity
 {

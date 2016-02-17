@@ -2,9 +2,6 @@
 
 #include "View.h"
 
-#include "InformationComponent.h"
-#include "GraphicsComponent.h"
-
 State * StateTest::getInstance()
 {
 	return this;
@@ -52,6 +49,9 @@ void StateTest::Init()
 	auto graphicsComponent = new GraphicsComponent();
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Ground", Color(1.f, 0.f, 0.f), 10.f));
 	testEntity->addComponent(graphicsComponent);
+
+	auto controlComponent = new ControllerComponent(theView->getInputHandler());
+	testEntity->addComponent(controlComponent);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -70,80 +70,18 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	}
 
 	// PLAYER UPDATE
-	auto infoC	 = testEntity->getComponent<InformationComponent>();
-	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-	infoC->Update(dt);
-	//std::cout << "Player Index [" << (int)indexX << "," << testMap->getMapHeight() - (int)indexY << "]" << std::endl;
-
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D))
+	if (testEntity)
 	{
-		if (infoC && moveDelay == 0)
+		auto infoC = testEntity->getComponent<InformationComponent>();
+		if (infoC)
 		{
-			if ((indexX + 1 < testMap->getMapWidth()))
-			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() != Grid::TILE_WALL)
-				{
-					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getGridPos());
-				}
-			}
+			infoC->Update(dt);
 		}
-	}
-
-	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A))
-	{
-		if (infoC && moveDelay == 0)
+		auto controlC = testEntity->getComponent<ControllerComponent>();
+		if (controlC)
 		{
-			if ((indexX - 1 >= 0))
-			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getTileID() != Grid::TILE_WALL)
-				{
-					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY][(int)indexX - 1]->getGridPos());
-				}
-			}
+			controlC->Update(dt,testMap);
 		}
-	}
-
-	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W))
-	{
-		if (infoC && moveDelay == 0)
-		{
-			if (((testMap->getMapHeight() - (int)indexY - 1) >= 0))
-			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
-				{
-					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY - 1][(int)indexX]->getGridPos());
-				}
-			}
-		}
-	}
-
-	else if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
-	{
-		if (infoC && moveDelay == 0)
-		{
-			if (((testMap->getMapHeight() - (int)indexY + 1) < testMap->getMapHeight()))
-			{
-				if (testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getTileID() != Grid::TILE_WALL)
-				{
-					infoC->setPosition(testMap->getGridMap()[testMap->getMapHeight() - (int)indexY + 1][(int)indexX]->getGridPos());
-				}
-			}
-		}
-	}
-
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_D) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_A) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_W) || theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
-	{
-		moveDelay += 0.05;
-		if (moveDelay >= 1)
-		{
-			moveDelay = 0;
-		}
-	}
-
-	else
-	{
-		moveDelay = 0;
 	}
 
 	theView->Update(dt);
@@ -211,7 +149,7 @@ void StateTest::renderPlayer()
 	theView->RenderMesh(this->testEntity->getComponent<GraphicsComponent>()->getMesh(this->testEntity->getComponent<GraphicsComponent>()->getResLevel()), false, false);
 	theView->modelStack.PopMatrix();
 
-	auto collisionC = this->testEntity->getComponent<CollisionComponent>();
+	/*auto collisionC = this->testEntity->getComponent<CollisionComponent>();
 	if (collisionC)
 	{
 		theView->modelStack.PushMatrix();
@@ -219,7 +157,7 @@ void StateTest::renderPlayer()
 		theView->modelStack.Rotate(this->testEntity->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
 		theView->RenderMesh(collisionC->getMesh(), false, false);
 		theView->modelStack.PopMatrix();
-	}
+	}*/
 }
 
 void StateTest::Draw(StateHandler * stateHandler)

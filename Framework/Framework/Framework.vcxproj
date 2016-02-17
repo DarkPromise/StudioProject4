@@ -94,7 +94,9 @@
     <ClCompile Include="Source\CollisionComponent.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\ControllerComponent.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\EntityGridObject.cpp" />
     <ClCompile Include="Source\EntityNPC.cpp" />
     <ClCompile Include="Source\EntityPlayer.cpp" />
     <ClCompile Include="Source\EntityTest.cpp" />
@@ -148,7 +150,9 @@
     <ClInclude Include="Source\CollisionComponent.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\ControllerComponent.h" />
     <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityGridObject.h" />
     <ClInclude Include="Source\EntityNPC.h" />
     <ClInclude Include="Source\EntityPlayer.h" />
     <ClInclude Include="Source\EntityTest.h" />

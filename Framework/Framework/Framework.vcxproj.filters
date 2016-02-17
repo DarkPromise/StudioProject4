@@ -329,6 +329,12 @@
     <ClCompile Include="Source\StateCredits.cpp">
       <Filter>Source Files\State Handling</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EntityGridObject.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ControllerComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Model.h">
@@ -501,6 +507,12 @@
     </ClInclude>
     <ClInclude Include="Source\StateCredits.h">
       <Filter>Header Files\State Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityGridObject.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ControllerComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
