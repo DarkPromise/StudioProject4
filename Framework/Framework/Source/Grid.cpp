@@ -42,13 +42,18 @@ void Grid::addTile(int tileID)
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);
 		break;
+	
 	case TILE_WALL:
 		newMesh = MeshBuilder::GenerateQuad("Tile 1", Color(1.f, 1.f, 1.f), m_iTileSize);
 		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);
 		break;
-	case 3:
+	
+	case TILE_DOOR_NEXTLEVEL:
+		newMesh = MeshBuilder::GenerateQuad("Tile 3", Color(1.f, 1.f, 1.f), m_iTileSize);
+		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");
+		m_cGridTiles.push_back(newMesh);
 		break;
 	}
 }

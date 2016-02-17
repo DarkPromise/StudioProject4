@@ -1,5 +1,4 @@
 #include "StateTest.h"
-
 #include "View.h"
 
 State * StateTest::getInstance()
@@ -77,6 +76,7 @@ void StateTest::Init()
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
+	gameTimer += dt * 0.1;
 	theCamera->Update(dt,theView->getInputHandler());
 	auto cameraC = testEntity->getComponent<CameraComponent>();
 	if (cameraC)
@@ -181,6 +181,30 @@ void StateTest::renderPlayer()
 	}*/
 }
 
+void StateTest::renderGUI()
+{
+	std::ostringstream ss;
+	if (gameTimer < 10)
+	{
+		ss.precision(3);
+	}
+	else
+	{
+		ss.precision(4);
+	}
+	ss << "TIME: " << gameTimer;
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 50.f, (float)theView->getWindowWidth() * 0.05f, (float)theView->getWindowHeight() * 0.9);
+
+	auto controlC = testEntity->getComponent<ControllerComponent>();
+	if (controlC)
+	{
+		if (controlC->unlockDoorNextLevel)
+		{
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 40.f, (float)theView->getWindowWidth() * 0.65f, (float)theView->getWindowHeight() * 0.05);
+		}
+	}
+}
+
 void StateTest::Draw(StateHandler * stateHandler)
 {
 	if (testMap)
@@ -191,6 +215,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 		testMap->RenderBackground(theView);
 		testMap->RenderGridEntities(theView);
 		renderPlayer();
+		renderGUI();
 		theView->modelStack.PopMatrix();
 	}
 

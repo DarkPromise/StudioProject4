@@ -1,14 +1,12 @@
 #ifndef STATE_TEST_H
 #define STATE_TEST_H
+#define TEXT_FONT 0
 
 #include "State.h"
 #include "MeshBuilder.h"
-
 #include "EntityTest.h"
 #include "EntityGridObject.h"
-
 #include "Camera.h"
-
 #include "GridMap.h"
 
 class StateTest : public State
@@ -17,6 +15,7 @@ public:
 	StateTest(std::string name, View * theView) 
 		: State(name, theView)
 		, moveDelay(0.f)
+		, gameTimer(0)
 	{
 		this->theView = theView;
 	}
@@ -31,6 +30,7 @@ public:
 	void HandleEvents(StateHandler * stateHandler, const int key, const bool status = true);
 	void Draw(StateHandler * stateHandler);
 	void renderPlayer();
+	void renderGUI();
 
 	GridMap * testMap;
 private:
@@ -39,6 +39,7 @@ private:
 	Camera * theCamera;
 	Entity * testEntity;
 	float moveDelay;
+	float gameTimer;
 };
 
 #endif

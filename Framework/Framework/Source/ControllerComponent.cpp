@@ -5,6 +5,7 @@
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
 : m_cInputHandler(theInputHandler)
 , m_dInputDelay(0.0)
+, unlockDoorNextLevel(false)
 {
 
 }
@@ -21,6 +22,23 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 	auto * infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
+		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
+		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		// CHECK IF IT'S BESIDE DOOR TO CLEAR STAGE
+		if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
+		{
+			unlockDoorNextLevel = true;
+		}
+
+		else
+		{
+			unlockDoorNextLevel = false;
+		}
+
+		// CONTROL PLAYER
 		if (m_dInputDelay > MOVEMENT_DELAY)
 		{
 			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_W))
@@ -53,7 +71,6 @@ InputHandler * ControllerComponent::getInputHandler()
 	return this->m_cInputHandler;
 }
 
-
 void ControllerComponent::setInputDelay(double delay)
 {
 	this->m_dInputDelay = delay;
@@ -76,7 +93,7 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 
 		if (playerIndexY - 1 >= 0)
 		{
-			if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_FLOOR)
 			{
 				if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity() != nullptr)
 				{
@@ -108,7 +125,7 @@ void ControllerComponent::MoveBackwards(GridMap * currMap)
 
 		if ((currMap->getMapHeight() - (int)indexY + 1) < currMap->getMapHeight())
 		{
-			if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_FLOOR)
 			{
 				if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity() != nullptr)
 				{
@@ -141,7 +158,7 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 
 		if (playerIndexX - 1 >= 0)
 		{
-			if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getTileID() == Grid::TILE_FLOOR)
 			{
 				if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity() != nullptr)
 				{
@@ -173,7 +190,7 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 
 		if (((int)indexX + 1) < currMap->getMapWidth())
 		{
-			if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() != Grid::TILE_WALL)
+			if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_FLOOR)
 			{
 				if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity() != nullptr)
 				{
