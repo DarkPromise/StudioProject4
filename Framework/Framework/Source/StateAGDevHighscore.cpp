@@ -95,12 +95,12 @@ void StateAGDevHighscore::RenderBackground()
 
 void StateAGDevHighscore::RenderHighscore()
 {
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Highscore", Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - 170.f, (float)theView->getWindowHeight() * 0.35f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Highscore", Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - 170.f, (float)theView->getWindowHeight() * 0.50f + 10.f);
 	for (int i = 0; i < 5; ++i)
 	{
 		int temp = i;
 		std::ostringstream scoring;
 		scoring << temp + 1 << "." << highscore.record[i].getName() << " " << highscore.record[i].getTiming().getMin() << ":" << highscore.record[i].getTiming().getSec();
-		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], scoring.str(), Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - (scoring.str().length() * 10.f), ((float)theView->getWindowHeight() * 0.2f * i));
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], scoring.str(), Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - (scoring.str().length() * 10.f), ((float)theView->getWindowHeight() * 0.5f * 0.20f * i));
 	}
 }
