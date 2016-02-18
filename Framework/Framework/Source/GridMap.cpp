@@ -180,16 +180,9 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						return true;
 					}
 				break;
-
-				case EntityGridObject::OBJECT_SWITCH:
-					if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
-					{
-						m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-					}
-				break;
 			}
 		}
-			break;
+		break;
 		
 		case DIRECTION_DOWN:
 		{
@@ -216,16 +209,9 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						return true;
 					}
 				break;
-
-				case EntityGridObject::OBJECT_SWITCH:
-					if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
-					{
-						m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-					}
-				break;
 			}
 		}
-			break;
+		break;
 		
 		case DIRECTION_LEFT:
 		{
@@ -251,16 +237,9 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						return true;
 					}
 				break;
-
-				case EntityGridObject::OBJECT_SWITCH:
-					if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
-					{
-						m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-					}
-				break;
 			}
 		}
-			break;
+		break;
 		
 		case DIRECTION_RIGHT:
 		{
@@ -286,16 +265,9 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 						return true;
 					}
 				break;
-
-				case EntityGridObject::OBJECT_SWITCH:
-					if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
-					{
-						m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-					}
-				break;
 			}
 		}
-			break;
+		break;
 	} // End of first switch statement
 	return false;
 }

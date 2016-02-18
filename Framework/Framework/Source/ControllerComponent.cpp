@@ -28,15 +28,68 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 		int playerIndexX = (int)indexX;
 		int playerIndexY = currMap->getMapHeight() - (int)indexY;
 
-		// CHECK IF IT'S BESIDE DOOR TO CLEAR STAGE
-		if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
+		// CHECK IF BESIDE DOOR TO CLEAR STAGE
+		if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL ||
+			currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
 		{
 			thePlayer->unlockDoorNextLevel = true;
+			if (m_cInputHandler->IsKeyPressed('E'))
+			{
+				// MOVE ON TO NEXT LEVEL
+			}
 		}
 
 		else
 		{
 			thePlayer->unlockDoorNextLevel = false;
+		}
+
+		// CHECK IF BESIDE SWITCH CAN BE ACTIVATED TO UNLOCK DOOR
+		EntityGridObject *theObject;
+		if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else if (currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else
+		{
+			thePlayer->unlockDoor = false;
+		}
+
+		if (m_cInputHandler->IsKeyPressed('E') && thePlayer->unlockDoor)
+		{
+			currMap->getGridMap()[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
 		}
 
 		// CONTROL PLAYER

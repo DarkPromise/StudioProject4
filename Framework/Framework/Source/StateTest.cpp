@@ -199,12 +199,30 @@ void StateTest::renderGUI()
 	{
 		if (thePlayer->unlockDoorNextLevel)
 		{
-			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.05);
+			if (!thePlayer->m_bHasKey)
+			{
+				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
+			}
+
+			else
+			{
+				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "PRESS 'E' TO UNLOCK", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
+			}
+		}
+
+		if (thePlayer->unlockDoor)
+		{
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "PRESS 'E' TO ACTIVATE", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
 		}
 
 		std::ostringstream ss1;
-		ss1 << "KEY: " << std::boolalpha << thePlayer->m_bHasKey;
-		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str(), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
+		std::string collectionStatus;
+		ss1 << "KEY: ";
+		if (thePlayer->m_bHasKey)
+		{
+			collectionStatus = "COLLECTED";
+		}
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str() + collectionStatus, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
 	}
 }
 

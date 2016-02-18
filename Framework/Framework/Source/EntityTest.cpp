@@ -3,6 +3,7 @@
 EntityTest::EntityTest()
 	: unlockDoorNextLevel(false)
 	, m_bHasKey(false)
+	, unlockDoor(false)
 {
 
 }

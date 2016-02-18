@@ -13,6 +13,7 @@ public:
 
 	bool unlockDoorNextLevel;
 	bool m_bHasKey;
+	bool unlockDoor;
 private:
 };
 
