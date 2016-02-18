@@ -28,6 +28,7 @@ public:
 	void setInputDelay(double delay);
 	double getInputDelay();
 
+	bool unlockDoorNextLevel;
 private:
 	InputHandler * m_cInputHandler;
 	double m_dInputDelay;
