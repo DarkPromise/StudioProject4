@@ -1,7 +1,8 @@
 #include "EntityTest.h"
 
 EntityTest::EntityTest()
-: m_bHasKey(false)
+	: unlockDoorNextLevel(false)
+	, m_bHasKey(false)
 {
 
 }

@@ -194,19 +194,18 @@ void StateTest::renderGUI()
 	ss << "TIME: " << gameTimer;
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 32.f, (float)theView->getWindowWidth() * 0.05f, (float)theView->getWindowHeight() * 0.9);
 
-	auto controlC = testEntity->getComponent<ControllerComponent>();
-	if (controlC)
+	EntityTest *thePlayer = dynamic_cast<EntityTest*>(testEntity);
+	if (thePlayer)
 	{
-		if (controlC->unlockDoorNextLevel)
+		if (thePlayer->unlockDoorNextLevel)
 		{
 			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.05);
 		}
-	}
 
-	EntityTest * testEntity2 = dynamic_cast<EntityTest*>(testEntity);
-	std::ostringstream ss1;
-	ss1 << "KEY: " << std::boolalpha << testEntity2->m_bHasKey;
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str(), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
+		std::ostringstream ss1;
+		ss1 << "KEY: " << std::boolalpha << thePlayer->m_bHasKey;
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str(), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
+	}
 }
 
 void StateTest::Draw(StateHandler * stateHandler)
