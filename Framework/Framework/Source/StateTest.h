@@ -8,6 +8,7 @@
 #include "EntityGridObject.h"
 #include "Camera.h"
 #include "GridMap.h"
+#include "LuaReader.h"
 
 class StateTest : public State
 {
@@ -16,9 +17,16 @@ public:
 		: State(name, theView)
 		, moveDelay(0.f)
 		, gameTimer(0)
+		, state(STATE_PLAY)
 	{
 		this->theView = theView;
 	}
+
+	enum GAMESTATE
+	{
+		STATE_PLAY,
+		STATE_PAUSE
+	};
 
 	State* getInstance();
 	void Init();
@@ -40,6 +48,7 @@ private:
 	Entity * testEntity;
 	float moveDelay;
 	float gameTimer;
+	GAMESTATE state;
 };
 
 #endif

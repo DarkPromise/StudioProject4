@@ -187,3 +187,14 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	}
 	return newEntity;
 }
+
+void LuaReader::saveFile()
+{
+	fstream file;
+	file.open("Scripts//Save.lua", ios::out);
+	file << "SaveData = {" << std::endl;
+	file << "Line 1" << std::endl;
+	file << "Line 2" << std::endl;
+	file << "}" << std::endl;
+	file.close();
+}

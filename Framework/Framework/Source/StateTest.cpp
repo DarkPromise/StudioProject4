@@ -71,46 +71,86 @@ void StateTest::Init()
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
 	testGridObject->addComponent(graphicsComponent);
 	testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+
+	// LUA
+	LuaReader script("Scripts//Save.lua");
+	script.saveFile();
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
-	gameTimer += dt;
-	theCamera->Update(dt,theView->getInputHandler());
-	auto cameraC = testEntity->getComponent<CameraComponent>();
-	if (cameraC)
+	static bool click = false;
+	auto controlC = testEntity->getComponent<ControllerComponent>();
+
+	if (state == GAMESTATE::STATE_PLAY)
 	{
-		cameraC->Update(dt);
-	}
+		// PAUSE GAME
+		if (!click && controlC->getInputHandler()->IsKeyPressed('P'))
+		{
+			click = true;
+			state = GAMESTATE::STATE_PAUSE;
+		}
+
+		else if (click && !controlC->getInputHandler()->IsKeyPressed('P'))
+		{
+			click = false;
+		}
+
+		// UPDATE CAMERA
+		theCamera->Update(dt,theView->getInputHandler());
+		auto cameraC = testEntity->getComponent<CameraComponent>();
+		if (cameraC)
+		{
+			cameraC->Update(dt);
+		}
 	
-	testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha += dt;
-	if (testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha > 2)
-	{
-		testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha = 0.f;
+		testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha += dt;
+		if (testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha > 2)
+		{
+			testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha = 0.f;
+		}
+
+		// PLAYER UPDATE
+		if (testEntity)
+		{
+			auto infoC = testEntity->getComponent<InformationComponent>();
+			if (infoC)
+			{
+				infoC->Update(dt);
+			}
+			
+			if (controlC)
+			{
+				controlC->Update(dt,testMap);
+			}
+		}
+
+		// UPDATE VIEW
+		theView->Update(dt);
+		theView->viewStack.LoadIdentity();
+		theView->viewStack.LookAt(
+									theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
+									theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
+									theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z
+								 );
+
+		gameTimer += dt;
 	}
 
-	// PLAYER UPDATE
-	if (testEntity)
+	else
 	{
-		auto infoC = testEntity->getComponent<InformationComponent>();
-		if (infoC)
+		// RESUME GAME
+		if (!click && controlC->getInputHandler()->IsKeyPressed('P'))
 		{
-			infoC->Update(dt);
+			click = true;
+			state = GAMESTATE::STATE_PLAY;
 		}
-		auto controlC = testEntity->getComponent<ControllerComponent>();
-		if (controlC)
+
+		else if (click && !controlC->getInputHandler()->IsKeyPressed('P'))
 		{
-			controlC->Update(dt,testMap);
+			click = false;
 		}
 	}
-
-	theView->Update(dt);
-	theView->viewStack.LoadIdentity();
-	theView->viewStack.LookAt(
-		theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
-		theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
-		theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z
-		);
 }
 
 void StateTest::HandleEvents(StateHandler * stateHandler)
@@ -223,6 +263,11 @@ void StateTest::renderGUI()
 			collectionStatus = "COLLECTED";
 		}
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str() + collectionStatus, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
+	}
+
+	if (state == GAMESTATE::STATE_PAUSE)
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME PAUSED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 	}
 }
 

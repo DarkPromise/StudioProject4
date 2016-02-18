@@ -53,6 +53,11 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 			{
 				thePlayer->unlockDoor = true;
 			}
+
+			else
+			{
+				thePlayer->unlockDoor = false;
+			}
 		}
 
 		else if (currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity())
@@ -61,6 +66,11 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
 			{
 				thePlayer->unlockDoor = true;
+			}
+
+			else
+			{
+				thePlayer->unlockDoor = false;
 			}
 		}
 
@@ -71,6 +81,11 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 			{
 				thePlayer->unlockDoor = true;
 			}
+
+			else
+			{
+				thePlayer->unlockDoor = false;
+			}
 		}
 
 		else if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity())
@@ -79,6 +94,11 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
 			{
 				thePlayer->unlockDoor = true;
+			}
+
+			else
+			{
+				thePlayer->unlockDoor = false;
 			}
 		}
 
