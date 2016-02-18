@@ -1,11 +1,11 @@
 #include "ControllerComponent.h"
 #include "EntityGridObject.h"
 #include "glfw3.h"
+#include "EntityTest.h"
 
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
 : m_cInputHandler(theInputHandler)
 , m_dInputDelay(0.0)
-, unlockDoorNextLevel(false)
 {
 
 }
@@ -19,6 +19,7 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 {
 	m_dInputDelay += dt;
 
+	EntityTest *thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 	auto * infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
@@ -30,12 +31,12 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 		// CHECK IF IT'S BESIDE DOOR TO CLEAR STAGE
 		if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
 		{
-			unlockDoorNextLevel = true;
+			thePlayer->unlockDoorNextLevel = true;
 		}
 
 		else
 		{
-			unlockDoorNextLevel = false;
+			thePlayer->unlockDoorNextLevel = false;
 		}
 
 		// CONTROL PLAYER
