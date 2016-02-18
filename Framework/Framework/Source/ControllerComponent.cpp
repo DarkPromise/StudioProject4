@@ -1,11 +1,11 @@
 #include "ControllerComponent.h"
 #include "EntityGridObject.h"
 #include "glfw3.h"
+#include "EntityTest.h"
 
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
 : m_cInputHandler(theInputHandler)
 , m_dInputDelay(0.0)
-, unlockDoorNextLevel(false)
 {
 
 }
@@ -19,6 +19,7 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 {
 	m_dInputDelay += dt;
 
+	EntityTest *thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 	auto * infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
@@ -27,18 +28,71 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 		int playerIndexX = (int)indexX;
 		int playerIndexY = currMap->getMapHeight() - (int)indexY;
 
-		// CHECK IF IT'S BESIDE DOOR TO CLEAR STAGE
-		if (currMap->getGridMap()[currMap->getMapHeight() - (int)indexY][(int)indexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
+		// CHECK IF BESIDE DOOR TO CLEAR STAGE
+		if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL ||
+			currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
 		{
-			unlockDoorNextLevel = true;
+			thePlayer->unlockDoorNextLevel = true;
+			if (m_cInputHandler->IsKeyPressed('E'))
+			{
+				// MOVE ON TO NEXT LEVEL
+			}
 		}
 
 		else
 		{
-			unlockDoorNextLevel = false;
+			thePlayer->unlockDoorNextLevel = false;
 		}
 
-		// CONTROL PLAYER
+		// CHECK IF BESIDE SWITCH CAN BE ACTIVATED TO UNLOCK DOOR
+		EntityGridObject *theObject;
+		if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else if (currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+		
+		else if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity())
+		{
+			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity());
+			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
+			{
+				thePlayer->unlockDoor = true;
+			}
+		}
+
+		else
+		{
+			thePlayer->unlockDoor = false;
+		}
+
+		if (m_cInputHandler->IsKeyPressed('E') && thePlayer->unlockDoor)
+		{
+			currMap->getGridMap()[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
+		}
+
+		// CONTROL PLAYER MOVEMENT
 		if (m_dInputDelay > MOVEMENT_DELAY)
 		{
 			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_UP))

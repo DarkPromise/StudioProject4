@@ -155,141 +155,118 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 
 	switch (GRID_DIRECTION(direction))
 	{
-	case DIRECTION_UP:
-	{
-						 switch (EntityGridObject::OBJECT_TYPE(EntityType))
-						 {
-						 case EntityGridObject::OBJECT_BOX:
-							 // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
-							 if ((m_cGridMap[pIndexY - 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY - 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
-							 {
-								 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
-								 {
-									 m_cGridMap[pIndexY - 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity());
-									 m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
-									 return true;
-								 }
-							 }
-							 break;
-						 case EntityGridObject::OBJECT_KEY:
-							 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
-							 {
-								 m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
-								 thePlayer->m_bHasKey = true;
-								 return true;
-							 }
-							 break;
-
-						 case EntityGridObject::OBJECT_SWITCH:
-							 if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
-							 {
-								 m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-							 }
-							 break;
-						 }
-	}
+		case DIRECTION_UP:
+		{
+			switch (EntityGridObject::OBJECT_TYPE(EntityType))
+			{
+				case EntityGridObject::OBJECT_BOX:
+					// If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
+					if ((m_cGridMap[pIndexY - 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY - 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
+					{
+						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+						{
+							m_cGridMap[pIndexY - 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity());
+							m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
+							return true;
+						}
+					}
+				break;
+			
+				case EntityGridObject::OBJECT_KEY:
+					if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+					{
+						m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
+						thePlayer->m_bHasKey = true;
+						return true;
+					}
+				break;
+			}
+		}
 		break;
-	case DIRECTION_DOWN:
-	{
-						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
-						   {
-						   case EntityGridObject::OBJECT_BOX:
-							   // If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
-							   if ((m_cGridMap[pIndexY + 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY + 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
-							   {
-								   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
-								   {
-									   m_cGridMap[pIndexY + 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity());
-									   m_cGridMap[pIndexY + 1][pIndexX]->removeEntity();
-									   return true;
-								   }
-							   }
-							   break;
-						   case EntityGridObject::OBJECT_KEY:
-							   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
-							   {
-								   m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
-								   thePlayer->m_bHasKey = true;
-								   return true;
-							   }
-							   break;
-
-						   case EntityGridObject::OBJECT_SWITCH:
-							   if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
-							   {
-								   m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-							   }
-							   break;
-						   }
-						   
-	}
+		
+		case DIRECTION_DOWN:
+		{
+			switch (EntityGridObject::OBJECT_TYPE(EntityType))
+			{
+				case EntityGridObject::OBJECT_BOX:
+					// If 2 Spaces Above is Empty and 2 Spaces above is not a Wall.
+					if ((m_cGridMap[pIndexY + 2][pIndexX]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY + 2][pIndexX]->getTileID() == Grid::TILE_FLOOR))
+					{
+						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+						{
+							m_cGridMap[pIndexY + 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity());
+							m_cGridMap[pIndexY + 1][pIndexX]->removeEntity();
+							return true;
+						}
+					}
+				break;
+			
+				case EntityGridObject::OBJECT_KEY:
+					if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+					{
+						m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
+						thePlayer->m_bHasKey = true;
+						return true;
+					}
+				break;
+			}
+		}
 		break;
-	case DIRECTION_LEFT:
-	{
-						   switch (EntityGridObject::OBJECT_TYPE(EntityType))
-						   {
-						   case EntityGridObject::OBJECT_BOX:
-							   if ((m_cGridMap[pIndexY][pIndexX - 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX-2]->getTileID() == Grid::TILE_FLOOR))
-							   {
-								   if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
-								   {
-									   m_cGridMap[pIndexY][pIndexX - 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX-1]->getGridEntity());
-									   m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
-									   return true;
-								   }
-							   }
-							   break;
-						   case EntityGridObject::OBJECT_KEY:
-							   if (m_cGridMap[pIndexY][pIndexX-1]->getGridEntity())
-							   {
-								   m_cGridMap[pIndexY][pIndexX-1]->deleteEntity();
-								   thePlayer->m_bHasKey = true;
-								   return true;
-							   }
-							   break;
-
-						   case EntityGridObject::OBJECT_SWITCH:
-							   if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
-							   {
-								   m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-							   }
-							   break;
-						   }
-
-	}
+		
+		case DIRECTION_LEFT:
+		{
+			switch (EntityGridObject::OBJECT_TYPE(EntityType))
+			{
+				case EntityGridObject::OBJECT_BOX:
+					if ((m_cGridMap[pIndexY][pIndexX - 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX - 2]->getTileID() == Grid::TILE_FLOOR))
+					{
+						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
+						{
+							m_cGridMap[pIndexY][pIndexX - 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity());
+							m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
+							return true;
+						}
+					}
+				break;
+			
+				case EntityGridObject::OBJECT_KEY:
+					if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
+					{
+						m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
+						thePlayer->m_bHasKey = true;
+						return true;
+					}
+				break;
+			}
+		}
 		break;
-	case DIRECTION_RIGHT:
-	{
-							switch (EntityGridObject::OBJECT_TYPE(EntityType))
-							{
-							case EntityGridObject::OBJECT_BOX:
-								if ((m_cGridMap[pIndexY][pIndexX + 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX + 2]->getTileID() == Grid::TILE_FLOOR))
-								{
-									if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
-									{
-										m_cGridMap[pIndexY][pIndexX + 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity());
-										m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
-										return true;
-									}
-								}
-								break;
-							case EntityGridObject::OBJECT_KEY:
-								if (m_cGridMap[pIndexY][pIndexX+1]->getGridEntity())
-								{
-									m_cGridMap[pIndexY][pIndexX+1]->deleteEntity();
-									thePlayer->m_bHasKey = true;
-									return true;
-								}
-								break;
-
-							case EntityGridObject::OBJECT_SWITCH:
-								if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
-								{
-									m_cGridMap[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-								}
-								break;
-							}
-	}
+		
+		case DIRECTION_RIGHT:
+		{
+			switch (EntityGridObject::OBJECT_TYPE(EntityType))
+			{
+				case EntityGridObject::OBJECT_BOX:
+					if ((m_cGridMap[pIndexY][pIndexX + 2]->getGridEntity() == nullptr) && (m_cGridMap[pIndexY][pIndexX + 2]->getTileID() == Grid::TILE_FLOOR))
+					{
+						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
+						{
+							m_cGridMap[pIndexY][pIndexX + 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity());
+							m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
+							return true;
+						}
+					}
+				break;
+			
+				case EntityGridObject::OBJECT_KEY:
+					if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
+					{
+						m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
+						thePlayer->m_bHasKey = true;
+						return true;
+					}
+				break;
+			}
+		}
 		break;
 	} // End of first switch statement
 	return false;
