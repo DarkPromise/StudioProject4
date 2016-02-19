@@ -9,7 +9,6 @@ Controller::Controller(Model * theModel, View * theView)
 , theView(theView)
 {
 	std::cout << "Controller Created" << std::endl;
-
 	m_dElapsedTime = 0.0;
 	m_dAccumulatedTime_ThreadOne = 0.0;
 	m_dAccumulatedTime_ThreadTwo = 0.0;
@@ -30,11 +29,6 @@ Controller::~Controller()
 		delete m_cInputHandler;
 		m_cInputHandler = NULL;
 	}
-	if (m_cSoundManager)
-	{
-		delete m_cSoundManager;
-		m_cSoundManager = NULL;
-	}
 }
 
 void Controller::RunGameLoop()
@@ -49,9 +43,8 @@ void Controller::RunGameLoop()
 	int width = windowInitScript.get<int>("WindowConfig.width");
 	
 	m_cInputHandler = new InputHandler();
-	m_cSoundManager = new SoundManager();
 	m_cStateHandler = new StateHandler();
-	
+	SoundManager::getInstance(); // Create SoundManager Singleton
 	theView->setInputHandler(m_cInputHandler);
 	m_cStateHandler->Init();
 

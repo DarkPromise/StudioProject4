@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "GridMap.h"
 #include "LuaReader.h"
+#include "SoundManager.h"
 
 class StateTest : public State
 {

@@ -1,21 +1,12 @@
 #include "SoundManager.h"
 
 bool SoundManager::m_soundStatus = true;
+ISoundEngine * SoundManager::soundEngine;
 
 SoundManager::SoundManager()
 {
 	soundEngine = createIrrKlangDevice();
-
 	std::cout << "Sound Engine Started" << std::endl;
-}
-
-SoundManager::~SoundManager()
-{
-	if (soundEngine)
-	{
-		soundEngine->drop();
-		soundEngine = NULL;
-	}
 }
 
 void SoundManager::toggleSound()
@@ -33,4 +24,9 @@ void SoundManager::toggleSound()
 bool SoundManager::getSoundStatus()
 {
 	return SoundManager::m_soundStatus;
+}
+
+void SoundManager::playSound(const char * soundPath)
+{
+	soundEngine->play2D(soundPath, true);
 }
