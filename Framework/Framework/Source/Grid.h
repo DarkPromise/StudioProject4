@@ -19,8 +19,7 @@ public:
 	{
 		TILE_FLOOR = 1,
 		TILE_WALL,
-		TILE_DOOR_NEXTLEVEL,
-		TILE_DOOR,
+		TILE_DOOR_CLEAR,
 	};
 
 

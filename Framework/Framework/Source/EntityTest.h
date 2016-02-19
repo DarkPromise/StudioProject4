@@ -12,7 +12,7 @@ public:
 	virtual void Update(double dt);
 
 	bool m_bHasKey;
-	bool unlockDoor;
+	bool m_levelClear;
 private:
 };
 

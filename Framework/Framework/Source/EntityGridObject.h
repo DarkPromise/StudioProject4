@@ -8,10 +8,11 @@ class EntityGridObject : public Entity
 public:
 	enum OBJECT_TYPE
 	{
-		OBJECT_BOX = 0,
+		OBJECT_BOX,
 		OBJECT_KEY,
 		OBJECT_SWITCH,
 		OBJECT_DOOR,
+
 		OBJECT_UNDEFINED,
 	};
 

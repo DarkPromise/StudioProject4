@@ -21,6 +21,7 @@ public:
 		, state(STATE_PLAY)
 		, gameSaved(false)
 		, gameSavedTimer(0)
+		, level(1)
 	{
 		this->theView = theView;
 	}
@@ -54,6 +55,7 @@ private:
 	GAMESTATE state;
 	bool gameSaved;
 	float gameSavedTimer;
+	int level;
 };
 
 #endif

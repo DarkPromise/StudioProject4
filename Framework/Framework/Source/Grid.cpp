@@ -51,15 +51,9 @@ void Grid::addTile(int tileID)
 		m_cGridTiles.push_back(newMesh);
 		break;
 	
-	case TILE_DOOR_NEXTLEVEL:
+	case TILE_DOOR_CLEAR:
 		newMesh = MeshBuilder::GenerateQuad("Tile 3", Color(1.f, 1.f, 1.f), m_iTileSize);
 		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");
-		m_cGridTiles.push_back(newMesh);
-		break;
-
-	case TILE_DOOR:
-		newMesh = MeshBuilder::GenerateQuad("Tile 4", Color(1.f, 1.f, 1.f), m_iTileSize);
-		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile109.tga");
 		m_cGridTiles.push_back(newMesh);
 		break;
 	}
@@ -86,7 +80,7 @@ void Grid::replaceTile(int tileID, int index)
 			m_cGridTiles[index] = newMesh;
 			break;
 
-		case TILE_DOOR_NEXTLEVEL:
+		case TILE_DOOR_CLEAR:
 			newMesh = MeshBuilder::GenerateQuad("Tile 3", Color(1.f, 1.f, 1.f), m_iTileSize);
 			newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");
 			m_cGridTiles[index] = newMesh;

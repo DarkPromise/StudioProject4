@@ -1,4 +1,4 @@
 Save = {
-playerGridX = "5",
-playerGridY = "22",
+playerGridX = "24",
+playerGridY = "21",
 }

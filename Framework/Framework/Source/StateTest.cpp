@@ -29,65 +29,61 @@ void StateTest::Init()
 
 	testMap = new GridMap();
 	testMap->Init(32, 25, 32);
-	testMap->LoadData("MapData//MainMenu_Background.csv","MapData//MainMenu_Foreground.csv");
-
-	// Init Test Entity
-	testEntity = new EntityTest();
 	
+	// PLAYER
+	testEntity = new EntityTest();
 	auto informationComponent = new InformationComponent();
 	informationComponent->setName("Test");
 	//informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
 	informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
 	testEntity->addComponent(informationComponent);
-	
 	auto cameraComponent = new CameraComponent(theCamera);
 	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 300.f));
 	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
 	testEntity->addComponent(cameraComponent);
-
 	auto graphicsComponent = new GraphicsComponent();
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Player", Color(1.f, 0.f, 0.f), 32.f));
 	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//player.tga");
 	graphicsComponent->getMesh()->alpha = 0.7f;
 	testEntity->addComponent(graphicsComponent);
-
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
 
-	// BOXES
-	EntityGridObject * testGridObject;
-	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-	graphicsComponent = new GraphicsComponent();
-	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-	testGridObject->addComponent(graphicsComponent);
-	testMap->getGridMap()[22][2]->addGridEntity(testGridObject);
+	// INTIALISE LEVELS
+	if (level == 1)
+	{
+		testMap->LoadData("MapData//level1_Background.csv", "MapData//level_Foreground.csv");
 
-	// KEY
-	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
-	graphicsComponent = new GraphicsComponent();
-	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
-	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
-	testGridObject->addComponent(graphicsComponent);
-	testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
+		// BOXES
+		EntityGridObject * testGridObject;
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[22][2]->addGridEntity(testGridObject);
 
-	// SWITCHES
-	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-	testGridObject->addChildren(19, 1, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 2, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 3, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 5, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 6, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(19, 7, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(20, 7, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(21, 7, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(22, 7, EntityGridObject::OBJECT_DOOR, testMap);
-	testGridObject->addChildren(23, 7, EntityGridObject::OBJECT_DOOR, testMap);
-	graphicsComponent = new GraphicsComponent();
-	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-	testGridObject->addComponent(graphicsComponent);
-	testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+		// KEY
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
+		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
+
+		// SWITCHES
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+		testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+	}
+
+	else if (level == 2)
+	{
+		testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+	}
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -95,6 +91,18 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	static bool click = false;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
+	auto thePlayer = dynamic_cast<EntityTest*>(testEntity);
+
+	if (thePlayer->m_levelClear)
+	{
+		if (level == 1)
+		{
+			level = 2;
+			thePlayer->m_levelClear = false;
+			thePlayer->m_bHasKey = false;
+			//testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+		}
+	}
 
 	// GAME RUNNING
 	if (state == GAMESTATE::STATE_PLAY)

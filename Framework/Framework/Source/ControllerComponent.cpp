@@ -278,6 +278,18 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			}
 		}
+
+		// CHECK TO CLEAR LEVEL
+		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR ||
+			currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_CLEAR)
+		{
+			auto thePlayer = dynamic_cast<EntityTest*>(this->getParent());
+			if (thePlayer->m_bHasKey)
+			{
+				// NEXT LEVEL
+				thePlayer->m_levelClear = true;
+			}
+		}
 	}
 	m_dInputDelay = 0.0;
 }

@@ -2,7 +2,7 @@
 
 EntityTest::EntityTest()
 : m_bHasKey(false)
-, unlockDoor(false)
+, m_levelClear(false)
 {
 
 }
