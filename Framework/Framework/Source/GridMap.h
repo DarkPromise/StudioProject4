@@ -56,7 +56,6 @@ public:
 
 	//Special Functions
 	bool PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * Player);
-
 public:
 	std::vector<std::vector<int> > backgroundData;	// 2D vector to store background values
 	std::vector<std::vector<int> > foregroundData;	// 2D vector to store foreground values

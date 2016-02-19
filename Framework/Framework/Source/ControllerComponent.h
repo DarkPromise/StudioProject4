@@ -7,7 +7,8 @@
 
 #include "GridMap.h"
 
-#define MOVEMENT_DELAY 0.1
+#define MOVEMENT_DELAY 0.15
+#define INTERACTION_DELAY 0.2
 
 class ControllerComponent : public Component
 {
@@ -21,13 +22,13 @@ public:
 	virtual void MoveBackwards(GridMap * currMap);
 	virtual void MoveLeft(GridMap * currMap);
 	virtual void MoveRight(GridMap * currMap);
+	virtual void Interact(GridMap * currMap);
 public:
 	void setInputHandler(InputHandler * inputHandler);
 	InputHandler * getInputHandler();
 
 	void setInputDelay(double delay);
 	double getInputDelay();
-
 private:
 	InputHandler * m_cInputHandler;
 	double m_dInputDelay;

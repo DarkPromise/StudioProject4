@@ -23,95 +23,6 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 	auto * infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
-		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
-		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
-		int playerIndexX = (int)indexX;
-		int playerIndexY = currMap->getMapHeight() - (int)indexY;
-
-		// CHECK IF BESIDE DOOR TO CLEAR STAGE
-		if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL ||
-			currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL || currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_NEXTLEVEL)
-		{
-			thePlayer->unlockDoorNextLevel = true;
-			if (m_cInputHandler->IsKeyPressed('E'))
-			{
-				// MOVE ON TO NEXT LEVEL
-			}
-		}
-
-		else
-		{
-			thePlayer->unlockDoorNextLevel = false;
-		}
-
-		// CHECK IF BESIDE SWITCH CAN BE ACTIVATED TO UNLOCK DOOR
-		EntityGridObject *theObject;
-		if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity())
-		{
-			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity());
-			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
-			{
-				thePlayer->unlockDoor = true;
-			}
-
-			else
-			{
-				thePlayer->unlockDoor = false;
-			}
-		}
-
-		else if (currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity())
-		{
-			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntity());
-			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
-			{
-				thePlayer->unlockDoor = true;
-			}
-
-			else
-			{
-				thePlayer->unlockDoor = false;
-			}
-		}
-
-		else if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity())
-		{
-			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity());
-			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
-			{
-				thePlayer->unlockDoor = true;
-			}
-
-			else
-			{
-				thePlayer->unlockDoor = false;
-			}
-		}
-
-		else if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity())
-		{
-			theObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity());
-			if (theObject->getObjectType() == EntityGridObject::OBJECT_SWITCH)
-			{
-				thePlayer->unlockDoor = true;
-			}
-
-			else
-			{
-				thePlayer->unlockDoor = false;
-			}
-		}
-
-		else
-		{
-			thePlayer->unlockDoor = false;
-		}
-
-		if (m_cInputHandler->IsKeyPressed('E') && thePlayer->unlockDoor)
-		{
-			currMap->getGridMap()[19][4]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-		}
-
 		// CONTROL PLAYER
 		if (m_dInputDelay > MOVEMENT_DELAY)
 		{
@@ -130,6 +41,14 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_RIGHT))
 			{
 				MoveRight(currMap);
+			}
+		}
+
+		if (m_dInputDelay > INTERACTION_DELAY)
+		{
+			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_E))
+			{
+				Interact(currMap);
 			}
 		}
 	}
@@ -278,6 +197,85 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 				{
 					infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos());
 				}
+			}
+		}
+	}
+	m_dInputDelay = 0.0;
+}
+
+void ControllerComponent::Interact(GridMap * currMap)
+{
+	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	if (infoC)
+	{
+		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
+		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
+		int playerIndexX = (int)indexX;
+		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+
+		// Checking 4 Sides
+		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->hasInteractableEntity())
+		{
+			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntityType());
+			switch (objType)
+			{
+			case EntityGridObject::OBJECT_BOX:
+				break;
+			case EntityGridObject::OBJECT_KEY:
+				break;
+			case EntityGridObject::OBJECT_SWITCH:
+				currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
+				break;
+			case EntityGridObject::OBJECT_DOOR:
+				break;
+			}
+		}
+		if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->hasInteractableEntity())
+		{
+			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntityType());
+			switch (objType)
+			{
+			case EntityGridObject::OBJECT_BOX:
+				break;
+			case EntityGridObject::OBJECT_KEY:
+				break;
+			case EntityGridObject::OBJECT_SWITCH:
+				currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
+				break;
+			case EntityGridObject::OBJECT_DOOR:
+				break;
+			}
+		}
+		if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->hasInteractableEntity())
+		{
+			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntityType());
+			switch (objType)
+			{
+			case EntityGridObject::OBJECT_BOX:
+				break;
+			case EntityGridObject::OBJECT_KEY:
+				break;
+			case EntityGridObject::OBJECT_SWITCH:
+				currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
+				break;
+			case EntityGridObject::OBJECT_DOOR:
+				break;
+			}
+		}
+		if (currMap->getGridMap()[playerIndexY][playerIndexX - 1]->hasInteractableEntity())
+		{
+			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntityType());
+			switch (objType)
+			{
+			case EntityGridObject::OBJECT_BOX:
+				break;
+			case EntityGridObject::OBJECT_KEY:
+				break;
+			case EntityGridObject::OBJECT_SWITCH:
+				currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
+				break;
+			case EntityGridObject::OBJECT_DOOR:
+				break;
 			}
 		}
 	}

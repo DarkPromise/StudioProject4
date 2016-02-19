@@ -67,11 +67,22 @@ void StateTest::Init()
 
 	// SWITCHES
 	testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+	testGridObject->addChildren(19, 1, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 2, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 3, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 5, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 6, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(19, 7, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(20, 7, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(21, 7, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(22, 7, EntityGridObject::OBJECT_DOOR, testMap);
+	testGridObject->addChildren(23, 7, EntityGridObject::OBJECT_DOOR, testMap);
 	graphicsComponent = new GraphicsComponent();
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
 	testGridObject->addComponent(graphicsComponent);
 	testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
-
+	
 	// LUA
 	LuaReader script("Scripts//Save.lua");
 	script.saveFile();
@@ -129,10 +140,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		theView->Update(dt);
 		theView->viewStack.LoadIdentity();
 		theView->viewStack.LookAt(
-									theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
-									theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
-									theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z
-								 );
+			theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
+			theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
+			theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z
+			);
 
 		gameTimer += dt;
 	}
@@ -232,29 +243,11 @@ void StateTest::renderGUI()
 		ss.precision(4);
 	}
 	ss << "TIME: " << gameTimer;
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 32.f, (float)theView->getWindowWidth() * 0.05f, (float)theView->getWindowHeight() * 0.9);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 32.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.9f);
 
 	EntityTest *thePlayer = dynamic_cast<EntityTest*>(testEntity);
 	if (thePlayer)
 	{
-		if (thePlayer->unlockDoorNextLevel)
-		{
-			if (!thePlayer->m_bHasKey)
-			{
-				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED TO OPEN", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
-			}
-
-			else
-			{
-				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "PRESS 'E' TO UNLOCK", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
-			}
-		}
-
-		if (thePlayer->unlockDoor)
-		{
-			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "PRESS 'E' TO ACTIVATE", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.6f, (float)theView->getWindowHeight() * 0.f);
-		}
-
 		std::ostringstream ss1;
 		std::string collectionStatus;
 		ss1 << "KEY: ";

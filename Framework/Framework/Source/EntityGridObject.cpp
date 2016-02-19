@@ -2,6 +2,11 @@
 
 EntityGridObject::EntityGridObject()
 : m_eObjectType(OBJECT_UNDEFINED)
+, m_cChildren(NULL)
+, m_bToggleable(false)
+, m_bToggled(false)
+, m_iIndexX(-1)
+, m_iIndexY(-1)
 {
 
 }
@@ -9,12 +14,32 @@ EntityGridObject::EntityGridObject()
 EntityGridObject::EntityGridObject(OBJECT_TYPE type)
 : m_eObjectType(type)
 {
-
+	switch (m_eObjectType)
+	{
+	case OBJECT_BOX:
+		break;
+	case OBJECT_KEY:
+		break;
+	case OBJECT_SWITCH:
+		m_bToggleable = true;
+		break;
+	case OBJECT_DOOR:
+		m_bToggleable = true;
+		break;
+	}
 }
 
 EntityGridObject::~EntityGridObject()
 {
-
+	//if (!m_cChildren.empty())
+	//{
+	//	for (int i = 0; i < m_cChildren.size(); i++)
+	//	{
+	//		delete m_cChildren[i];
+	//	}
+	//}
+	m_cChildren.clear();
+	m_cChildren.~vector();
 }
 
 void EntityGridObject::Update(double dt)
@@ -30,4 +55,71 @@ void EntityGridObject::setObjectType(OBJECT_TYPE type)
 EntityGridObject::OBJECT_TYPE EntityGridObject::getObjectType()
 {
 	return this->m_eObjectType;
+}
+
+void EntityGridObject::addChildren(int y, int x, OBJECT_TYPE childType, GridMap * currMap)
+{
+	EntityGridObject * newChild = new EntityGridObject(childType);
+	newChild->m_iIndexX = x;
+	newChild->m_iIndexY = y;
+
+	auto childGC = new GraphicsComponent();
+	switch (childType)
+	{
+	case OBJECT_BOX:
+		break;
+	case OBJECT_KEY:
+		break;
+	case OBJECT_SWITCH:
+		break;
+	case OBJECT_DOOR:
+		newChild->setToggleable(true);
+		childGC->addMesh(MeshBuilder::GenerateQuad("Door", Color(1.f, 0.f, 0.f), 32.f));
+		childGC->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile109.tga");
+		newChild->addComponent(childGC);
+		currMap->getGridMap()[y][x]->addGridEntity(newChild);
+		break;
+	}
+	this->m_cChildren.push_back(newChild);
+}
+
+std::vector<EntityGridObject*> EntityGridObject::getChildren()
+{
+	return this->m_cChildren;
+}
+
+void EntityGridObject::toggleObject(GridMap * currMap)
+{
+	if (!m_bToggled)
+	{
+		m_bToggled = true;
+	}
+	else
+	{
+		m_bToggled = false;
+	}
+
+	switch (this->m_eObjectType)
+	{
+	case OBJECT_BOX:
+		break;
+	case OBJECT_KEY:
+		break;
+	case OBJECT_SWITCH:
+		break;
+	case OBJECT_DOOR:
+		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->replaceTile(Grid::TILE_FLOOR,BACKGROUND_TILE);
+		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->deleteEntity();
+		break;
+	}
+}
+
+void EntityGridObject::setToggleable(bool status)
+{
+	this->m_bToggleable = status;
+}
+
+bool EntityGridObject::hasToggleAbility()
+{
+	return this->m_bToggleable;
 }

@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include "LoadTGA.h"
 #include "EntityGridObject.h"
+#include "GridMap.h"
 
 Grid::Grid(int tileSize)
 : m_iTileSize(tileSize)
@@ -14,7 +15,7 @@ Grid::Grid(int tileSize)
 
 Grid::~Grid()
 {
-	if (m_cGridEntity != nullptr)
+	if (m_cGridEntity)
 	{
 		delete m_cGridEntity;
 	}
@@ -157,4 +158,53 @@ void Grid::deleteEntity()
 {
 	delete this->m_cGridEntity;
 	this->m_cGridEntity = nullptr;
+}
+
+bool Grid::hasInteractableEntity()
+{
+	auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
+	if (gridObject)
+	{
+		switch (gridObject->getObjectType())
+		{
+		case EntityGridObject::OBJECT_BOX:
+			return true;
+			break;
+		case EntityGridObject::OBJECT_KEY:
+			return true;
+			break;
+		case EntityGridObject::OBJECT_SWITCH:
+			return true;
+			break;
+		}
+	}
+	return false;
+}
+
+int Grid::getGridEntityType()
+{
+	auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
+	if (gridObject)
+	{
+		return gridObject->getObjectType();
+	}
+	return EntityGridObject::OBJECT_UNDEFINED;
+}
+
+void Grid::toggleObjects(GridMap * currMap)
+{
+	auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
+	if (gridObject)
+	{
+		if (gridObject->hasToggleAbility())
+		{
+			if (gridObject->getChildren().size() > 0)
+			{
+				for (int i = 0; i < gridObject->getChildren().size(); i++)
+				{
+					gridObject->getChildren()[i]->toggleObject(currMap);
+				}
+			}
+		}
+	}
 }

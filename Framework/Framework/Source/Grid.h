@@ -10,12 +10,11 @@
 
 class Entity;
 
+class GridMap;
+
 class Grid
 {
 public:
-	Grid(int tileSize);
-	~Grid();
-
 	enum TILE_TYPE
 	{
 		TILE_FLOOR = 1,
@@ -23,6 +22,10 @@ public:
 		TILE_DOOR_NEXTLEVEL,
 		TILE_DOOR,
 	};
+
+
+	Grid(int tileSize);
+	~Grid();
 
 	// Set and Get Functions
 	void addTile(int tileID);
@@ -38,19 +41,20 @@ public:
 
 	void setGridPos(Vector3 gridPos);
 	Vector3 getGridPos();
-
 public:
 	void addGridEntity(Entity * gridEntity);
 	Entity * getGridEntity();
 	void removeEntity();
 	void deleteEntity();
+	bool hasInteractableEntity();
+	int getGridEntityType();
+	void toggleObjects(GridMap * currMap);
 private:
 	int m_iTileSize;
 	int m_iTileID;
 	BoundingBox m_cGridAABB;
 	std::vector<Mesh*> m_cGridTiles;
 	Vector3 m_v3GridPos;
-
 	Entity * m_cGridEntity;
 };
 

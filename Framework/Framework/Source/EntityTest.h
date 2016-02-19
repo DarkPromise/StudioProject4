@@ -11,7 +11,6 @@ public:
 
 	virtual void Update(double dt);
 
-	bool unlockDoorNextLevel;
 	bool m_bHasKey;
 	bool unlockDoor;
 private:
