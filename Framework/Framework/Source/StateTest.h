@@ -18,6 +18,8 @@ public:
 		, moveDelay(0.f)
 		, gameTimer(0)
 		, state(STATE_PLAY)
+		, gameSaved(false)
+		, gameSavedTimer(0)
 	{
 		this->theView = theView;
 	}
@@ -49,6 +51,8 @@ private:
 	float moveDelay;
 	float gameTimer;
 	GAMESTATE state;
+	bool gameSaved;
+	float gameSavedTimer;
 };
 
 #endif

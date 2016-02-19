@@ -7,7 +7,7 @@
 #include "Entity.h"
 #include <fstream>
 
-using std::fstream;
+using std::ofstream;
 using std::ios;
 
 extern "C"
@@ -91,7 +91,7 @@ public:
 	template<typename T> T lua_to(T);
 	std::vector<std::string> getTables(const std::string & tableName);
 	bool lua_gettostack(const std::string& variableName);
-	void saveFile();
+	void saveFile(int playerIndex, int playerIndexY);
 	
 	// Entity Creation (Test!!!)
 	Entity * createEntity(const std::string & entityType, Camera * camera);

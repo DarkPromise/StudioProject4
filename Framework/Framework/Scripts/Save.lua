@@ -1,4 +1,4 @@
-SaveData = {
-Line 1
-Line 2
+Save = {
+playerGridX = "1",
+playerGridY = "23",
 }

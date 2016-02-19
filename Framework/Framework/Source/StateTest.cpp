@@ -11,6 +11,11 @@ void StateTest::Init()
 	// Testing will be done in Perspective
 	theView->LoadPerspectiveCamera(90.0);
 
+	// OPEN THE LUA SCRIPT
+	LuaReader Script("Scripts//Save.lua");
+	int x = Script.get<int>("Save.playerGridX");
+	int y = Script.get<int>("Save.playerGridY");
+
 	Mesh * testMesh;
 	testMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
@@ -82,17 +87,15 @@ void StateTest::Init()
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
 	testGridObject->addComponent(graphicsComponent);
 	testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
-	
-	// LUA
-	LuaReader script("Scripts//Save.lua");
-	script.saveFile();
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
 	static bool click = false;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
+	auto infoC = testEntity->getComponent<InformationComponent>();
 
+	// GAME RUNNING
 	if (state == GAMESTATE::STATE_PLAY)
 	{
 		// PAUSE GAME
@@ -105,6 +108,37 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		else if (click && !controlC->getInputHandler()->IsKeyPressed('P'))
 		{
 			click = false;
+		}
+
+		// SAVE GAME
+		if (!click && controlC->getInputHandler()->IsKeyPressed('S'))
+		{
+			click = true;
+			gameSaved = true;
+
+			float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+			float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+			int playerIndexX = (int)indexX;
+			int playerIndexY = testMap->getMapHeight() - (int)indexY;
+
+			LuaReader script("Scripts//Save.lua");
+			script.saveFile(playerIndexX, playerIndexY);
+		}
+
+		else if (click && !controlC->getInputHandler()->IsKeyPressed('S'))
+		{
+			click = false;
+		}
+
+		// SHOW GAME SAVING
+		if (gameSaved)
+		{
+			gameTimer += dt;
+			if (gameTimer >= 5)
+			{
+				gameTimer = 0;
+				gameSaved = false;
+			}
 		}
 
 		// UPDATE CAMERA
@@ -124,7 +158,6 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		// PLAYER UPDATE
 		if (testEntity)
 		{
-			auto infoC = testEntity->getComponent<InformationComponent>();
 			if (infoC)
 			{
 				infoC->Update(dt);
@@ -148,6 +181,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		gameTimer += dt;
 	}
 
+	// GAME PAUSED
 	else
 	{
 		// RESUME GAME
@@ -233,6 +267,7 @@ void StateTest::renderPlayer()
 
 void StateTest::renderGUI()
 {
+	// GAME TIMER
 	std::ostringstream ss;
 	if (gameTimer < 10)
 	{
@@ -243,8 +278,9 @@ void StateTest::renderGUI()
 		ss.precision(4);
 	}
 	ss << "TIME: " << gameTimer;
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 32.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.9f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.95f);
 
+	// PLAYER HUD STUFF
 	EntityTest *thePlayer = dynamic_cast<EntityTest*>(testEntity);
 	if (thePlayer)
 	{
@@ -258,9 +294,16 @@ void StateTest::renderGUI()
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str() + collectionStatus, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
 	}
 
+	// GAME PAUSE
 	if (state == GAMESTATE::STATE_PAUSE)
 	{
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME PAUSED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
+	}
+
+	// GAME SAVED
+	if (gameSaved)
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME SAVING..", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 	}
 }
 
