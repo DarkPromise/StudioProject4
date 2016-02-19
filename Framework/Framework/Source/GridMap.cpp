@@ -443,3 +443,23 @@ int GridMap::getMapHeight()
 {
 	return this->m_iNumTilesHeight;
 }
+
+void GridMap::ResetData()
+{
+	backgroundData.clear();
+	backgroundData.~vector();
+	foregroundData.clear();
+	foregroundData.~vector();
+	collisionData.clear();
+	collisionData.~vector();
+
+	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
+	{
+		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
+		{
+			delete m_cGridMap[i][j];
+		}
+	}
+	m_cGridMap.clear();
+	m_cGridMap.~vector();
+}

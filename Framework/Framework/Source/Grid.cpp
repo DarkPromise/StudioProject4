@@ -50,7 +50,7 @@ void Grid::addTile(int tileID)
 		//newMesh = MeshBuilder::GenerateBoundingBox("Test", Vector3(0.5f, 0.5f, 0), Vector3(-0.5f, -0.5f, 0), Color(0.f, 0.f, 1.f));
 		m_cGridTiles.push_back(newMesh);
 		break;
-	
+
 	case TILE_DOOR_CLEAR:
 		newMesh = MeshBuilder::GenerateQuad("Tile 3", Color(1.f, 1.f, 1.f), m_iTileSize);
 		newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");

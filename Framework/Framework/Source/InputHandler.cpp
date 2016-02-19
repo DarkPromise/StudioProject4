@@ -332,6 +332,7 @@ CharBuffer * InputHandler::getBuffer(int index)
 	{
 		return this->m_charBufferList[index];
 	}
+	return nullptr;
 }
 
 void InputHandler::setBufferMode(bool status)

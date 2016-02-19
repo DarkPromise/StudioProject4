@@ -15,7 +15,6 @@ void StateTest::Init()
 	LuaReader Script("Scripts//Save.lua");
 	int x = Script.get<int>("Save.playerGridX");
 	int y = Script.get<int>("Save.playerGridY");
-
 	Mesh * testMesh;
 	testMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
@@ -28,7 +27,7 @@ void StateTest::Init()
 	theView->getInputHandler()->setMouseEnabled(false);
 
 	testMap = new GridMap();
-	testMap->Init(32, 25, 32);
+	testMap->Init(32, 25);
 	
 	// PLAYER
 	testEntity = new EntityTest();
@@ -100,7 +99,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			level = 2;
 			thePlayer->m_levelClear = false;
 			thePlayer->m_bHasKey = false;
-			//testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+
+			testMap->ResetData();
+			testMap->Init(32, 25);
+			testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
 		}
 	}
 

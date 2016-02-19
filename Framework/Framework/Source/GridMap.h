@@ -36,6 +36,7 @@ public:
 	// Generic Functions
 	void Init(int xSize, int ySize, int tileSize = 32);
 	bool LoadData(std::string backgroundCSV, std::string foregroundCSV);
+	void ResetData();
 	virtual void Update(double dt);
 
 	// Rendering Function
