@@ -7,7 +7,7 @@ Grid::Grid(int tileSize)
 : m_iTileSize(tileSize)
 , m_iTileID(-1)
 , m_v3GridPos(Vector3(0.f,0.f,0.f))
-, m_cGridEntity(nullptr)
+, m_cGridEntity(NULL)
 {
 	m_cGridAABB.setMaxMin(Vector3((float)tileSize * 0.5f, (float)tileSize * 0.5f, 0.f), Vector3((float)-tileSize * 0.5f, (float)-tileSize * 0.5f, 0.f));
 	m_cGridTiles.push_back(MeshBuilder::GenerateBoundingBox("GridBB", m_cGridAABB.Max, m_cGridAABB.Min,Color(0.f,0.f,1.f)));
@@ -67,7 +67,7 @@ void Grid::addTile(int tileID)
 
 void Grid::replaceTile(int tileID, int index)
 {
-	if (m_cGridTiles[index] != nullptr)
+	if (m_cGridTiles[index] != NULL)
 	{
 		delete m_cGridTiles[index];
 		Mesh * newMesh;
@@ -97,11 +97,11 @@ void Grid::replaceTile(int tileID, int index)
 
 Mesh * Grid::getMesh(int index)
 {
-	if (m_cGridTiles[index] != nullptr)
+	if (m_cGridTiles[index] != NULL)
 	{
 		return m_cGridTiles[index];
 	}
-	return nullptr;
+	return NULL;
 }
 
 void Grid::setTileSize(int tileSize)
@@ -151,31 +151,37 @@ Entity * Grid::getGridEntity()
 
 void Grid::removeEntity()
 {
-	this->m_cGridEntity = nullptr;
+	this->m_cGridEntity = NULL;
 }
 
 void Grid::deleteEntity()
 {
-	delete this->m_cGridEntity;
-	this->m_cGridEntity = nullptr;
+	if (this->m_cGridEntity)
+	{
+		delete this->m_cGridEntity;
+		this->m_cGridEntity = NULL;
+	}
 }
 
 bool Grid::hasInteractableEntity()
 {
-	auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
-	if (gridObject)
+	if (m_cGridEntity)
 	{
-		switch (gridObject->getObjectType())
+		auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
+		if (gridObject)
 		{
-		case EntityGridObject::OBJECT_BOX:
-			return true;
-			break;
-		case EntityGridObject::OBJECT_KEY:
-			return true;
-			break;
-		case EntityGridObject::OBJECT_SWITCH:
-			return true;
-			break;
+			switch (gridObject->getObjectType())
+			{
+			case EntityGridObject::OBJECT_BOX:
+				return true;
+				break;
+			case EntityGridObject::OBJECT_KEY:
+				return true;
+				break;
+			case EntityGridObject::OBJECT_SWITCH:
+				return true;
+				break;
+			}
 		}
 	}
 	return false;

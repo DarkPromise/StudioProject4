@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 CameraComponent::CameraComponent()
-: m_Camera(nullptr)
+: m_Camera(NULL)
 , m_v3CamDir(Vector3(0.f, 0.f, 0.f))
 , m_v3CamOffset(Vector3(0.f, 0.f, 0.f))
 {

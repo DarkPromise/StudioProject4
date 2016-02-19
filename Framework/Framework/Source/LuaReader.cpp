@@ -127,7 +127,7 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 {
 	auto components = getTables(entityType);
 
-	Entity * newEntity = nullptr;
+	Entity * newEntity = NULL;
 
 	if (entityType == "Player")
 	{

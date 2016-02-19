@@ -22,7 +22,7 @@ void StateTest::Init()
 	m_meshList.push_back(testMesh);
 
 	theCamera = new Camera();
-	SoundManager::playSound("Sounds//movesfx.wav");
+	//SoundManager::playSound("Sounds//movesfx.wav");
 
 	theView->getInputHandler()->resetMousePosition(theView);
 	theView->getInputHandler()->setMouseEnabled(false);

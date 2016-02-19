@@ -2,8 +2,8 @@
 #include "Entity.h"
 
 CollisionComponent::CollisionComponent()
-: m_AABB(nullptr)
-, m_AABBMesh(nullptr)
+: m_AABB(NULL)
+, m_AABBMesh(NULL)
 {
 
 }

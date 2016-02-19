@@ -39,7 +39,7 @@ public:
 			}
 		}
 		//std::cout << "Component does not exist" << std::endl;
-		return nullptr;
+		return NULL;
 	}
 private:
 	std::vector<Component*> m_componentList;

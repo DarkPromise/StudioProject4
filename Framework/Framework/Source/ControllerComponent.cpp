@@ -88,7 +88,7 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 		{
 			if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_FLOOR)
 			{
-				if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity() != nullptr)
+				if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity() != NULL)
 				{
 					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntity());
 					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_UP, gridObject->getObjectType(),this->getParent()))
@@ -120,7 +120,7 @@ void ControllerComponent::MoveBackwards(GridMap * currMap)
 		{
 			if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_FLOOR)
 			{
-				if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity() != nullptr)
+				if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity() != NULL)
 				{
 					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntity());
 					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_DOWN, gridObject->getObjectType(),this->getParent()))
@@ -153,7 +153,7 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 		{
 			if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getTileID() == Grid::TILE_FLOOR)
 			{
-				if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity() != nullptr)
+				if (currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity() != NULL)
 				{
 					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridEntity());
 					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_LEFT, gridObject->getObjectType(), this->getParent()))
@@ -185,7 +185,7 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 		{
 			if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_FLOOR)
 			{
-				if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity() != nullptr)
+				if (currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity() != NULL)
 				{
 					auto gridObject = dynamic_cast<EntityGridObject*>(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntity());
 					if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_RIGHT, gridObject->getObjectType(), this->getParent()))
