@@ -14,7 +14,7 @@
 class StateTest : public State
 {
 public:
-	StateTest(std::string name, View * theView) 
+	StateTest(std::string name, View * theView, int gameType) 
 		: State(name, theView)
 		, moveDelay(0.f)
 		, gameTimer(0)
@@ -22,6 +22,7 @@ public:
 		, gameSaved(false)
 		, gameSavedTimer(0)
 		, level(1)
+		, gameType(gameType)
 	{
 		this->theView = theView;
 	}
@@ -56,6 +57,7 @@ private:
 	bool gameSaved;
 	float gameSavedTimer;
 	int level;
+	int gameType;
 };
 
 #endif

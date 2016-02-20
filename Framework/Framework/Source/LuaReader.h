@@ -91,7 +91,7 @@ public:
 	template<typename T> T lua_to(T);
 	std::vector<std::string> getTables(const std::string & tableName);
 	bool lua_gettostack(const std::string& variableName);
-	void saveFile(int playerIndex, int playerIndexY);
+	void saveFile(int playerIndex, int playerIndexY, int level);
 	
 	// Entity Creation (Test!!!)
 	Entity * createEntity(const std::string & entityType, Camera * camera);

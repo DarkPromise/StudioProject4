@@ -188,13 +188,14 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	return newEntity;
 }
 
-void LuaReader::saveFile(int playerIndexX, int playerIndexY)
+void LuaReader::saveFile(int playerIndexX, int playerIndexY, int level)
 {
 	ofstream file;
 	file.open("Scripts//Save.lua");
 	file << "Save = {" << std::endl;
 	file << "playerGridX = \"" + std::to_string(playerIndexX) + "\"," << std::endl;
 	file << "playerGridY = \"" + std::to_string(playerIndexY) + "\"," << std::endl;
+	file << "level = \"" + std::to_string(level) + "\"," << std::endl;
 	file << "}" << std::endl;
 	file.close();
 }

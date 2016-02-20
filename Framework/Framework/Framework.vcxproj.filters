@@ -150,18 +150,6 @@
     <Filter Include="Header Files\State Handling\Game States\Darren">
       <UniqueIdentifier>{01a84c91-aa00-4bbf-8b75-537e30d57978}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\State Handling\Game States\Josh">
-      <UniqueIdentifier>{bbcbb060-8757-43a3-8fee-ca69215cd1f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\State Handling\Game States\Giggs">
-      <UniqueIdentifier>{dbc985be-bb60-4d8b-9e3c-fe2c87b4c7ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\State Handling\Game States\Keith">
-      <UniqueIdentifier>{0eb6012e-a3a1-4b6f-8dc8-bcf35e20d093}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\State Handling\Game States\Darren">
-      <UniqueIdentifier>{9cbaa545-0059-4b71-b75f-6cd1af381715}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\2D Grid Map">
       <UniqueIdentifier>{367433cf-2888-43ee-ba8b-5c7a51a1836c}</UniqueIdentifier>
     </Filter>
@@ -334,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="Source\ControllerComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMenu.cpp">
+      <Filter>Source Files\State Handling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -513,6 +504,9 @@
     </ClInclude>
     <ClInclude Include="Source\ControllerComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMenu.h">
+      <Filter>Header Files\State Handling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

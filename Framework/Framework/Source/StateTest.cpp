@@ -15,6 +15,8 @@ void StateTest::Init()
 	LuaReader Script("Scripts//Save.lua");
 	int x = Script.get<int>("Save.playerGridX");
 	int y = Script.get<int>("Save.playerGridY");
+	int savedLevel = Script.get<int>("Save.level");
+	
 	Mesh * testMesh;
 	testMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
@@ -33,18 +35,29 @@ void StateTest::Init()
 	testEntity = new EntityTest();
 	auto informationComponent = new InformationComponent();
 	informationComponent->setName("Test");
-	//informationComponent->setPosition(Vector3(0.f, 0.f, 0.f));
-	informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+	if (gameType == 1)
+	{
+		informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+		
+	}
+	else if (gameType == 2)
+	{
+		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
+		level = savedLevel;
+	}
 	testEntity->addComponent(informationComponent);
+	
 	auto cameraComponent = new CameraComponent(theCamera);
 	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 300.f));
 	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
 	testEntity->addComponent(cameraComponent);
+	
 	auto graphicsComponent = new GraphicsComponent();
 	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Player", Color(1.f, 0.f, 0.f), 32.f));
 	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//player.tga");
 	graphicsComponent->getMesh()->alpha = 0.7f;
 	testEntity->addComponent(graphicsComponent);
+	
 	auto controlComponent = new ControllerComponent(theView->getInputHandler());
 	testEntity->addComponent(controlComponent);
 
@@ -94,12 +107,12 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 
 	if (thePlayer->m_levelClear)
 	{
-		if (level == 1)
+		level++;
+		thePlayer->m_levelClear = false;
+		thePlayer->m_bHasKey = false;
+		
+		if (level == 2)
 		{
-			level = 2;
-			thePlayer->m_levelClear = false;
-			thePlayer->m_bHasKey = false;
-
 			testMap->ResetData();
 			testMap->Init(32, 25);
 			testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
@@ -133,7 +146,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			int playerIndexY = testMap->getMapHeight() - (int)indexY;
 
 			LuaReader script("Scripts//Save.lua");
-			script.saveFile(playerIndexX, playerIndexY);
+			script.saveFile(playerIndexX, playerIndexY, level);
 		}
 
 		else if (click && !controlC->getInputHandler()->IsKeyPressed('S'))

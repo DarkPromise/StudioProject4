@@ -24,10 +24,13 @@ void StateCredits::Init()
 	newMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(newMesh);
 
-
-	newMesh = MeshBuilder::GenerateQuad("Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
 	m_meshList.push_back(newMesh);
 
+	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
+	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
+	newMesh->alpha = 0.f;
+	m_meshList.push_back(newMesh);
 }
 
 void StateCredits::Cleanup()
@@ -78,6 +81,9 @@ void StateCredits::Draw(StateHandler* stateHandler)
 
 void StateCredits::RenderBackground()
 {
+	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
+	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
+
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Done by: ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.5);
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Giggs 123132 ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.4);
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Joshua 123132 ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.3);

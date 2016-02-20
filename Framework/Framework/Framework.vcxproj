@@ -132,6 +132,7 @@
     <ClCompile Include="Source\StateCredits.cpp" />
     <ClCompile Include="Source\StateHandler.cpp" />
     <ClCompile Include="Source\StateMainmenu.cpp" />
+    <ClCompile Include="Source\StateMenu.cpp" />
     <ClCompile Include="Source\StateSplash.cpp" />
     <ClCompile Include="Source\StateTest.cpp" />
     <ClCompile Include="Source\Timing.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source\StateCredits.h" />
     <ClInclude Include="Source\StateHandler.h" />
     <ClInclude Include="Source\StateMainmenu.h" />
+    <ClInclude Include="Source\StateMenu.h" />
     <ClInclude Include="Source\StateSplash.h" />
     <ClInclude Include="Source\StateTest.h" />
     <ClInclude Include="Source\Timing.h" />

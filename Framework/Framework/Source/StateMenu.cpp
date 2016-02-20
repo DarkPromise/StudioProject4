@@ -1,25 +1,21 @@
-#include "StateAGDevMenu.h"
+#include "StateMenu.h"
 #include "View.h"
 #include "LoadTGA.h"
 
-//#include "StateTest.h"
-#include "StateAGDevInstructions.h"
-#include "StateAGDevHighscore.h"
-#include "StateAGDevOptions.h"
-#include "StateCredits.h"
-#include "StateMenu.h"
+#include "StateTest.h"
+#include "StateAGDevMenu.h"
 
-StateAGDevMenu::~StateAGDevMenu()
+StateMenu::~StateMenu()
 {
 
 }
 
-State * StateAGDevMenu::getInstance()
+State * StateMenu::getInstance()
 {
 	return this;
 }
 
-void StateAGDevMenu::Init()
+void StateMenu::Init()
 {
 	// Menu in 2D
 	theView->LoadOrthoCamera();
@@ -45,24 +41,16 @@ void StateAGDevMenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("Start Button", "Start", 0.5f, 0.5f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("StartBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("NewGame Button", "New Game", 0.5f, 0.5f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("NewGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Instructions Button", "Instructions", 0.5f, 0.6f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("InstructionsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("LoadGame Button", "Load Game", 0.5f, 0.6f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Highscores Button", "Highscores", 0.5f, 0.7f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("HighscoreBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
-	m_guiList.push_back(newGui);
-
-	newGui = new GuiButton("Options Button", "Options", 0.5f, 0.8f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OptionsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
-	m_guiList.push_back(newGui);
-
-	newGui = new GuiButton("Credits Button", "Credits", 0.5f, 0.9f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("CreditsBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("Multiplayer Button", "Multiplayer", 0.5f, 0.7f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("MultiplayerBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
 	m_bStartFadeIn = true;
@@ -70,7 +58,7 @@ void StateAGDevMenu::Init()
 	m_dFadeDelay = 0.0;
 }
 
-void StateAGDevMenu::Update(StateHandler * stateHandler, double dt)
+void StateMenu::Update(StateHandler * stateHandler, double dt)
 {
 	if (m_bStartFadeIn)
 	{
@@ -86,17 +74,20 @@ void StateAGDevMenu::Update(StateHandler * stateHandler, double dt)
 	theView->Update(dt);
 }
 
-void StateAGDevMenu::HandleEvents(StateHandler * stateHandler)
+void StateMenu::HandleEvents(StateHandler * stateHandler)
+{
+	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	{
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+	}
+}
+
+void StateMenu::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
 {
 
 }
 
-void StateAGDevMenu::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
-{
-
-}
-
-void StateAGDevMenu::Cleanup()
+void StateMenu::Cleanup()
 {
 	if (!m_guiList.empty())
 	{
@@ -119,30 +110,30 @@ void StateAGDevMenu::Cleanup()
 	m_meshList.~vector(); // There will be a memory leak if you dont deallocate the memory given to the vector itself
 }
 
-void StateAGDevMenu::Pause()
+void StateMenu::Pause()
 {
 
 }
 
-void StateAGDevMenu::Resume()
+void StateMenu::Resume()
 {
 
 }
 
-void StateAGDevMenu::Draw(StateHandler * stateHandler)
+void StateMenu::Draw(StateHandler * stateHandler)
 {
 	RenderBackground();
 	RenderButtons();
 	theView->SwapBuffers();
 }
 
-void StateAGDevMenu::RenderBackground()
+void StateMenu::RenderBackground()
 {
 	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
 }
 
-void StateAGDevMenu::RenderButtons()
+void StateMenu::RenderButtons()
 {
 	for (unsigned int i = 0; i < m_guiList.size(); i++)
 	{
@@ -150,7 +141,7 @@ void StateAGDevMenu::RenderButtons()
 	}
 }
 
-void StateAGDevMenu::UpdateSelection(StateHandler * stateHandler)
+void StateMenu::UpdateSelection(StateHandler * stateHandler)
 {
 	if (!m_bStartFadeIn)
 	{
@@ -172,24 +163,16 @@ void StateAGDevMenu::UpdateSelection(StateHandler * stateHandler)
 					{
 						switch (MENU_BUTTONS(i))
 						{
-						case START_BUTTON:
-							//m_bStartFadeOut = true;
-							stateHandler->ChangeState(new StateMenu("AGDev GameMenu State", theView));
+						case NEWGAME_BUTTON:
+							gameType = 1;
+							m_bStartFadeOut = true;
 							break;
-						case INSTRUCTIONS_BUTTON:
-							stateHandler->ChangeState(new StateAGDevInstructions("AGDev Instructions State", theView));
+						case LOADGAME_BUTTON:
+							gameType = 2;
+							m_bStartFadeOut = true;
 							break;
-						case HIGHSCORE_BUTTON:
-							stateHandler->ChangeState(new StateAGDevHighscore("AGDev Highscore State", theView));
-							break;
-						case OPTIONS_BUTTON:
-							stateHandler->ChangeState(new StateAGDevOptions("AGDev Options State", theView));
-							break;
-						case CREDITS_BUTTON:
-							stateHandler->ChangeState(new StateCredits("AGDev Credits State", theView));
-							break;
-						case EXIT_BUTTON:
-							//Theres no Exit button
+						case MULTIPLAYER_BUTTON:
+							gameType = 3;
 							break;
 						}
 						theView->getInputHandler()->setClickDelay(0.2);
@@ -204,7 +187,7 @@ void StateAGDevMenu::UpdateSelection(StateHandler * stateHandler)
 	}
 }
 
-void StateAGDevMenu::FadeInEffect(double dt)
+void StateMenu::FadeInEffect(double dt)
 {
 	if (m_meshList[0]->alpha < 1)
 	{
@@ -219,15 +202,15 @@ void StateAGDevMenu::FadeInEffect(double dt)
 	}
 }
 
-void StateAGDevMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
+void StateMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
 {
 	for (Mesh * mesh : m_meshList)
 	{
 		mesh->alpha -= 2.f * dt;
 	}
 
-	/*if (m_meshList[0]->alpha < 0)
+	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateTest("Test Game State", theView));
-	}*/
+		stateHandler->ChangeState(new StateTest("Test Game State", theView, gameType));
+	}
 }
