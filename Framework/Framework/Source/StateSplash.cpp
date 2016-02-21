@@ -99,6 +99,6 @@ void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 	}
 	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("Menu State", theView, true));
 	}
 }

@@ -138,18 +138,6 @@
     <Filter Include="Source Files\2D Grid Map">
       <UniqueIdentifier>{acc56cdd-a68d-4a99-9a9e-abadefcd1643}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\State Handling\Game States\Josh">
-      <UniqueIdentifier>{ac2265ca-1d76-4bd0-b8bb-a82faf325ccd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\State Handling\Game States\Giggs">
-      <UniqueIdentifier>{d865a325-d6c6-4853-9265-1911c4db019c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\State Handling\Game States\Keith">
-      <UniqueIdentifier>{3b86388c-32d8-4640-ba8c-b2adf1287c8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\State Handling\Game States\Darren">
-      <UniqueIdentifier>{01a84c91-aa00-4bbf-8b75-537e30d57978}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\2D Grid Map">
       <UniqueIdentifier>{367433cf-2888-43ee-ba8b-5c7a51a1836c}</UniqueIdentifier>
     </Filter>

@@ -38,6 +38,8 @@ public:
 
 	// State Specific Functions
 	void UpdateSelection(StateHandler * stateHandler);
+	void FadeInEffect(double dt);
+	void FadeOutEffect(double dt, StateHandler * stateHandler);
 
 	// Rendering Functions
 	void RenderBackground();
@@ -46,6 +48,11 @@ private:
 	std::vector<Mesh*> m_meshList;
 	std::vector<Gui*> m_guiList;
 	BUTTON m_eCurrentSelection;
+
+	// Fade Effect
+	double m_dFadeDelay;
+	bool m_bStartFadeIn;
+	bool m_bStartFadeOut;
 };
 
 #endif

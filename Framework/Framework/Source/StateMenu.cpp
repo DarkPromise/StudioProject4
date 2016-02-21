@@ -31,12 +31,12 @@ void StateMenu::Init()
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
-	newMesh->alpha = 0.f;
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
-	newMesh->alpha = 0.f;
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	// Create Gui Buttons
@@ -78,7 +78,7 @@ void StateMenu::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
 
@@ -206,6 +206,12 @@ void StateMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
 {
 	for (Mesh * mesh : m_meshList)
 	{
+		if (m_meshList[0] && !runOnce)
+		{
+			runOnce = true;
+			m_meshList[1]->alpha = 1.f;
+			m_meshList[2]->alpha = 1.f;
+		}
 		mesh->alpha -= 2.f * dt;
 	}
 

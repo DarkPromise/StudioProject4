@@ -198,7 +198,7 @@ void StateAGDevGame::HandleEvents(StateHandler * stateHandler)
 	}
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 
 	if (thePlayer)
@@ -208,7 +208,7 @@ void StateAGDevGame::HandleEvents(StateHandler * stateHandler)
 		{
 			if (healthC->getHealth() <= 0)
 			{
-				stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+				stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 			}
 		}
 	}

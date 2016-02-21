@@ -26,18 +26,35 @@ void StateAGDevInstructions::Init()
 	Mesh * newMesh;
 	newMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	newMesh->textureID = LoadTGA("Fonts//source.tga");
+	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
+
+	m_bStartFadeIn = true;
+	m_bStartFadeOut = false;
+	m_dFadeDelay = 0.0;
 }
 
 void StateAGDevInstructions::Update(StateHandler * stateHandler, double dt)
 {
+	if (m_bStartFadeIn)
+	{
+		FadeInEffect(dt);
+	}
+
+	if (m_bStartFadeOut)
+	{
+		FadeOutEffect(dt, stateHandler);
+	}
+
 	theView->Update(dt);
 }
 
@@ -45,7 +62,7 @@ void StateAGDevInstructions::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
 
@@ -92,15 +109,38 @@ void StateAGDevInstructions::RenderBackground()
 
 void StateAGDevInstructions::RenderInstructions()
 {
-	std::string Instructions = "Movement - W A S D Keys";
-	std::string Instructions2 = "Avoid the Red Spheres and Pick up the Green Spheres";
-	std::string Instructions3 = "Pick up the White Spheres to gain back Health";
-	std::string Instructions4 = "Try to get the Highiest Score!";
-	std::string Instructions5 = "Press Backspace to go back to the Menu";
+	std::string Instructions  = "Move around with (W, A, S, D)";
+	std::string Instructions2 = "Solve puzzles, push and interact objects (E)";
+	std::string Instructions3 = "Avoid guards, level resets upon detection";
+	std::string Instructions4 = "Beat level in the fastest timing possible";
+	//std::string Instructions5 = "Press Backspace to go back to Menu";
 
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions.length() * 10.f), (float)theView->getWindowHeight() * 0.4f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions2, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions2.length() * 10.f), (float)theView->getWindowHeight() * 0.3f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions3, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions3.length() * 10.f), (float)theView->getWindowHeight() * 0.2f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions4, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions4.length() * 10.f), (float)theView->getWindowHeight() * 0.1f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions5, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions5.length() * 10.f), (float)theView->getWindowHeight() * 0.f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.1f /*- (Instructions.length() * 10.f)*/, (float)theView->getWindowHeight() * 0.4f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions2, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.1f /*- (Instructions2.length() * 10.f)*/, (float)theView->getWindowHeight() * 0.3f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions3, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.1f /*- (Instructions3.length() * 10.f)*/, (float)theView->getWindowHeight() * 0.2f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions4, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.1f /*- (Instructions4.length() * 10.f)*/, (float)theView->getWindowHeight() * 0.1f);
+	//theView->RenderTextOnScreen(m_meshList[TEXT_FONT], Instructions5, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.5f - (Instructions5.length() * 10.f), (float)theView->getWindowHeight() * 0.f);
+}
+
+void StateAGDevInstructions::FadeInEffect(double dt)
+{
+	if (m_meshList[0]->alpha < 1)
+	{
+		for (Mesh * mesh : m_meshList)
+		{
+			mesh->alpha += 2.f * dt;
+		}
+	}
+	else
+	{
+		m_bStartFadeIn = false;
+	}
+}
+
+void StateAGDevInstructions::FadeOutEffect(double dt, StateHandler * stateHandler)
+{
+	for (Mesh * mesh : m_meshList)
+	{
+		mesh->alpha -= 2.f * dt;
+	}
 }

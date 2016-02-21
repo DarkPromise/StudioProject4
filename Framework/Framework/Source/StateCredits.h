@@ -24,13 +24,21 @@ public:
 	void HandleEvents(StateHandler * stateHandler, const int key, const bool status = true);
 	void Draw(StateHandler * stateHandler);
 
+	// State Specific Functions
+	void FadeInEffect(double dt);
+	void FadeOutEffect(double dt, StateHandler * stateHandler);
+
 	// Rendering Functions
 	void RenderBackground();
-
+	void RenderNames();
 private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;
 
+	// Fade Effect
+	double m_dFadeDelay;
+	bool m_bStartFadeIn;
+	bool m_bStartFadeOut;
 };
 
 #endif

@@ -22,15 +22,48 @@ void StateCredits::Init()
 	Mesh * newMesh;
 	newMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	newMesh->textureID = LoadTGA("Fonts//source.tga");
+	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
-	newMesh->alpha = 0.f;
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
+
+	m_bStartFadeIn = true;
+	m_bStartFadeOut = false;
+	m_dFadeDelay = 0.0;
+}
+
+void StateCredits::Update(StateHandler * stateHandler, double dt)
+{
+	if (m_bStartFadeIn)
+	{
+		FadeInEffect(dt);
+	}
+
+	if (m_bStartFadeOut)
+	{
+		FadeOutEffect(dt, stateHandler);
+	}
+
+	theView->Update(dt);
+}
+
+void StateCredits::HandleEvents(StateHandler * stateHandler)
+{
+	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	{
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
+	}
+}
+
+void StateCredits::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
+{
 }
 
 void StateCredits::Cleanup()
@@ -56,26 +89,10 @@ void StateCredits::Resume()
 
 }
 
-void StateCredits::Update(StateHandler * stateHandler, double dt)
-{
-	theView->Update(dt);
-}
-
-void StateCredits::HandleEvents(StateHandler * stateHandler)
-{
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
-	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
-	}
-}
-
-void StateCredits::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
-{
-}
-
 void StateCredits::Draw(StateHandler* stateHandler)
 {
 	RenderBackground();
+	RenderNames();
 	theView->SwapBuffers();
 }
 
@@ -83,9 +100,35 @@ void StateCredits::RenderBackground()
 {
 	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
+}
 
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Done by: ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.5);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Giggs 123132 ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.4);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Joshua 123132 ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.3);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Darren 123132 ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.2);
+void StateCredits::RenderNames()
+{
+	//theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Done by: ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.5);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Giggs 140169M", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.4);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Joshua 123132", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.3);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Darren 123132", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.2);
+}
+
+void StateCredits::FadeInEffect(double dt)
+{
+	if (m_meshList[0]->alpha < 1)
+	{
+		for (Mesh * mesh : m_meshList)
+		{
+			mesh->alpha += 2.f * dt;
+		}
+	}
+	else
+	{
+		m_bStartFadeIn = false;
+	}
+}
+
+void StateCredits::FadeOutEffect(double dt, StateHandler * stateHandler)
+{
+	for (Mesh * mesh : m_meshList)
+	{
+		mesh->alpha -= 2.f * dt;
+	}
 }

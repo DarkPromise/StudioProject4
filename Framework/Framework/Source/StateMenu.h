@@ -19,6 +19,7 @@ public:
 	StateMenu(std::string name, View * theView)
 		: State(name, theView)
 		, gameType(1)
+		, runOnce(false)
 	{
 		this->theView = theView;
 	}
@@ -53,6 +54,7 @@ private:
 	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
 	int gameType;
+	bool runOnce;
 };
 
 #endif

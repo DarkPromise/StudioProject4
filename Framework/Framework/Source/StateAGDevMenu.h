@@ -19,9 +19,11 @@ public:
 		EXIT_BUTTON,
 	};
 
-	StateAGDevMenu(std::string name, View * theView) : State(name, theView)
+	StateAGDevMenu(std::string name, View * theView, bool alpha) : State(name, theView)
 	{
 		this->theView = theView;
+		this->alpha = alpha;
+		runOnce = false;
 	}
 	~StateAGDevMenu();
 
@@ -52,6 +54,8 @@ private:
 	double m_dFadeDelay;
 	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
+	bool alpha;
+	bool runOnce;
 };
 
 #endif

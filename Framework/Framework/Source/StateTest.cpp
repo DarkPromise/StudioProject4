@@ -1,6 +1,8 @@
 #include "StateTest.h"
 #include "View.h"
 
+#define HUD_DISPLAY_DELAY 3
+
 State * StateTest::getInstance()
 {
 	return this;
@@ -105,6 +107,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto thePlayer = dynamic_cast<EntityTest*>(testEntity);
 
+	// LEVEL CLEARED
 	if (thePlayer->m_levelClear)
 	{
 		level++;
@@ -123,19 +126,19 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	if (state == GAMESTATE::STATE_PLAY)
 	{
 		// PAUSE GAME
-		if (!click && controlC->getInputHandler()->IsKeyPressed('P'))
+		if (!click && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click = true;
 			state = GAMESTATE::STATE_PAUSE;
 		}
 
-		else if (click && !controlC->getInputHandler()->IsKeyPressed('P'))
+		else if (click && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click = false;
 		}
 
 		// SAVE GAME
-		if (!click && controlC->getInputHandler()->IsKeyPressed('S'))
+		if (!click && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 		{
 			click = true;
 			gameSaved = true;
@@ -149,7 +152,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			script.saveFile(playerIndexX, playerIndexY, level);
 		}
 
-		else if (click && !controlC->getInputHandler()->IsKeyPressed('S'))
+		else if (click && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 		{
 			click = false;
 		}
@@ -158,10 +161,32 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		if (gameSaved)
 		{
 			gameTimer += dt;
-			if (gameTimer >= 5)
+			if (gameTimer >= HUD_DISPLAY_DELAY)
 			{
 				gameTimer = 0;
 				gameSaved = false;
+			}
+		}
+
+		// SHOW PLAYER KEY REQUIRED
+		if (thePlayer->m_showkeyRequired)
+		{
+			thePlayer->m_showKeyRequiredTimer += dt;
+			if (thePlayer->m_showKeyRequiredTimer >= HUD_DISPLAY_DELAY)
+			{
+				thePlayer->m_showKeyRequiredTimer = 0;
+				thePlayer->m_showkeyRequired = false;
+			}
+		}
+
+		// SHOW DOOR ACTIVATED
+		if (thePlayer->m_switchActivated)
+		{
+			thePlayer->m_switchActivatedTimer += dt;
+			if (thePlayer->m_switchActivatedTimer >= HUD_DISPLAY_DELAY)
+			{
+				thePlayer->m_switchActivatedTimer = 0;
+				thePlayer->m_switchActivated = false;
 			}
 		}
 
@@ -173,13 +198,13 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			cameraC->Update(dt);
 		}
 	
+		// PLAYER UPDATE
 		testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha += dt;
 		if (testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha > 2)
 		{
 			testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha = 0.f;
 		}
 
-		// PLAYER UPDATE
 		if (testEntity)
 		{
 			if (infoC)
@@ -196,11 +221,9 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		// UPDATE VIEW
 		theView->Update(dt);
 		theView->viewStack.LoadIdentity();
-		theView->viewStack.LookAt(
-			theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
-			theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
-			theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z
-			);
+		theView->viewStack.LookAt(theCamera->getCameraPos().x, theCamera->getCameraPos().y, theCamera->getCameraPos().z,
+								  theCamera->getCameraTarget().x, theCamera->getCameraTarget().y, theCamera->getCameraTarget().z,
+								  theCamera->getCameraUp().x, theCamera->getCameraUp().y, theCamera->getCameraUp().z);
 
 		gameTimer += dt;
 	}
@@ -209,13 +232,13 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	else
 	{
 		// RESUME GAME
-		if (!click && controlC->getInputHandler()->IsKeyPressed('P'))
+		if (!click && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click = true;
 			state = GAMESTATE::STATE_PLAY;
 		}
 
-		else if (click && !controlC->getInputHandler()->IsKeyPressed('P'))
+		else if (click && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click = false;
 		}
@@ -304,7 +327,7 @@ void StateTest::renderGUI()
 	ss << "TIME: " << gameTimer;
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.95f);
 
-	// PLAYER HUD STUFF
+	// PLAYER HUD
 	EntityTest *thePlayer = dynamic_cast<EntityTest*>(testEntity);
 	if (thePlayer)
 	{
@@ -316,6 +339,16 @@ void StateTest::renderGUI()
 			collectionStatus = "COLLECTED";
 		}
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str() + collectionStatus, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
+
+		if (thePlayer->m_showkeyRequired)
+		{
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
+		}
+
+		if (thePlayer->m_switchActivated)
+		{
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "DOOR UNLOCKED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
+		}
 	}
 
 	// GAME PAUSE

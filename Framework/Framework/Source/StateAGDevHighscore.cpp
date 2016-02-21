@@ -4,7 +4,6 @@
 
 #include "StateAGDevMenu.h"
 
-
 StateAGDevHighscore::~StateAGDevHighscore()
 {
 	highscore.reset();
@@ -27,20 +26,37 @@ void StateAGDevHighscore::Init()
 	Mesh * newMesh;
 	newMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	newMesh->textureID = LoadTGA("Fonts//source.tga");
+	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
+
+	m_bStartFadeIn = true;
+	m_bStartFadeOut = false;
+	m_dFadeDelay = 0.0;
 
 	highscore.ReadFromTextFile();
 }
 
 void StateAGDevHighscore::Update(StateHandler * stateHandler, double dt)
 {
+	if (m_bStartFadeIn)
+	{
+		FadeInEffect(dt);
+	}
+
+	if (m_bStartFadeOut)
+	{
+		FadeOutEffect(dt, stateHandler);
+	}
+
 	theView->Update(dt);
 }
 
@@ -48,7 +64,7 @@ void StateAGDevHighscore::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
 
@@ -102,5 +118,28 @@ void StateAGDevHighscore::RenderHighscore()
 		std::ostringstream scoring;
 		scoring << temp + 1 << "." << highscore.record[i].getName() << " " << highscore.record[i].getTiming().getMin() << ":" << highscore.record[i].getTiming().getSec();
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], scoring.str(), Color(1.f, 0.f, 0.f), 48.f, ((float)theView->getWindowWidth() * 0.5f) - (scoring.str().length() * 10.f), ((float)theView->getWindowHeight() * 0.5f * 0.20f * i));
+	}
+}
+
+void StateAGDevHighscore::FadeInEffect(double dt)
+{
+	if (m_meshList[0]->alpha < 1)
+	{
+		for (Mesh * mesh : m_meshList)
+		{
+			mesh->alpha += 2.f * dt;
+		}
+	}
+	else
+	{
+		m_bStartFadeIn = false;
+	}
+}
+
+void StateAGDevHighscore::FadeOutEffect(double dt, StateHandler * stateHandler)
+{
+	for (Mesh * mesh : m_meshList)
+	{
+		mesh->alpha -= 2.f * dt;
 	}
 }

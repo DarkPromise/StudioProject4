@@ -212,6 +212,7 @@ void ControllerComponent::Interact(GridMap * currMap)
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
 		int playerIndexX = (int)indexX;
 		int playerIndexY = currMap->getMapHeight() - (int)indexY;
+		auto thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 
 		// Checking 4 Sides
 		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->hasInteractableEntity())
@@ -225,6 +226,7 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
+				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -241,6 +243,7 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
+				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -257,6 +260,7 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
+				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -273,21 +277,24 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
+				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
 			}
 		}
 
-		// CHECK TO CLEAR LEVEL
+		// CHECK FOR DOOR TO CLEAR LEVEL
 		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR ||
 			currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_CLEAR)
 		{
-			auto thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 			if (thePlayer->m_bHasKey)
 			{
-				// NEXT LEVEL
 				thePlayer->m_levelClear = true;
+			}
+			else
+			{
+				thePlayer->m_showkeyRequired = true;
 			}
 		}
 	}

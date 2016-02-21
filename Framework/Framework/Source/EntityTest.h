@@ -13,6 +13,10 @@ public:
 
 	bool m_bHasKey;
 	bool m_levelClear;
+	bool m_showkeyRequired;
+	bool m_switchActivated;
+	float m_showKeyRequiredTimer;
+	float m_switchActivatedTimer;
 private:
 };
 

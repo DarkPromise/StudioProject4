@@ -26,13 +26,16 @@ void StateAGDevOptions::Init()
 	Mesh * newMesh;
 	newMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	newMesh->textureID = LoadTGA("Fonts//source.tga");
+	newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("Project", Color(0.f, 0.f, 0.f), 1.f);
 	newMesh->textureArray[0] = LoadTGA("Images//Project.tga");
+	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 	
 	// Create Gui
@@ -45,11 +48,25 @@ void StateAGDevOptions::Init()
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OffBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
+	m_bStartFadeIn = true;
+	m_bStartFadeOut = false;
+	m_dFadeDelay = 0.0;
+
 	m_eCurrentSelection = DEFAULT_BUTTON;
 }
 
 void StateAGDevOptions::Update(StateHandler * stateHandler, double dt)
 {
+	if (m_bStartFadeIn)
+	{
+		FadeInEffect(dt);
+	}
+
+	if (m_bStartFadeOut)
+	{
+		FadeOutEffect(dt, stateHandler);
+	}
+
 	UpdateSelection(stateHandler);
 	theView->Update(dt);
 }
@@ -58,7 +75,7 @@ void StateAGDevOptions::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView));
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
 
@@ -168,4 +185,27 @@ void StateAGDevOptions::RenderBackground()
 	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Sound : ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * (1.f - 0.76f) - 24.f);
+}
+
+void StateAGDevOptions::FadeInEffect(double dt)
+{
+	if (m_meshList[0]->alpha < 1)
+	{
+		for (Mesh * mesh : m_meshList)
+		{
+			mesh->alpha += 2.f * dt;
+		}
+	}
+	else
+	{
+		m_bStartFadeIn = false;
+	}
+}
+
+void StateAGDevOptions::FadeOutEffect(double dt, StateHandler * stateHandler)
+{
+	for (Mesh * mesh : m_meshList)
+	{
+		mesh->alpha -= 2.f * dt;
+	}
 }
