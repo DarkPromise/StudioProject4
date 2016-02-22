@@ -3,7 +3,11 @@
 #include "StateAGDevMenu.h"
 #include "StateAGDevOptions.h"
 
-#define HUD_DISPLAY_DELAY 3
+#define HUD_DISPLAY_DELAY	3
+#define xSize				32
+#define ySize				25
+#define NUM_BOXES			3
+#define NUM_SWITCHES		1
 
 State * StateTest::getInstance()
 {
@@ -14,13 +18,8 @@ void StateTest::Init()
 {
 	// Testing will be done in Perspective
 	theView->LoadPerspectiveCamera(90.0);
-
-	// OPEN THE LUA SCRIPT
-	LuaReader Script("Scripts//Save.lua");
-	int x = Script.get<int>("Save.playerGridX");
-	int y = Script.get<int>("Save.playerGridY");
-	int savedLevel = Script.get<int>("Save.level");
 	
+	// MESHES
 	Mesh * testMesh;
 	testMesh = MeshBuilder::GenerateText("Source Font", 16, 16);
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
@@ -37,7 +36,7 @@ void StateTest::Init()
 	theView->getInputHandler()->setMouseEnabled(false);
 
 	testMap = new GridMap();
-	testMap->Init(32, 25);
+	testMap->Init(xSize, ySize);
 	
 	// PLAYER
 	LuaReader playerScript("Scripts//Player.lua");
@@ -45,49 +44,32 @@ void StateTest::Init()
 	auto informationComponent = testEntity->getComponent<InformationComponent>();
 	auto gameplayComponent = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
+	auto gameC = testEntity->getComponent<GameplayComponent>();
+	
 	switch (gameType)
 	{
-	case 1:
-		informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+		case 1:
+			informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
 		break;
-	case 2:
-		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
-		level = savedLevel;
+		
+		case 2:
+			loadPlayer(testMap, informationComponent, gameC);
 		break;
 	}
 
 	// INTIALISE LEVELS
-	switch (level)
-	{
-	case 1:
-		testMap->LoadData("MapData//level1_Background.csv", "MapData//level_Foreground.csv");
-
-		// BOXES
-		EntityGridObject * testGridObject;
-		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-		graphicsComponent = new GraphicsComponent();
-		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-		testGridObject->addComponent(graphicsComponent);
-		testMap->getGridMap()[22][2]->addGridEntity(testGridObject);
-
-		// KEY
-		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
-		graphicsComponent = new GraphicsComponent();
-		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
-		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
-		testGridObject->addComponent(graphicsComponent);
-		testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
-
-		// SWITCHES
-		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-		testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
-		graphicsComponent = new GraphicsComponent();
-		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-		testGridObject->addComponent(graphicsComponent);
-		testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+	switch (gameC->getCurrLevel())
+	{		
+		case 1:
+			loadLevel1(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
-	case 2:
+		
+		case 2:
+			loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);		
+		break;
+
+		case 3:
+			loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
 	}
 }
@@ -98,6 +80,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
+	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 
 	// LEVEL CLEARED
 	if (gameC)
@@ -109,14 +92,15 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			gameC->setHasKey(false);
 
 			testMap->ResetData();
-
+			testMap->Init(xSize, ySize);
 			switch (gameC->getCurrLevel())
 			{
-			case 1:
+				case 2:					
+					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
-			case 2:
-				testMap->Init(32, 25);
-				testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+
+				case 3:
+					loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 			}
 		}
@@ -142,14 +126,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			click = true;
 			gameSaved = true;
-
-			float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-			float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-			int playerIndexX = (int)indexX;
-			int playerIndexY = testMap->getMapHeight() - (int)indexY;
-
-			LuaReader script("Scripts//Save.lua");
-			script.saveFile(playerIndexX, playerIndexY, level);
+			gameSave(infoC);
 		}
 
 		else if (click && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
@@ -334,18 +311,18 @@ void StateTest::renderGUI()
 		{
 			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 		}
+
+		// GAME SAVED
+		else if (gameSaved)
+		{
+			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME SAVING..", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
+		}
 	}
 
 	// GAME PAUSE
 	if (state == GAMESTATE::STATE_PAUSE)
 	{
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME PAUSED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
-	}
-
-	// GAME SAVED
-	if (gameSaved)
-	{
-		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME SAVING..", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 	}
 }
 
@@ -374,4 +351,164 @@ void StateTest::Draw(StateHandler * stateHandler)
 		}
 	}
 	theView->SwapBuffers();
+}
+
+void StateTest::gameSave(InformationComponent *infoC)
+{
+	// OPEN SCRIPT
+	LuaReader script("Scripts//SavePlayer.lua");
+
+	// SAVE PLAYER DATA
+	float indexX = infoC->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+	int playerIndexX = (int)indexX;
+	int playerIndexY = testMap->getMapHeight() - (int)indexY;
+	auto gameC = testEntity->getComponent<GameplayComponent>();
+	std::vector<int> entityBoxesX; 
+	std::vector<int> entityBoxesY;
+	std::vector<int> entityDoorsX;
+	std::vector<int> entityDoorsY;
+	
+	// SAVE MAP DATA
+	for (unsigned int i = 0; i < testMap->getGridMap().size(); i++)
+	{
+		for (unsigned int j = 0; j < testMap->getGridMap()[i].size(); j++)
+		{
+			if (testMap->getGridMap()[i][j]->getGridEntity() != NULL)
+			{
+				EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(testMap->getGridMap()[i][j]->getGridEntityType());
+				switch (objType)
+				{
+					case EntityGridObject::OBJECT_BOX:
+						entityBoxesX.push_back(i);
+						entityBoxesY.push_back(j);
+					break;
+				}
+			}
+
+			if (testMap->getGridMap()[i][j]->getremoveDoor())
+			{
+				entityDoorsX.push_back(i);
+				entityDoorsY.push_back(j);
+			}
+		}
+	}
+
+	// SAVING DATA INTO SCRIPTS
+	if (gameC)
+	{
+		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey());
+		script.saveMap(entityBoxesX, entityBoxesY, entityDoorsX, entityDoorsY);
+		entityBoxesX.clear();
+		entityBoxesY.clear();
+		entityDoorsX.clear();
+		entityDoorsY.clear();
+	}
+}
+
+void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC)
+{
+	LuaReader Script("Scripts//SavePlayer.lua");
+	int x = Script.get<int>("SavePlayer.playerGridX");
+	int y = Script.get<int>("SavePlayer.playerGridY");
+	int savedLevel = Script.get<int>("SavePlayer.level");
+	int collected = Script.get<int>("SavePlayer.hasKey");
+	
+	if (gameC)
+	{
+		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
+		gameC->setCurrLevel(savedLevel);
+		if (collected == 1)
+		{
+			gameC->setHasKey(true);
+		}
+		
+		else
+		{
+			gameC->setHasKey(false);
+		}
+	}
+}
+
+void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
+{
+	testMap->LoadData("MapData//level1_Background.csv", "MapData//level_Foreground.csv");
+	
+	switch (gameType)
+	{
+		// NEW GAME
+		case 1:
+			for (int i = 0; i < NUM_BOXES; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[17][2 + i]->addGridEntity(testGridObject);
+			}
+
+			for (int i = 0; i < NUM_SWITCHES; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+			}
+		break;
+
+		// LOAD GAME
+		case 2:
+			for (int i = 0; i < NUM_BOXES; i++)
+			{
+				LuaReader Script2("Scripts//SaveMap.lua");
+				int x = Script2.get<int>("SaveMap.entityX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveMap.entityY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
+			}
+
+			for (int i = 0; i < NUM_SWITCHES; i++)
+			{
+				LuaReader Script2("Scripts//SaveMap.lua");
+				int x = Script2.get<int>("SaveMap.entityDoorX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveMap.entityDoorY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+			}
+		break;
+	}
+
+	// KEY
+	if (gameC)
+	{
+		if (!gameC->getHasKey())
+		{
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
+		}
+	}
+}
+
+void StateTest::loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
+{
+	testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+}
+
+void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
+{
 }

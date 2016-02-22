@@ -99,7 +99,10 @@ public:
 	template<typename T> T lua_to(T);
 	std::vector<std::string> getTables(const std::string & tableName);
 	bool lua_gettostack(const std::string& variableName);
-	void saveFile(int playerIndex, int playerIndexY, int level);
+	
+	// Save files
+	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey);
+	void saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, std::vector<int> entityDoorsX, std::vector<int> entityDoorsY);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);

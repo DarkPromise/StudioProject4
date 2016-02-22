@@ -40,6 +40,9 @@ public:
 
 	void setGridPos(Vector3 gridPos);
 	Vector3 getGridPos();
+
+	void setremoveDoor(bool removeDoor);
+	bool getremoveDoor();
 public:
 	void addGridEntity(Entity * gridEntity);
 	Entity * getGridEntity();
@@ -55,6 +58,7 @@ private:
 	std::vector<Mesh*> m_cGridTiles;
 	Vector3 m_v3GridPos;
 	Entity * m_cGridEntity;
+	bool removeDoor;
 };
 
 #endif

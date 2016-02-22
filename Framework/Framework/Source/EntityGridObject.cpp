@@ -66,18 +66,27 @@ void EntityGridObject::addChildren(int y, int x, OBJECT_TYPE childType, GridMap 
 	auto childGC = new GraphicsComponent();
 	switch (childType)
 	{
-	case OBJECT_BOX:
+		case OBJECT_UNDEFINED:
+			currMap->getGridMap()[y][x]->setremoveDoor(true);
+			currMap->getGridMap()[y][x]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
+			currMap->getGridMap()[y][x]->deleteEntity();
 		break;
-	case OBJECT_KEY:
-		break;
-	case OBJECT_SWITCH:
-		break;
-	case OBJECT_DOOR:
-		newChild->setToggleable(true);
-		childGC->addMesh(MeshBuilder::GenerateQuad("Door", Color(1.f, 0.f, 0.f), 32.f));
-		childGC->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile109.tga");
-		newChild->addComponent(childGC);
-		currMap->getGridMap()[y][x]->addGridEntity(newChild);
+		
+		case OBJECT_BOX:
+			break;
+		
+		case OBJECT_KEY:
+			break;
+		
+		case OBJECT_SWITCH:
+			break;
+		
+		case OBJECT_DOOR:
+			newChild->setToggleable(true);
+			childGC->addMesh(MeshBuilder::GenerateQuad("Door", Color(1.f, 0.f, 0.f), 32.f));
+			childGC->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile109.tga");
+			newChild->addComponent(childGC);
+			currMap->getGridMap()[y][x]->addGridEntity(newChild);
 		break;
 	}
 	this->m_cChildren.push_back(newChild);
@@ -108,6 +117,7 @@ void EntityGridObject::toggleObject(GridMap * currMap)
 	case OBJECT_SWITCH:
 		break;
 	case OBJECT_DOOR:
+		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->setremoveDoor(true);
 		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->replaceTile(Grid::TILE_FLOOR,BACKGROUND_TILE);
 		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->deleteEntity();
 		break;

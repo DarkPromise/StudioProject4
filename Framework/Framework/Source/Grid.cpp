@@ -8,6 +8,7 @@ Grid::Grid(int tileSize)
 , m_iTileID(-1)
 , m_v3GridPos(Vector3(0.f,0.f,0.f))
 , m_cGridEntity(NULL)
+, removeDoor(false)
 {
 	m_cGridAABB.setMaxMin(Vector3((float)tileSize * 0.5f, (float)tileSize * 0.5f, 0.f), Vector3((float)-tileSize * 0.5f, (float)-tileSize * 0.5f, 0.f));
 	m_cGridTiles.push_back(MeshBuilder::GenerateBoundingBox("GridBB", m_cGridAABB.Max, m_cGridAABB.Min,Color(0.f,0.f,1.f)));
@@ -131,6 +132,16 @@ void Grid::setGridPos(Vector3 gridPos)
 Vector3 Grid::getGridPos()
 {
 	return this->m_v3GridPos;
+}
+
+void Grid::setremoveDoor(bool removeDoor)
+{
+	this->removeDoor = removeDoor;
+}
+
+bool Grid::getremoveDoor()
+{
+	return removeDoor;
 }
 
 void Grid::addGridEntity(Entity * gridObject)

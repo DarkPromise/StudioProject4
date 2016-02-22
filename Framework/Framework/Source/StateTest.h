@@ -21,7 +21,6 @@ public:
 		, state(STATE_PLAY)
 		, gameSaved(false)
 		, gameSavedTimer(0)
-		, level(1)
 		, gameType(gameType)
 	{
 		this->theView = theView;
@@ -44,6 +43,11 @@ public:
 	void Draw(StateHandler * stateHandler);
 	void renderPlayer();
 	void renderGUI();
+	void gameSave(InformationComponent *infoC);
+	void loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC);
+	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
+	void loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
+	void loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
 
 	GridMap * testMap;
 private:
@@ -51,12 +55,12 @@ private:
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
 	Entity * testEntity;
+	EntityGridObject *testGridObject;
 	float moveDelay;
 	float gameTimer;
 	GAMESTATE state;
 	bool gameSaved;
 	float gameSavedTimer;
-	int level;
 	int gameType;
 };
 

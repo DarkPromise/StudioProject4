@@ -180,14 +180,40 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	return newEntity;
 }
 
-void LuaReader::saveFile(int playerIndexX, int playerIndexY, int level)
+void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey)
 {
 	ofstream file;
-	file.open("Scripts//Save.lua");
-	file << "Save = {" << std::endl;
+	file.open("Scripts//SavePlayer.lua");
+	file << "SavePlayer = {" << std::endl;
 	file << "playerGridX = \"" + std::to_string(playerIndexX) + "\"," << std::endl;
 	file << "playerGridY = \"" + std::to_string(playerIndexY) + "\"," << std::endl;
 	file << "level = \"" + std::to_string(level) + "\"," << std::endl;
+	file << "hasKey = \"" + std::to_string(m_bHasKey) + "\"," << std::endl;
+	file << "}" << std::endl;
+	file.close();
+}
+
+void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, std::vector<int> entityDoorsX, std::vector<int> entityDoorsY)
+{
+	ofstream file;
+	file.open("Scripts//SaveMap.lua");
+	file << "SaveMap = {" << std::endl;
+	for (int i = 0; i < entityBoxesX.size(); i++)
+	{
+		file << "entityY" + std::to_string(i + 1) + "=\"" + std::to_string(entityBoxesX[i]) + "\"," << std::endl;
+	}
+	for (int j = 0; j < entityBoxesY.size(); j++)
+	{
+		file << "entityX" + std::to_string(j + 1) + "=\"" + std::to_string(entityBoxesY[j]) + "\"," << std::endl;
+	}
+	for (int i = 0; i < entityDoorsX.size(); i++)
+	{
+		file << "entityDoorY" + std::to_string(i + 1) + "=\"" + std::to_string(entityDoorsX[i]) + "\"," << std::endl;
+	}
+	for (int j = 0; j < entityDoorsY.size(); j++)
+	{
+		file << "entityDoorX" + std::to_string(j + 1) + "=\"" + std::to_string(entityDoorsY[j]) + "\"," << std::endl;
+	}
 	file << "}" << std::endl;
 	file.close();
 }
