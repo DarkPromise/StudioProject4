@@ -107,7 +107,7 @@ void StateTest::Init()
 
 	// TESTING SITE
 	LuaReader testEntityScript("Scripts//Guard.lua");
-	Entity * testEntity = testEntityScript.createEntity("NPC");
+	Entity * testEntity = testEntityScript.createEntity("guard");
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
