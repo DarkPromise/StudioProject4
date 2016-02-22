@@ -1,5 +1,7 @@
 #include "StateTest.h"
 #include "View.h"
+#include "StateAGDevMenu.h"
+#include "StateAGDevOptions.h"
 
 #define HUD_DISPLAY_DELAY 3
 
@@ -24,9 +26,13 @@ void StateTest::Init()
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(testMesh);
 
-	theCamera = new Camera();
-	//SoundManager::playSound("Sounds//movesfx.wav");
+	// SOUND
+	if (SoundManager::getSoundStatus())
+	{
+		SoundManager::playSound("Sounds//movesfx.wav", false);
+	}
 
+	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
 	theView->getInputHandler()->setMouseEnabled(false);
 
@@ -247,7 +253,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 
 void StateTest::HandleEvents(StateHandler * stateHandler)
 {
-
+	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	{
+		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+	}
 }
 
 void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const bool status)

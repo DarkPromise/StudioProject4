@@ -2,7 +2,6 @@
 #include "View.h"
 #include "LoadTGA.h"
 
-//#include "StateTest.h"
 #include "StateAGDevInstructions.h"
 #include "StateAGDevHighscore.h"
 #include "StateAGDevOptions.h"

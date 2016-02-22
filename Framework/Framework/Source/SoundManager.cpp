@@ -26,7 +26,7 @@ bool SoundManager::getSoundStatus()
 	return SoundManager::m_soundStatus;
 }
 
-void SoundManager::playSound(const char * soundPath)
+void SoundManager::playSound(const char * soundPath, bool loop)
 {
-	soundEngine->play2D(soundPath, true);
+	soundEngine->play2D(soundPath, loop);
 }

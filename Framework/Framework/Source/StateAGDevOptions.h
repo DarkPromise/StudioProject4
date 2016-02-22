@@ -11,9 +11,9 @@
 
 enum BUTTON
 {
-	BACK_BUTTON,
-	ON_BUTTON,
-	OFF_BUTTON,
+	SOUND_BUTTON,
+	DIFFICULTY_BUTTON,
+
 	DEFAULT_BUTTON,
 };
 
@@ -40,9 +40,13 @@ public:
 	void UpdateSelection(StateHandler * stateHandler);
 	void FadeInEffect(double dt);
 	void FadeOutEffect(double dt, StateHandler * stateHandler);
+	void toggleDifficulty();
 
 	// Rendering Functions
 	void RenderBackground();
+	void RenderButtons();
+
+	static int difficulty;
 private:
 	View * theView;
 	std::vector<Mesh*> m_meshList;

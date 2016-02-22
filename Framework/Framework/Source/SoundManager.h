@@ -5,7 +5,6 @@
 #include "irrKlang.h"
 
 // Singleton Sound Manager
-
 #pragma comment (lib,"irrKlang.lib")
 using namespace irrklang;
 
@@ -24,7 +23,7 @@ public:
 	void operator=(SoundManager & const) = delete;
 	static void toggleSound();
 	static bool getSoundStatus();
-	static void playSound(const char * soundPath);
+	static void playSound(const char * soundPath, bool loop);
 private:
 	static ISoundEngine * soundEngine;
 	static bool m_soundStatus;

@@ -1,8 +1,9 @@
 #include "StateAGDevOptions.h"
 #include "View.h"
 #include "LoadTGA.h"
-
 #include "StateAGDevMenu.h"
+
+int StateAGDevOptions::difficulty = 1;
 
 StateAGDevOptions::~StateAGDevOptions()
 {
@@ -40,11 +41,11 @@ void StateAGDevOptions::Init()
 	
 	// Create Gui
 	Gui * newGui;
-	newGui = new GuiButton("On Button", "On", 0.57f, 0.76f, 48.f);
+	newGui = new GuiButton("Sound Button", "Sound:", 0.47f, 0.76f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OnBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Off Button", "Off", 0.57f, 0.76f, 48.f);
+	newGui = new GuiButton("Difficulty Button", "Difficulty:", 0.429f, 0.66f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OffBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
@@ -120,71 +121,101 @@ void StateAGDevOptions::Resume()
 void StateAGDevOptions::Draw(StateHandler * stateHandler)
 {
 	RenderBackground();
-	if (SoundManager::getSoundStatus())
-	{
-		theView->RenderGui(m_guiList[ON_BUTTON],m_meshList[TEXT_FONT]);
-	}
-	else
-	{
-		theView->RenderGui(m_guiList[OFF_BUTTON], m_meshList[TEXT_FONT]);
-	}
+	RenderButtons();
 	theView->SwapBuffers();
 }
 
 void StateAGDevOptions::UpdateSelection(StateHandler * stateHandler)
 {
-	for (unsigned int i = 0; i < m_guiList.size(); i++)
+	if (!m_bStartFadeIn)
 	{
-		m_guiList[i]->setX(theView->getWindowWidth() * (m_guiList[i]->getWidthOffset()));
-		m_guiList[i]->setY(theView->getWindowHeight() * (m_guiList[i]->getHeightOffset()));
-
-		if (m_guiList[i]->getBoundingBox().Min.x + m_guiList[i]->getX() <= theView->getInputHandler()->getMouseX() &&
-			theView->getInputHandler()->getMouseX() <= m_guiList[i]->getBoundingBox().Max.x + m_guiList[i]->getX() &&
-			m_guiList[i]->getBoundingBox().Min.y + m_guiList[i]->getY() <= theView->getInputHandler()->getMouseY() &&
-			theView->getInputHandler()->getMouseY() <= m_guiList[i]->getBoundingBox().Max.y + m_guiList[i]->getY())
+		for (unsigned int i = 0; i < m_guiList.size(); i++)
 		{
-			m_guiList[i]->highlightButton(true);
+			m_guiList[i]->setX(theView->getWindowWidth() * (m_guiList[i]->getWidthOffset()));
+			m_guiList[i]->setY(theView->getWindowHeight() * (m_guiList[i]->getHeightOffset()));
 
-			if (theView->getInputHandler()->getClickDelay() <= 0.0)
+			if (m_guiList[i]->getBoundingBox().Min.x + m_guiList[i]->getX() <= theView->getInputHandler()->getMouseX() &&
+				theView->getInputHandler()->getMouseX() <= m_guiList[i]->getBoundingBox().Max.x + m_guiList[i]->getX() &&
+				m_guiList[i]->getBoundingBox().Min.y + m_guiList[i]->getY() <= theView->getInputHandler()->getMouseY() &&
+				theView->getInputHandler()->getMouseY() <= m_guiList[i]->getBoundingBox().Max.y + m_guiList[i]->getY())
 			{
-				if (SoundManager::getSoundStatus())
-				{
-					m_guiList[ON_BUTTON]->highlightButton(true);
-				}
-				else if (!SoundManager::getSoundStatus())
-				{
-					m_guiList[OFF_BUTTON]->highlightButton(true);
-				}
+				m_guiList[i]->highlightButton(true);
 
-				if (theView->getInputHandler()->IsKeyPressed(GLFW_MOUSE_BUTTON_1))
+				if (theView->getInputHandler()->getClickDelay() <= 0.0)
 				{
-					switch (BUTTON(i))
+					/*if (SoundManager::getSoundStatus())
 					{
-					case ON_BUTTON:
-						SoundManager::toggleSound();
-						std::cout << SoundManager::getSoundStatus() << std::endl;
-						break;
-					case OFF_BUTTON:
-						SoundManager::toggleSound();
-						break;
+						m_guiList[ON_BUTTON]->highlightButton(true);
 					}
-					theView->getInputHandler()->setClickDelay(0.2);
+					else if (!SoundManager::getSoundStatus())
+					{
+						m_guiList[OFF_BUTTON]->highlightButton(true);
+					}*/
+
+					if (theView->getInputHandler()->IsKeyPressed(GLFW_MOUSE_BUTTON_1))
+					{
+						switch (BUTTON(i))
+						{
+							case SOUND_BUTTON:
+								SoundManager::toggleSound();
+								std::cout << SoundManager::getSoundStatus() << std::endl;
+							break;
+
+							case DIFFICULTY_BUTTON:
+								toggleDifficulty();
+								break;
+						}
+						theView->getInputHandler()->setClickDelay(0.2);
+					}
 				}
 			}
-		}
-		else
-		{
-			m_guiList[i]->highlightButton(false);
+			else
+			{
+				m_guiList[i]->highlightButton(false);
+			}
 		}
 	}
-
 }
 
 void StateAGDevOptions::RenderBackground()
 {
 	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Sound : ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * (1.f - 0.76f) - 24.f);
+}
+
+void StateAGDevOptions::RenderButtons()
+{
+	for (unsigned int i = 0; i < m_guiList.size(); i++)
+	{
+		theView->RenderGui(m_guiList[i], m_meshList[TEXT_FONT]);
+	}
+	
+	// SOUND SETTINGS
+	if (SoundManager::getSoundStatus())
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "On", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.55f, (float)theView->getWindowHeight() * (1.f - 0.76f) - 24.f);
+	}	
+	
+	else
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Off", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.55f, (float)theView->getWindowHeight() * (1.f - 0.76f) - 24.f);
+	}
+
+	// DIFFICULTY SETTINGS
+	if (difficulty == 1)
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Easy", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.55f, (float)theView->getWindowHeight() * (1.f - 0.66f) - 24.f);
+	}
+
+	else if (difficulty == 2)
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Normal", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.55f, (float)theView->getWindowHeight() * (1.f - 0.66f) - 24.f);
+	}
+
+	else
+	{
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Hard", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.55f, (float)theView->getWindowHeight() * (1.f - 0.66f) - 24.f);
+	}
 }
 
 void StateAGDevOptions::FadeInEffect(double dt)
@@ -208,4 +239,11 @@ void StateAGDevOptions::FadeOutEffect(double dt, StateHandler * stateHandler)
 	{
 		mesh->alpha -= 2.f * dt;
 	}
+}
+
+void StateAGDevOptions::toggleDifficulty()
+{
+	difficulty++;
+	if (difficulty == 4)
+		difficulty = 1;
 }
