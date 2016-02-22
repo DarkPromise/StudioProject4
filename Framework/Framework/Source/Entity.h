@@ -20,6 +20,7 @@ class Component;
 #include "CameraComponent.h"
 #include "CollisionComponent.h"
 #include "ControllerComponent.h"
+#include "GameplayComponent.h"
 
 class Entity
 {

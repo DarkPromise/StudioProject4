@@ -5,7 +5,6 @@ InformationComponent::InformationComponent()
 : m_sName("NULL")
 , m_iAmmoCount(30.f)
 , m_iMaxAmmo(30.f)
-, m_fSize(1.f)
 , m_fUpwardsSpeed(0.f)
 , m_v3Rotation(Vector3(0.f,0.f,0.f))
 , m_v3Position(Vector3(0.f, 0.f, 0.f))
@@ -25,39 +24,75 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	{
 		this->setName(infoName.cast<std::string>());
 	}
+	else
+	{
+		std::cout << "InformationComponent.name is not a string!" << std::endl;
+	}
+
 	auto infoPosition = tableInfo["position"];
 	if (infoPosition.isTable())
 	{
-		// LuaRef starts indexes from 1, not 0
-		this->setPosition(Vector3(infoPosition.rawget<float>(1), infoPosition.rawget<float>(2), infoPosition.rawget<float>(3)));
+		if (infoPosition.length() == 3)
+		{
+			// LuaRef starts indexes from 1, not 0
+			this->setPosition(Vector3(infoPosition.rawget<float>(1), infoPosition.rawget<float>(2), infoPosition.rawget<float>(3)));
+		}
+		else
+		{
+			std::cout << "InformationComponent.position is not an array with 3 values!" << std::endl;
+		}
 	}
+
 	auto infoVelocity = tableInfo["velocity"];
 	if (infoVelocity.isTable())
 	{
-		// LuaRef starts indexes from 1, not 0
-		this->setVelocity(Vector3(infoVelocity.rawget<float>(1), infoVelocity.rawget<float>(2), infoVelocity.rawget<float>(3)));
+		if (infoVelocity.length() == 3)
+		{
+			// LuaRef starts indexes from 1, not 0
+			this->setVelocity(Vector3(infoVelocity.rawget<float>(1), infoVelocity.rawget<float>(2), infoVelocity.rawget<float>(3)));
+		}
+		else
+		{
+			std::cout << "InformationComponent.velocity is not an array with 3 values!" << std::endl;
+		}
 	}
+
 	auto infoDirection = tableInfo["direction"];
 	if (infoDirection.isTable())
 	{
-		// LuaRef starts indexes from 1, not 0
-		this->setDirection(Vector3(infoDirection.rawget<float>(1), infoDirection.rawget<float>(2), infoDirection.rawget<float>(3)));
+		if (infoDirection.length() == 3)
+		{
+			// LuaRef starts indexes from 1, not 0
+			this->setDirection(Vector3(infoDirection.rawget<float>(1), infoDirection.rawget<float>(2), infoDirection.rawget<float>(3)));
+		}
+		else
+		{
+			std::cout << "InformationComponent.direction is not an array with 3 values!" << std::endl;
+		}
 	}
+
 	auto infoRotation = tableInfo["rotation"];
 	if (infoRotation.isTable())
 	{
-		// LuaRef starts indexes from 1, not 0
-		this->setRotation(Vector3(infoRotation.rawget<float>(1), infoRotation.rawget<float>(2), infoRotation.rawget<float>(3)));
+		if (infoRotation.length() == 3)
+		{
+			// LuaRef starts indexes from 1, not 0
+			this->setRotation(Vector3(infoRotation.rawget<float>(1), infoRotation.rawget<float>(2), infoRotation.rawget<float>(3)));
+		}
+		else
+		{
+			std::cout << "InformationComponent.rotation is not an array with 3 values!" << std::endl;
+		}
 	}
-	auto infoSize = tableInfo["size"];
-	if (infoSize.isNumber())
-	{
-		this->setSize(infoSize.cast<float>());
-	}
+
 	auto infoType = tableInfo["type"];
 	if (infoType.isString())
 	{
 		this->setType(infoType.cast<std::string>());
+	}
+	else
+	{
+		std::cout << "InformationComponent.type is not a string!" << std::endl;
 	}
 }
 
@@ -71,58 +106,7 @@ void InformationComponent::Update(double dt)
 
 	if (this->m_type == TYPE_PLAYER || this->m_type == TYPE_NPC)
 	{
-		Vector3 newDir = this->getDirection();
-		float xDir = sin(Math::DegreeToRadian(this->getRotation().y));
-		float zDir = cos(Math::DegreeToRadian(this->getRotation().y));
-		newDir.x = xDir;
-		newDir.z = zDir;
-		this->setDirection(newDir);
 		
-		float newUpwardsSpeed = this->getUpwardsSpeed();
-		newUpwardsSpeed += GRAVITY * dt;
-		this->setUpwardsSpeed(newUpwardsSpeed);
-
-		Vector3 tempVelocity = this->getVelocity();
-		tempVelocity.y = this->getUpwardsSpeed();
-		this->setVelocity(tempVelocity);
-
-		Vector3 newPos = this->getPosition();
-		newPos.x = this->getPosition().x + this->getDirection().x * (this->getVelocity().x * dt);
-		newPos.z = this->getPosition().z + this->getDirection().z * (this->getVelocity().x * dt); // **Note : x-velocity !!! should be changed
-		newPos.y += this->getUpwardsSpeed();
-
-		this->setPosition(newPos);
-		this->setVelocity(Vector3(0.f, 0.f, 0.f));
-
-		auto collisionC = this->getParent()->getComponent<CollisionComponent>();
-		if (collisionC)
-		{
-			collisionC->Update(dt);
-			// Check For Collision with Ground
-			if (this->getPosition().y <= collisionC->getAABB()->Max.y + 5.f)
-			{
-				this->setUpwardsSpeed(0.f);
-				Vector3 newPos = this->getPosition();
-				newPos.y = collisionC->getAABB()->Max.y + 5.f;
-				this->setPosition(newPos);
-			}
-		}
-		else
-		{
-			if (this->getPosition().y <= this->getSize() * 0.5f)
-			{
-				this->setUpwardsSpeed(0.f);
-				Vector3 newPos = this->getPosition();
-				newPos.y = this->getSize() * 0.5f;
-				this->setPosition(newPos);
-			}
-		}
-
-		if (this->getPosition().x < -1000.f || this->getPosition().x > 1000.f || this->getPosition().z < -1000.f || this->getPosition().z > 1000.f) // WORLD BORDERS
-		{
-			this->setPosition(Vector3(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0, 2000.f), Math::RandFloatMinMax(-1000.f, 1000.f)));
-		}
-
 	}
 	else
 	{
@@ -185,16 +169,6 @@ void InformationComponent::setDirection(Vector3 direction)
 Vector3 InformationComponent::getDirection()
 {
 	return this->m_v3Direction;
-}
-
-void InformationComponent::setSize(float size)
-{
-	this->m_fSize = size;
-}
-
-float InformationComponent::getSize()
-{
-	return this->m_fSize;
 }
 
 void InformationComponent::setRotation(Vector3 rotate)

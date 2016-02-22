@@ -151,7 +151,7 @@ void GridMap::RenderGridEntities(View * theView)
 
 bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * Player)
 {
-	EntityTest * thePlayer = dynamic_cast<EntityTest*>(Player);
+	auto gameC = Player->getComponent<GameplayComponent>();
 
 	switch (GRID_DIRECTION(direction))
 	{
@@ -176,7 +176,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 					{
 						m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
-						thePlayer->m_bHasKey = true;
+						if (gameC)
+						{
+							gameC->setHasKey(true);
+						}
 						return true;
 					}
 				break;
@@ -205,7 +208,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 					{
 						m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
-						thePlayer->m_bHasKey = true;
+						if (gameC)
+						{
+							gameC->setHasKey(true);
+						}
 						return true;
 					}
 				break;
@@ -233,7 +239,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 					{
 						m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
-						thePlayer->m_bHasKey = true;
+						if (gameC)
+						{
+							gameC->setHasKey(true);
+						}
 						return true;
 					}
 				break;
@@ -261,7 +270,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 					{
 						m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
-						thePlayer->m_bHasKey = true;
+						if (gameC)
+						{
+							gameC->setHasKey(true);
+						}
 						return true;
 					}
 				break;

@@ -1,5 +1,6 @@
 #include "CameraComponent.h"
 #include "Entity.h"
+#include "LuaReader.h"
 
 CameraComponent::CameraComponent()
 : m_Camera(NULL)
@@ -21,7 +22,25 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 {
+	auto cameraOffset = tableInfo["cameraOffset"];
+	if (cameraOffset.isTable())
+	{
+		if (cameraOffset.length() == 3)
+		{
+			// LuaRef starts indexes from 1, not 0
+			this->m_v3CamOffset = Vector3(cameraOffset.rawget<float>(1), cameraOffset.rawget<float>(2), cameraOffset.rawget<float>(3));
+		}
+		else
+		{
+			std::cout << "CameraComponent.cameraOffset is not an array with 3 values!" << std::endl;
+		}
+	}
 
+	auto cameraMode = tableInfo["cameraMode"];
+	if (cameraMode.isNumber())
+	{
+		this->m_Camera->setCameraMode(Camera::CAMERA_MODE(cameraMode.cast<int>()));
+	}
 }
 
 void CameraComponent::Update(double dt)

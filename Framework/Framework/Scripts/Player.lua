@@ -3,16 +3,21 @@ InformationComponent = {
     name = "Josh",
     position = {0,0,0},
     direction = {0,0,0},
-    size = "10",
-    type = "0",
+    type = "Player",
   },
 GraphicsComponent = {
-    meshType = "Cube",
-    meshSize = "10",
-    color = {1,1,1},
+    meshType = "Quad",
+    meshName = "Player",
+    meshImage = "Images//player.tga",
+    meshSize = 32,
+    meshAlpha = 0.7,
+    meshColor = {1,0,0},
   },
 CameraComponent = {
-    mode = "1",
+    cameraOffset = {0,0,300},
+    cameraMode = 2,
+  },
+ControllerComponent = {
   },
 CollisionComponent = {
     min = {-5,-5,-5},
@@ -21,5 +26,9 @@ CollisionComponent = {
 HealthComponent = {
     minHp = "100",
     maxHp = "100",
+  },
+ GameplayComponent = {
+    currLevel = 1,
+    hasKey = "false",
   },
 }

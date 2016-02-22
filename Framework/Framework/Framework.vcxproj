@@ -102,6 +102,7 @@
     <ClCompile Include="Source\EntityTest.cpp" />
     <ClCompile Include="Source\EntityWall.cpp" />
     <ClCompile Include="Source\EntityWorldObject.cpp" />
+    <ClCompile Include="Source\GameplayComponent.cpp" />
     <ClCompile Include="Source\GraphicsComponent.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\GridMap.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\EntityTest.h" />
     <ClInclude Include="Source\EntityWall.h" />
     <ClInclude Include="Source\EntityWorldObject.h" />
+    <ClInclude Include="Source\GameplayComponent.h" />
     <ClInclude Include="Source\GraphicsComponent.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\GridMap.h" />

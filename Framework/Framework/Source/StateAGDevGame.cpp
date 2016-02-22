@@ -74,7 +74,6 @@ void StateAGDevGame::Init()
 		infoComponent->setName("NPC");
 		infoComponent->setPosition(Vector3(Math::RandFloatMinMax(-DOMAIN_SIZE, DOMAIN_SIZE), 0.f, Math::RandFloatMinMax(-DOMAIN_SIZE, DOMAIN_SIZE)));
 		infoComponent->setType(InformationComponent::ENTITY_TYPE::TYPE_NPC);
-		infoComponent->setSize(10.f);
 		newNpc->addComponent(infoComponent);
 		auto * graphicsComponent = new GraphicsComponent();
 		if (randomNPC <= 20) // 20% Chance
@@ -373,7 +372,6 @@ void StateAGDevGame::SpawnNPCs()
 	infoComponent->setName("NPC");
 	infoComponent->setPosition(Vector3(Math::RandFloatMinMax(-DOMAIN_SIZE, DOMAIN_SIZE), Math::RandFloatMinMax(1000.f,2000.f), Math::RandFloatMinMax(-DOMAIN_SIZE, DOMAIN_SIZE)));
 	infoComponent->setType(InformationComponent::ENTITY_TYPE::TYPE_NPC);
-	infoComponent->setSize(10.f);
 	newNpc->addComponent(infoComponent);
 	auto * graphicsComponent = new GraphicsComponent();
 	if (randomNPC <= 20) // 20% Chance

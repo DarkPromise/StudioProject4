@@ -198,6 +198,12 @@ void Grid::toggleObjects(GridMap * currMap)
 	{
 		if (gridObject->hasToggleAbility())
 		{
+			switch (gridObject->getObjectType())
+			{
+			case EntityGridObject::OBJECT_SWITCH:
+				break;
+			}
+
 			if (gridObject->getChildren().size() > 0)
 			{
 				for (int i = 0; i < gridObject->getChildren().size(); i++)

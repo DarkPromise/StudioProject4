@@ -1,4 +1,4 @@
-guard = {
+Guard = {
 InformationComponent = {
     name = "Guard",
     position = {1,2,3},
@@ -7,9 +7,12 @@ InformationComponent = {
     type = "NPC",
   },
 GraphicsComponent = {
-    meshType = "Cube",
-    meshSize = "10",
-    color = {1,1,1},
+    meshType = "Quad",
+    meshName = "Guard Mesh",
+    meshImage = "guard.tga",
+    meshSize = 32,
+    meshColor = {1,1,1},
+    meshAlpha = 1,
   },
 CollisionComponent = {
     min = {-5,-5,-5},

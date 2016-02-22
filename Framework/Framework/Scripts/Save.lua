@@ -1,5 +1,5 @@
 Save = {
-playerGridX = "4",
-playerGridY = "23",
+playerGridX = "6",
+playerGridY = "17",
 level = "1",
 }

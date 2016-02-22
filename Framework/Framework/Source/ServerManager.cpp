@@ -320,7 +320,6 @@ void ServerManager::Select()
 					infoC->setName(newPacket.m_sName);
 					infoC->setPosition(newPacket.m_v3Position);
 					infoC->setRotation(newPacket.m_v3Rotation);
-					infoC->setSize(newPacket.m_fSize);
 				}
 			}
 
@@ -339,7 +338,6 @@ void ServerManager::Select()
 					newPacket.m_v3Position = infoC->getPosition();
 					newPacket.m_v3Velocity = infoC->getVelocity();
 					newPacket.m_v3Direction = infoC->getDirection();
-					newPacket.m_fSize = infoC->getSize();
 					newPacket.m_v3Rotation = infoC->getRotation();
 					//newPacket.m_fForce = infoC->getForce();
 					//newPacket.m_fAcceleration = infoC->getAcceleration();

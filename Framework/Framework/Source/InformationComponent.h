@@ -41,9 +41,6 @@ public:
 	void setDirection(Vector3 direction);
 	Vector3 getDirection();
 
-	void setSize(float size);
-	float getSize();
-
 	void setRotation(Vector3 rotate);
 	Vector3 getRotation();
 	void applyRotation(float rotateValue, int axis);
@@ -69,7 +66,6 @@ private:
 	Vector3 m_v3Velocity;
 	Vector3 m_v3Direction;
 	Vector3 m_v3Rotation;
-	float m_fSize;
 	float m_fUpwardsSpeed;
 	ENTITY_TYPE m_type;
 

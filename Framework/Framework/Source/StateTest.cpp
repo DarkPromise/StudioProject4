@@ -40,38 +40,26 @@ void StateTest::Init()
 	testMap->Init(32, 25);
 	
 	// PLAYER
-	testEntity = new EntityTest();
-	auto informationComponent = new InformationComponent();
-	informationComponent->setName("Test");
-	if (gameType == 1)
+	LuaReader playerScript("Scripts//Player.lua");
+	testEntity = playerScript.createEntity("Player",theCamera,theView->getInputHandler());
+	auto informationComponent = testEntity->getComponent<InformationComponent>();
+	auto gameplayComponent = testEntity->getComponent<GameplayComponent>();
+	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
+	switch (gameType)
 	{
+	case 1:
 		informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
-		
-	}
-	else if (gameType == 2)
-	{
+		break;
+	case 2:
 		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
 		level = savedLevel;
+		break;
 	}
-	testEntity->addComponent(informationComponent);
-	
-	auto cameraComponent = new CameraComponent(theCamera);
-	cameraComponent->setCameraOffset(Vector3(0.f, 0.f, 300.f));
-	theCamera->setCameraMode(Camera::CM_THIRD_PERSON_FOLLOW_ENTITY);
-	testEntity->addComponent(cameraComponent);
-	
-	auto graphicsComponent = new GraphicsComponent();
-	graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Player", Color(1.f, 0.f, 0.f), 32.f));
-	graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//player.tga");
-	graphicsComponent->getMesh()->alpha = 0.7f;
-	testEntity->addComponent(graphicsComponent);
-	
-	auto controlComponent = new ControllerComponent(theView->getInputHandler());
-	testEntity->addComponent(controlComponent);
 
 	// INTIALISE LEVELS
-	if (level == 1)
+	switch (level)
 	{
+	case 1:
 		testMap->LoadData("MapData//level1_Background.csv", "MapData//level_Foreground.csv");
 
 		// BOXES
@@ -98,16 +86,10 @@ void StateTest::Init()
 		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
 		testGridObject->addComponent(graphicsComponent);
 		testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+		break;
+	case 2:
+		break;
 	}
-
-	else if (level == 2)
-	{
-		testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
-	}
-
-	// TESTING SITE
-	LuaReader testEntityScript("Scripts//Guard.lua");
-	Entity * testEntity = testEntityScript.createEntity("guard");
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -115,20 +97,28 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	static bool click = false;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
-	auto thePlayer = dynamic_cast<EntityTest*>(testEntity);
+	auto gameC = testEntity->getComponent<GameplayComponent>();
 
 	// LEVEL CLEARED
-	if (thePlayer->m_levelClear)
+	if (gameC)
 	{
-		level++;
-		thePlayer->m_levelClear = false;
-		thePlayer->m_bHasKey = false;
-		
-		if (level == 2)
+		if (gameC->getLevelCleared())
 		{
+			gameC->incrementLevel();
+			gameC->setLevelCleared(false);
+			gameC->setHasKey(false);
+
 			testMap->ResetData();
-			testMap->Init(32, 25);
-			testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+
+			switch (gameC->getCurrLevel())
+			{
+			case 1:
+				break;
+			case 2:
+				testMap->Init(32, 25);
+				testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+				break;
+			}
 		}
 	}
 
@@ -179,24 +169,11 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		}
 
 		// SHOW PLAYER KEY REQUIRED
-		if (thePlayer->m_showkeyRequired)
+		if (gameC)
 		{
-			thePlayer->m_showKeyRequiredTimer += dt;
-			if (thePlayer->m_showKeyRequiredTimer >= HUD_DISPLAY_DELAY)
+			if (gameC->getKeyShowTimer() > 0)
 			{
-				thePlayer->m_showKeyRequiredTimer = 0;
-				thePlayer->m_showkeyRequired = false;
-			}
-		}
-
-		// SHOW DOOR ACTIVATED
-		if (thePlayer->m_switchActivated)
-		{
-			thePlayer->m_switchActivatedTimer += dt;
-			if (thePlayer->m_switchActivatedTimer >= HUD_DISPLAY_DELAY)
-			{
-				thePlayer->m_switchActivatedTimer = 0;
-				thePlayer->m_switchActivated = false;
+				gameC->setKeyShowTimer(gameC->getKeyShowTimer() - dt);
 			}
 		}
 
@@ -341,26 +318,21 @@ void StateTest::renderGUI()
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.95f);
 
 	// PLAYER HUD
-	EntityTest *thePlayer = dynamic_cast<EntityTest*>(testEntity);
-	if (thePlayer)
+	auto gameC = testEntity->getComponent<GameplayComponent>();
+	if (gameC)
 	{
 		std::ostringstream ss1;
 		std::string collectionStatus;
 		ss1 << "KEY: ";
-		if (thePlayer->m_bHasKey)
+		if (gameC->getHasKey())
 		{
 			collectionStatus = "COLLECTED";
 		}
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss1.str() + collectionStatus, Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.f);
 
-		if (thePlayer->m_showkeyRequired)
+		if (gameC->getKeyShowTimer() > 0)
 		{
 			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY REQUIRED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
-		}
-
-		if (thePlayer->m_switchActivated)
-		{
-			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "DOOR UNLOCKED", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 		}
 	}
 

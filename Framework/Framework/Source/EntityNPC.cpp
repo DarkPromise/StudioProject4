@@ -35,7 +35,7 @@ void EntityNPC::Update(double dt)
 		}
 		else
 		{
-			if (infoC->getPosition().y <= infoC->getSize() * 0.5f)
+			if (infoC->getPosition().y <= collisionC->getAABB()->Max.y * 0.5f)
 			{
 				m_bOnGround = true;
 			}

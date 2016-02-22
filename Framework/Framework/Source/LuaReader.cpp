@@ -122,10 +122,20 @@ bool LuaReader::lua_gettostack(const std::string & variableName)
 	return true;
 }
 
-Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera)
+Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera, InputHandler * inputHandler)
 {
 	using namespace luabridge;
+	
 	auto newEntity = new Entity();
+	if (entityType == "Player")
+	{
+
+	}
+	else if (entityType == "NPC")
+	{
+
+	}
+
 	auto components = getTables(entityType);
 	LuaRef componentTable = getGlobal(L, entityType.c_str());
 
@@ -137,6 +147,34 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 			auto * infoComponent = new InformationComponent();
 			infoComponent->CreateComponent(infoTable);
 			newEntity->addComponent(infoComponent);
+		}
+		else if (componentName == "GraphicsComponent")
+		{
+			LuaRef graphicsTable = componentTable[componentName];
+			auto * graphicsComponent = new GraphicsComponent();
+			graphicsComponent->CreateComponent(graphicsTable);
+			newEntity->addComponent(graphicsComponent);
+		}
+		else if (componentName == "CameraComponent")
+		{
+			LuaRef cameraTable = componentTable[componentName];
+			auto * cameraComponent = new CameraComponent(camera);
+			cameraComponent->CreateComponent(cameraTable);
+			newEntity->addComponent(cameraComponent);
+		}
+		else if (componentName == "ControllerComponent")
+		{
+			LuaRef controllerTable = componentTable[componentName];
+			auto * controllerComponent = new ControllerComponent(inputHandler);
+			controllerComponent->CreateComponent(controllerTable);
+			newEntity->addComponent(controllerComponent);
+		}
+		else if (componentName == "GameplayComponent")
+		{
+			LuaRef gameplayTable = componentTable[componentName];
+			auto * gameplayComponent = new GameplayComponent();
+			gameplayComponent->CreateComponent(gameplayTable);
+			newEntity->addComponent(gameplayComponent);
 		}
 	}
 	return newEntity;

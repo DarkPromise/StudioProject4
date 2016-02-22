@@ -24,8 +24,8 @@ void ControllerComponent::Update(double dt, GridMap * currMap)
 {
 	m_dInputDelay += dt;
 
-	EntityTest *thePlayer = dynamic_cast<EntityTest*>(this->getParent());
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	EntityTest * thePlayer = dynamic_cast<EntityTest*>(this->getParent());
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		// CONTROL PLAYER
@@ -81,7 +81,7 @@ double ControllerComponent::getInputDelay()
 
 void ControllerComponent::MoveForward(GridMap * currMap)
 {
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
@@ -113,7 +113,7 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 
 void ControllerComponent::MoveBackwards(GridMap * currMap)
 {
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
@@ -146,7 +146,7 @@ void ControllerComponent::MoveBackwards(GridMap * currMap)
 
 void ControllerComponent::MoveLeft(GridMap * currMap)
 {
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
@@ -178,7 +178,7 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 
 void ControllerComponent::MoveRight(GridMap * currMap)
 {
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
@@ -210,7 +210,9 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 
 void ControllerComponent::Interact(GridMap * currMap)
 {
-	auto * infoC = this->getParent()->getComponent<InformationComponent>();
+	auto infoC = this->getParent()->getComponent<InformationComponent>();
+	auto gameC = this->getParent()->getComponent<GameplayComponent>();
+
 	if (infoC)
 	{
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
@@ -231,7 +233,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
-				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -248,7 +249,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
-				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -265,7 +265,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
-				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -282,7 +281,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 			case EntityGridObject::OBJECT_SWITCH:
 				currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
-				thePlayer->m_switchActivated = true;
 				break;
 			case EntityGridObject::OBJECT_DOOR:
 				break;
@@ -293,13 +291,13 @@ void ControllerComponent::Interact(GridMap * currMap)
 		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_DOOR_CLEAR ||
 			currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getTileID() == Grid::TILE_DOOR_CLEAR || currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getTileID() == Grid::TILE_DOOR_CLEAR)
 		{
-			if (thePlayer->m_bHasKey)
+			if (gameC->getHasKey())
 			{
-				thePlayer->m_levelClear = true;
+				gameC->setLevelCleared(true);
 			}
 			else
 			{
-				thePlayer->m_showkeyRequired = true;
+				gameC->setKeyShowTimer(3.0);
 			}
 		}
 	}
