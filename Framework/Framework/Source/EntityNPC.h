@@ -15,6 +15,8 @@ public:
 
 	virtual void Update(double dt);
 
+	void Test();
+
 	void Jump();
 private:
 	bool m_bOnGround;

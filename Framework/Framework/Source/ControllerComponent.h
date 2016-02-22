@@ -17,6 +17,7 @@ public:
 	virtual ~ControllerComponent();
 
 	// Generic Functions
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	virtual void Update(double dt,GridMap * currMap);
 	virtual void MoveForward(GridMap * currMap);
 	virtual void MoveBackwards(GridMap * currMap);

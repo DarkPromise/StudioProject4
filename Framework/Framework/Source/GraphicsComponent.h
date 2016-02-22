@@ -18,7 +18,9 @@ public:
 	GraphicsComponent();
 	virtual ~GraphicsComponent();
 
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	void Update(double dt);
+
 	// Mesh Creation
 	void addMesh(Mesh * mesh);
 	Mesh * getMesh(int index = 0);

@@ -104,6 +104,10 @@ void StateTest::Init()
 	{
 		testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
 	}
+
+	// TESTING SITE
+	LuaReader testEntityScript("Scripts//Guard.lua");
+	Entity * testEntity = testEntityScript.createEntity("NPC");
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)

@@ -1,23 +1,32 @@
 #ifndef LUA_READER_H
 #define LUA_READER_H
 
+#pragma warning(disable:4800)
+
+// C++ Includes
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Entity.h"
 #include <fstream>
 
 using std::ofstream;
 using std::ios;
 
+// Classes Includes
+#include "Entity.h"
+
+// Lua Includes
 extern "C"
 {
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
 }
+#include "LuaBridge.h"
+using namespace luabridge;
 
-#pragma warning(disable:4800)
+// Macro Definition
+// -NOT IN USE-
 
 class LuaReader
 {
@@ -40,9 +49,8 @@ public:
 			printError(variableName, "No script loaded");
 			return lua_getdefault<T>();
 		}
-
 		T result;
-
+		
 		if (lua_gettostack(variableName))
 		{
 			result = lua_get<T>(variableName);
@@ -86,18 +94,19 @@ public:
 	}
 
 	template<typename T> T lua_get(const std::string & variableName) { return 0; }
-	template<typename T> T lua_getdefault() { return 0; }
+	template<typename T> T lua_getdefault() { return (T)0; }
 	template<typename T> std::vector<T> lua_getcontents(const std::string & contentName) { return 0 };
 	template<typename T> T lua_to(T);
 	std::vector<std::string> getTables(const std::string & tableName);
 	bool lua_gettostack(const std::string& variableName);
 	void saveFile(int playerIndex, int playerIndexY, int level);
-	
-	// Entity Creation (Test!!!)
-	Entity * createEntity(const std::string & entityType, Camera * camera);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);
+
+public:
+	// Entity Creation (Test!!!)
+	Entity * createEntity(const std::string & entityType, Camera * camera = nullptr);
 private:
 	lua_State * L;
 	std::string filename;
@@ -133,7 +142,7 @@ template<> inline float LuaReader::lua_get<float>(const std::string & variableNa
 
 template<> inline std::string LuaReader::lua_get<std::string>(const std::string & variableName)
 {
-	std::string temp = "temp";
+	std::string temp = "undefined";
 	if (lua_isstring(L, -1))
 	{
 		temp = (std::string)(lua_tostring(L, -1));
@@ -151,7 +160,7 @@ template<> inline Vector3 LuaReader::lua_get<Vector3>(const std::string & variab
 
 	if (lua_isnil(L, -1))
 	{
-		printError(variableName, "Not a array of numbers");
+		printError(variableName, "Not an array of numbers");
 	}
 	lua_pushnil(L);
 
@@ -165,6 +174,7 @@ template<> inline Vector3 LuaReader::lua_get<Vector3>(const std::string & variab
 		}
 		lua_pop(L, 1);
 	}
+
 	return Vector3(temp[0], temp[1], temp[2]);
 }
 
@@ -191,11 +201,30 @@ template<> inline Color LuaReader::lua_get<Color>(const std::string & variableNa
 	return Color(temp[0], temp[1], temp[2]);
 }
 
+template<> inline InformationComponent::ENTITY_TYPE LuaReader::lua_get<InformationComponent::ENTITY_TYPE>(const std::string & variableName)
+{
+	lua_gettostack(variableName.c_str());
+
+	if (!lua_isstring(L, -1))
+	{
+		printError(variableName, "Not a string");
+	}
+
+	if (variableName == "Player")
+	{
+		return InformationComponent::ENTITY_TYPE::TYPE_PLAYER;
+	}
+	else if (variableName == "NPC")
+	{
+		return InformationComponent::ENTITY_TYPE::TYPE_NPC;
+	}
+
+	return InformationComponent::ENTITY_TYPE::TYPE_UNDEFINED;
+}
+
 template<> inline std::string LuaReader::lua_getdefault<std::string>()
 {
 	return "undefined";
 }
-
-
 
 #endif

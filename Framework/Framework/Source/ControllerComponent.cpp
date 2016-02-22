@@ -15,6 +15,11 @@ ControllerComponent::~ControllerComponent()
 
 }
 
+void ControllerComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void ControllerComponent::Update(double dt, GridMap * currMap)
 {
 	m_dInputDelay += dt;

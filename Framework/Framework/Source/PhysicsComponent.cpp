@@ -13,6 +13,11 @@ PhysicsComponent::~PhysicsComponent()
 
 }
 
+void PhysicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void PhysicsComponent::Update(double dt)
 {
 	//this->m_v3Direction.x = sin(Math::DegreeToRadian(-m_fRotation));

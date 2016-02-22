@@ -11,6 +11,11 @@ EntityNPC::~EntityNPC()
 
 }
 
+void EntityNPC::Test()
+{
+	std::cout << "Lua Test" << std::endl;
+}
+
 void EntityNPC::Update(double dt)
 {
 	auto infoC = this->getComponent<InformationComponent>();

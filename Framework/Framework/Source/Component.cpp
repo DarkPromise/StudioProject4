@@ -8,7 +8,7 @@ Component::~Component()
 
 void Component::Update(double dt)
 {
-
+	
 }
 
 void Component::setParent(Entity* parent)

@@ -20,6 +20,11 @@ AIComponent::~AIComponent()
 
 }
 
+void AIComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void AIComponent::Update(double dt, Entity * thePlayer)
 {
 	auto infoC = this->getParent()->getComponent<InformationComponent>();

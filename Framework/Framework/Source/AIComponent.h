@@ -32,6 +32,7 @@ public:
 	AIComponent();
 	virtual ~AIComponent();
 
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	void Update(double dt, Entity * thePlayer);
 
 	void setType(AI_TYPE type);

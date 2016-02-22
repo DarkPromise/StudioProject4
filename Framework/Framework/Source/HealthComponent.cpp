@@ -12,6 +12,11 @@ HealthComponent::~HealthComponent()
 
 }
 
+void HealthComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void HealthComponent::Update(double dt)
 {
 

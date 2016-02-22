@@ -5,10 +5,12 @@
 
 class Component;
 
+// C++ Includes
 #include <iostream>
 #include <string>
 #include <vector>
 
+// Component Includes
 #include "InformationComponent.h"
 #include "GraphicsComponent.h"
 #include "AIComponent.h"
@@ -25,7 +27,8 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	virtual void Update(double dt) = 0;
+	virtual void Update(double dt);
+
 	void addComponent(Component* component);
 
 	template<typename T> T* getComponent()
@@ -38,9 +41,13 @@ public:
 				return result;
 			}
 		}
-		//std::cout << "Component does not exist" << std::endl;
-		return NULL;
+		std::cout << "Component does not exist" << std::endl;
+		return nullptr;
 	}
+
+public:
+	// Entity Creation Functions
+
 private:
 	std::vector<Component*> m_componentList;
 };

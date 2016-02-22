@@ -8,6 +8,9 @@
 #define GRAVITY -30.f
 #define JUMP_SPEED 10.f
 
+// Lua
+#include "LuaReader.h"
+
 class EntityPlayer : public Entity
 {
 public:

@@ -5,6 +5,11 @@
 
 #include <iostream>
 
+namespace luabridge 
+{
+	class LuaRef;
+}
+
 class Entity;
 
 class Component
@@ -12,6 +17,7 @@ class Component
 public:
 	virtual ~Component();
 
+	virtual void CreateComponent(luabridge::LuaRef& tableInfo) = 0;
 	virtual void Update(double dt);
 
 	void setParent(Entity*);

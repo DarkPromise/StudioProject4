@@ -20,6 +20,11 @@ GraphicsComponent::~GraphicsComponent()
 	m_meshList.~vector();
 }
 
+void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void GraphicsComponent::Update(double dt)
 {
 

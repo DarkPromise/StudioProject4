@@ -20,10 +20,10 @@ public:
 		TYPE_UNDEFINED,
 		TYPE_TOTAL,
 	};
-
 	InformationComponent();
 	virtual ~InformationComponent();
 
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	void Update(double dt);
 
 	void setName(const std::string name);
@@ -49,6 +49,7 @@ public:
 	void applyRotation(float rotateValue, int axis);
 
 	void setType(ENTITY_TYPE type);
+	void setType(std::string type);
 	ENTITY_TYPE getType();
 
 	void setUpwardsSpeed(float upwardsSpeed);

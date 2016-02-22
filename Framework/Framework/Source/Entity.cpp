@@ -20,6 +20,11 @@ Entity::~Entity()
 	m_componentList.~vector();
 }
 
+void Entity::Update(double dt)
+{
+
+}
+
 void Entity::addComponent(Component * component)
 {
 	if (component->getParent() == NULL) //Component has no parent

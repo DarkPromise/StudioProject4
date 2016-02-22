@@ -1,6 +1,8 @@
 #ifndef SOUND_MANAGER_H
 #define SOUND_MANAGER_H
 
+#pragma warning(disable:4227)
+
 #include <iostream>
 #include "irrKlang.h"
 

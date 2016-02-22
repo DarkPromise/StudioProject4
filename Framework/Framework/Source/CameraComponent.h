@@ -12,6 +12,7 @@ public:
 	virtual ~CameraComponent();
 
 	// Generic Functions
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	void Update(double dt);
 	void LookAround(double dt);
 

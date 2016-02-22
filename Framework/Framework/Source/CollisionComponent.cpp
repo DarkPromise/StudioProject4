@@ -20,6 +20,11 @@ CollisionComponent::~CollisionComponent()
 	}
 }
 
+void CollisionComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void CollisionComponent::Update(double dt)
 {
 	auto infoC = this->getParent()->getComponent<InformationComponent>();

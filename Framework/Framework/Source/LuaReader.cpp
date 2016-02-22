@@ -1,6 +1,7 @@
 #include "LuaReader.h"
 
 #include "EntityPlayer.h"
+#include "EntityNPC.h"
 
 LuaReader::LuaReader(const std::string & filepath)
 {
@@ -34,42 +35,40 @@ std::vector<std::string> LuaReader::getTables(const std::string & tableName)
 {
 	// Using Lua to create a function using code 
 	std::string functionCode =
-		"function getKeys(name) "
-		"s = \"\""
-		"for k, v in pairs(_G[name]) do "
-		"    s = s..k..\",\" "
-		"    end "
-		"return s "
-		"end";
+		R"(function getKeys(name)
+		s = {}
+		for k, v in pairs(name)
+		do
+		table.insert(s,k)
+		end
+		return s
+		end)";
 
 	// Execute the code
-	luaL_loadstring(L, functionCode.c_str());
+	luaL_dostring(L, functionCode.c_str());
 	lua_pcall(L, 0, 0, 0);
 
 	// Get Keys
 	lua_getglobal(L, "getKeys"); 
-	lua_pushstring(L, tableName.c_str());
+	lua_gettostack(tableName);
 
 	// Execute Function
 	lua_pcall(L, 1, 1, 0);
 
-	std::string test = lua_tostring(L, -1);
-	std::vector<std::string> resultingStrings;
-	std::string temp = "";
+	lua_pushnil(L);
 
-	for (unsigned int i = 0; i < test.size(); i++) 
+	std::vector<std::string> resultingStrings;
+
+	while (lua_next(L, -2))
 	{
-		if (test.at(i) != ',') 
+		if (lua_type(L, -1) == LUA_TSTRING)
 		{
-			temp += test.at(i);
+			resultingStrings.push_back(lua_tostring(L, -1));
 		}
-		else 
-		{
-			resultingStrings.push_back(temp);
-			temp = "";
-		}
+		lua_pop(L, 1);
 	}
-	this->Clean();
+
+	lua_settop(L, 0);
 
 	return resultingStrings;
 }
@@ -125,64 +124,19 @@ bool LuaReader::lua_gettostack(const std::string & variableName)
 
 Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera)
 {
+	using namespace luabridge;
+	auto newEntity = new Entity();
 	auto components = getTables(entityType);
+	LuaRef componentTable = getGlobal(L, entityType.c_str());
 
-	Entity * newEntity = NULL;
-
-	if (entityType == "Player")
+	for (auto componentName : components)
 	{
-		newEntity = new EntityPlayer();
-	}
-	else
-	{
-		// Make Other Entities
-	}
-
-	if (newEntity)
-	{
-		for (auto name : components)
+		if (componentName == "InformationComponent")
 		{
-			if (name == "InformationComponent")
-			{
-				auto * infoComponent = new InformationComponent();
-				infoComponent->setName(this->get<std::string>(entityType + "." + name + ".name"));
-				infoComponent->setPosition(this->get<Vector3>(entityType + "." + name + ".position"));
-				infoComponent->setPosition(this->get<Vector3>(entityType + "." + name + ".direction"));
-				infoComponent->setSize(this->get<float>(entityType + "." + name + ".size"));
-				infoComponent->setType(InformationComponent::ENTITY_TYPE(this->get<int>(entityType + "." + name + ".type")));
-				newEntity->addComponent(infoComponent);
-			}
-			else if (name == "GraphicsComponent")
-			{
-				auto * graphicsComponent = new GraphicsComponent();
-				if (this->get<std::string>(entityType + "." + name + ".meshType") == "Cube") // Can be used with Enums, **NOTE : This is just testing, there can be else/if for the meshTypes
-				{
-					graphicsComponent->addMesh(MeshBuilder::GenerateCube(entityType + " (LOW RES)", this->get<Color>(entityType + "." + name + ".color"), this->get<float>(entityType + "." + name + ".meshSize")));
-					graphicsComponent->addMesh(MeshBuilder::GenerateCube(entityType + " (MED RES)", this->get<Color>(entityType + "." + name + ".color"), this->get<float>(entityType + "." + name + ".meshSize")));
-					graphicsComponent->addMesh(MeshBuilder::GenerateCube(entityType + " (HIGH RES)", this->get<Color>(entityType + "." + name + ".color"), this->get<float>(entityType + "." + name + ".meshSize")));
-				}
-				newEntity->addComponent(graphicsComponent);
-			}
-			else if (name == "CameraComponent")
-			{
-				auto * cameraComponent = new CameraComponent(camera);
-				cameraComponent->getCamera()->setCameraMode(Camera::CAMERA_MODE(this->get<int>(entityType + "." + name + ".mode")));
-				newEntity->addComponent(cameraComponent);
-			}
-			else if (name == "CollisionComponent")
-			{
-				auto * collisionComponent = new CollisionComponent();
-				collisionComponent->setMinMax(this->get<Vector3>(entityType + "." + name + ".min"), this->get<Vector3>(entityType + "." + name + ".max"));
-				collisionComponent->setMesh(MeshBuilder::GenerateBoundingBox("PlayerBB", collisionComponent->getAABB()->Max, collisionComponent->getAABB()->Min, Color(0.f, 0.f, 1.f)));
-				newEntity->addComponent(collisionComponent);
-			}
-			else if (name == "HealthComponent")
-			{
-				auto * healthComponent = new HealthComponent();
-				healthComponent->setHealth(this->get<float>(entityType + "." + name + ".minHp"));
-				healthComponent->setMaxHealth(this->get<float>(entityType + "." + name + ".maxHp"));
-				newEntity->addComponent(healthComponent);
-			}
+			LuaRef infoTable = componentTable[componentName];
+			auto * infoComponent = new InformationComponent();
+			infoComponent->CreateComponent(infoTable);
+			newEntity->addComponent(infoComponent);
 		}
 	}
 	return newEntity;

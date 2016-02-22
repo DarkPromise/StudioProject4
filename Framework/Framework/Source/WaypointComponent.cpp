@@ -12,6 +12,11 @@ WaypointComponent::~WaypointComponent()
 
 }
 
+void WaypointComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void WaypointComponent::Update(double dt)
 {
 

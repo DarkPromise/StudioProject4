@@ -19,6 +19,11 @@ CameraComponent::~CameraComponent()
 	
 }
 
+void CameraComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+
+}
+
 void CameraComponent::Update(double dt)
 {
 	auto infoC = this->getParent()->getComponent<InformationComponent>();

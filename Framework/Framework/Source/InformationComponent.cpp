@@ -17,6 +17,50 @@ InformationComponent::InformationComponent()
 	this->m_iUID = size_t(this);
 }
 
+void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+{
+	using namespace luabridge;
+	auto infoName = tableInfo["name"];
+	if (infoName.isString())
+	{
+		this->setName(infoName.cast<std::string>());
+	}
+	auto infoPosition = tableInfo["position"];
+	if (infoPosition.isTable())
+	{
+		// LuaRef starts indexes from 1, not 0
+		this->setPosition(Vector3(infoPosition.rawget<float>(1), infoPosition.rawget<float>(2), infoPosition.rawget<float>(3)));
+	}
+	auto infoVelocity = tableInfo["velocity"];
+	if (infoVelocity.isTable())
+	{
+		// LuaRef starts indexes from 1, not 0
+		this->setVelocity(Vector3(infoVelocity.rawget<float>(1), infoVelocity.rawget<float>(2), infoVelocity.rawget<float>(3)));
+	}
+	auto infoDirection = tableInfo["direction"];
+	if (infoDirection.isTable())
+	{
+		// LuaRef starts indexes from 1, not 0
+		this->setDirection(Vector3(infoDirection.rawget<float>(1), infoDirection.rawget<float>(2), infoDirection.rawget<float>(3)));
+	}
+	auto infoRotation = tableInfo["rotation"];
+	if (infoRotation.isTable())
+	{
+		// LuaRef starts indexes from 1, not 0
+		this->setRotation(Vector3(infoRotation.rawget<float>(1), infoRotation.rawget<float>(2), infoRotation.rawget<float>(3)));
+	}
+	auto infoSize = tableInfo["size"];
+	if (infoSize.isNumber())
+	{
+		this->setSize(infoSize.cast<float>());
+	}
+	auto infoType = tableInfo["type"];
+	if (infoType.isString())
+	{
+		this->setType(infoType.cast<std::string>());
+	}
+}
+
 InformationComponent::~InformationComponent()
 {
 }
@@ -33,7 +77,7 @@ void InformationComponent::Update(double dt)
 		newDir.x = xDir;
 		newDir.z = zDir;
 		this->setDirection(newDir);
-
+		
 		float newUpwardsSpeed = this->getUpwardsSpeed();
 		newUpwardsSpeed += GRAVITY * dt;
 		this->setUpwardsSpeed(newUpwardsSpeed);
@@ -185,6 +229,22 @@ void InformationComponent::applyRotation(float rotateValue, int axis)
 void InformationComponent::setType(ENTITY_TYPE type)
 {
 	this->m_type = type;
+}
+
+void InformationComponent::setType(std::string type)
+{
+	if (type == "Player")
+	{
+		this->m_type = TYPE_PLAYER;
+	}
+	else if (type == "NPC")
+	{
+		this->m_type = TYPE_NPC;
+	}
+	else
+	{
+		this->m_type = TYPE_UNDEFINED;
+	}
 }
 
 InformationComponent::ENTITY_TYPE InformationComponent::getType()

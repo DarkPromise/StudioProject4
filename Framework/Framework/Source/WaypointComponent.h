@@ -28,6 +28,7 @@ public:
 	WaypointComponent();
 	virtual ~WaypointComponent();
 
+	void CreateComponent(luabridge::LuaRef & tableInfo);
 	void Update(double dt);
 
 	void setWaypointIndex(int index);
