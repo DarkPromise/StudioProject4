@@ -216,7 +216,7 @@ void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBo
 	file.close();
 }
 
-void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY)
+void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY, int totalCloseDoors, int totalOpenDoors)
 {
 	ofstream file;
 	file.open("Scripts//SaveDoors.lua");
@@ -237,6 +237,8 @@ void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entity
 	{
 		file << "entityDoorOpenX" + std::to_string(j + 1) + "=\"" + std::to_string(entityDoorsOpenY[j]) + "\"," << std::endl;
 	}
+	file << "totalCloseDoors = \"" + std::to_string(totalCloseDoors) + "\"," << std::endl;
+	file << "totalOpenDoors = \"" + std::to_string(totalOpenDoors) + "\"," << std::endl;
 	file << "}" << std::endl;
 	file.close();
 }

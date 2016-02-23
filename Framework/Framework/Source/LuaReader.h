@@ -103,7 +103,7 @@ public:
 	// Save files
 	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey, float timing);
 	void saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes);
-	void saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY);
+	void saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY, int totalCloseDoors, int totalOpenDoors);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);
