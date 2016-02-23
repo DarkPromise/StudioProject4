@@ -69,7 +69,6 @@ void EntityGridObject::addChildren(int y, int x, OBJECT_TYPE childType, GridMap 
 		case OBJECT_UNDEFINED:
 			currMap->getGridMap()[y][x]->setremoveDoor(true);
 			currMap->getGridMap()[y][x]->replaceTile(Grid::TILE_FLOOR, BACKGROUND_TILE);
-			currMap->getGridMap()[y][x]->deleteEntity();
 		break;
 		
 		case OBJECT_BOX:

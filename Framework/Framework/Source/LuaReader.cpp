@@ -184,7 +184,7 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	return newEntity;
 }
 
-void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey)
+void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey, float timing)
 {
 	ofstream file;
 	file.open("Scripts//SavePlayer.lua");
@@ -193,11 +193,12 @@ void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m
 	file << "playerGridY = \"" + std::to_string(playerIndexY) + "\"," << std::endl;
 	file << "level = \"" + std::to_string(level) + "\"," << std::endl;
 	file << "hasKey = \"" + std::to_string(m_bHasKey) + "\"," << std::endl;
+	file << "timing = \"" + std::to_string(timing) + "\"," << std::endl;
 	file << "}" << std::endl;
 	file.close();
 }
 
-void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, std::vector<int> entityDoorsX, std::vector<int> entityDoorsY)
+void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes)
 {
 	ofstream file;
 	file.open("Scripts//SaveMap.lua");
@@ -210,6 +211,16 @@ void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBo
 	{
 		file << "entityX" + std::to_string(j + 1) + "=\"" + std::to_string(entityBoxesY[j]) + "\"," << std::endl;
 	}
+	file << "totalBoxes = \"" + std::to_string(totalBoxes) + "\"," << std::endl;
+	file << "}" << std::endl;
+	file.close();
+}
+
+void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY)
+{
+	ofstream file;
+	file.open("Scripts//SaveDoors.lua");
+	file << "SaveDoors = {" << std::endl;
 	for (int i = 0; i < entityDoorsX.size(); i++)
 	{
 		file << "entityDoorY" + std::to_string(i + 1) + "=\"" + std::to_string(entityDoorsX[i]) + "\"," << std::endl;
@@ -217,6 +228,14 @@ void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBo
 	for (int j = 0; j < entityDoorsY.size(); j++)
 	{
 		file << "entityDoorX" + std::to_string(j + 1) + "=\"" + std::to_string(entityDoorsY[j]) + "\"," << std::endl;
+	}
+	for (int i = 0; i < entityDoorsOpenX.size(); i++)
+	{
+		file << "entityDoorOpenY" + std::to_string(i + 1) + "=\"" + std::to_string(entityDoorsOpenX[i]) + "\"," << std::endl;
+	}
+	for (int j = 0; j < entityDoorsOpenY.size(); j++)
+	{
+		file << "entityDoorOpenX" + std::to_string(j + 1) + "=\"" + std::to_string(entityDoorsOpenY[j]) + "\"," << std::endl;
 	}
 	file << "}" << std::endl;
 	file.close();

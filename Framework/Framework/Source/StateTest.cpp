@@ -3,11 +3,12 @@
 #include "StateAGDevMenu.h"
 #include "StateAGDevOptions.h"
 
-#define HUD_DISPLAY_DELAY	3
-#define xSize				32
-#define ySize				25
-#define NUM_BOXES			3
-#define NUM_SWITCHES		1
+#define HUD_DISPLAY_DELAY		3
+#define xSize					32
+#define ySize					25
+#define NUM_SWITCHES_LEVEL1		1
+
+static int totalBoxes = 0;
 
 State * StateTest::getInstance()
 {
@@ -96,12 +97,14 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			gameC->incrementLevel();
 			gameC->setLevelCleared(false);
 			gameC->setHasKey(false);
+			totalBoxes = 0;
 
 			testMap->ResetData();
 			testMap->Init(xSize, ySize);
 			switch (gameC->getCurrLevel())
 			{
-				case 2:					
+				case 2:
+					infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
 					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 
@@ -328,6 +331,8 @@ void StateTest::RenderGUI()
 		{
 			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME SAVING..", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 		}
+
+		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "LEVEL: " + std::to_string(gameC->getCurrLevel()), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.825f, (float)theView->getWindowHeight() * 0.93f);
 	}
 
 	// GAME PAUSE
@@ -357,7 +362,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 		testMap->RenderGridEntities(theView);
 		RenderPlayer();
 		RenderGUI();
-		RenderAI();
+		//RenderAI();
 		theView->modelStack.PopMatrix();
 	}
 
@@ -385,11 +390,11 @@ void StateTest::gameSave(InformationComponent *infoC)
 	int playerIndexX = (int)indexX;
 	int playerIndexY = testMap->getMapHeight() - (int)indexY;
 	auto gameC = testEntity->getComponent<GameplayComponent>();
-	std::vector<int> entityBoxesX; 
-	std::vector<int> entityBoxesY;
-	std::vector<int> entityDoorsX;
-	std::vector<int> entityDoorsY;
-	
+	std::vector<int> entityBoxesX; std::vector<int> entityBoxesY;
+	std::vector<int> entityDoorsX; std::vector<int> entityDoorsY;
+	std::vector<int> entityDoorsOpenX; std::vector<int> entityDoorsOpenY;
+	//std::cout << "X:" + std::to_string(playerIndexX) << " Y:" + std::to_string(playerIndexY) << std::endl;
+
 	// SAVE MAP DATA
 	for (unsigned int i = 0; i < testMap->getGridMap().size(); i++)
 	{
@@ -404,13 +409,19 @@ void StateTest::gameSave(InformationComponent *infoC)
 						entityBoxesX.push_back(i);
 						entityBoxesY.push_back(j);
 					break;
+
+					case EntityGridObject::OBJECT_DOOR:
+						entityDoorsX.push_back(i);
+						entityDoorsY.push_back(j);
+					break;
 				}
 			}
 
+			// DOOR REMOVED
 			if (testMap->getGridMap()[i][j]->getremoveDoor())
 			{
-				entityDoorsX.push_back(i);
-				entityDoorsY.push_back(j);
+				entityDoorsOpenX.push_back(i);
+				entityDoorsOpenY.push_back(j);
 			}
 		}
 	}
@@ -418,12 +429,12 @@ void StateTest::gameSave(InformationComponent *infoC)
 	// SAVING DATA INTO SCRIPTS
 	if (gameC)
 	{
-		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey());
-		script.saveMap(entityBoxesX, entityBoxesY, entityDoorsX, entityDoorsY);
-		entityBoxesX.clear();
-		entityBoxesY.clear();
-		entityDoorsX.clear();
-		entityDoorsY.clear();
+		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer);
+		script.saveMap(entityBoxesX, entityBoxesY, totalBoxes);
+		script.saveDoors(entityDoorsX, entityDoorsY, entityDoorsOpenX, entityDoorsOpenY);
+		entityBoxesX.clear(); entityBoxesY.clear();
+		entityDoorsX.clear(); entityDoorsY.clear();
+		entityDoorsOpenX.clear(); entityDoorsOpenY.clear();
 	}
 }
 
@@ -434,6 +445,7 @@ void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationCo
 	int y = Script.get<int>("SavePlayer.playerGridY");
 	int savedLevel = Script.get<int>("SavePlayer.level");
 	int collected = Script.get<int>("SavePlayer.hasKey");
+	gameTimer = Script.get<float>("SavePlayer.timing");
 	
 	if (gameC)
 	{
@@ -455,38 +467,127 @@ void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponen
 {
 	testMap->LoadData("MapData//level1_Background.csv");
 	
+	LuaReader Script("Scripts//SaveMap.lua");
+	int currentLevelTotalBoxes = Script.get<int>("SaveMap.totalBoxes");
+	
 	switch (gameType)
 	{
 		// NEW GAME
 		case 1:
-			for (int i = 0; i < NUM_BOXES; i++)
+			// BOXES
+			for (int i = 1; i < 7; i++)
 			{
 				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
 				graphicsComponent = new GraphicsComponent();
 				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
 				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
 				testGridObject->addComponent(graphicsComponent);
-				testMap->getGridMap()[17][2 + i]->addGridEntity(testGridObject);
+				testMap->getGridMap()[15][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+			
+			for (int i = 1; i < 7; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
+				totalBoxes++;
 			}
 
-			for (int i = 0; i < NUM_SWITCHES; i++)
+			for (int i = 1; i < 7; i++)
 			{
-				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-				testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
 				graphicsComponent = new GraphicsComponent();
-				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
 				testGridObject->addComponent(graphicsComponent);
-				testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+				testMap->getGridMap()[5][i]->addGridEntity(testGridObject);
+				totalBoxes++;
 			}
+
+			for (int i = 11; i < 28; i+= 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[9][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 12; i < 28; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 13; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[11][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 11; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[18][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 12; i < 28; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[17][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 13; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[16][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
 		break;
 
 		// LOAD GAME
 		case 2:
-			for (int i = 0; i < NUM_BOXES; i++)
+			for (int i = 0; i < currentLevelTotalBoxes; i++)
 			{
-				LuaReader Script2("Scripts//SaveMap.lua");
-				int x = Script2.get<int>("SaveMap.entityX" + std::to_string(i + 1));
-				int y = Script2.get<int>("SaveMap.entityY" + std::to_string(i + 1));
+				int x = Script.get<int>("SaveMap.entityX" + std::to_string(i + 1));
+				int y = Script.get<int>("SaveMap.entityY" + std::to_string(i + 1));
 				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
 				graphicsComponent = new GraphicsComponent();
 				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
@@ -495,11 +596,11 @@ void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponen
 				testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
 			}
 
-			for (int i = 0; i < NUM_SWITCHES; i++)
+			for (int i = 0; i < NUM_SWITCHES_LEVEL1; i++)
 			{
-				LuaReader Script2("Scripts//SaveMap.lua");
-				int x = Script2.get<int>("SaveMap.entityDoorX" + std::to_string(i + 1));
-				int y = Script2.get<int>("SaveMap.entityDoorY" + std::to_string(i + 1));
+				LuaReader Script2("Scripts//SaveDoors.lua");
+				int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
 				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
 				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
 				graphicsComponent = new GraphicsComponent();

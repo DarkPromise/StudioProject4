@@ -101,8 +101,9 @@ public:
 	bool lua_gettostack(const std::string& variableName);
 	
 	// Save files
-	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey);
-	void saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, std::vector<int> entityDoorsX, std::vector<int> entityDoorsY);
+	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey, float timing);
+	void saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes);
+	void saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);

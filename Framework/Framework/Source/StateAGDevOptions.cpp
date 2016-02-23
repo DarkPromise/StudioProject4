@@ -158,7 +158,7 @@ void StateAGDevOptions::UpdateSelection(StateHandler * stateHandler)
 						{
 							case SOUND_BUTTON:
 								SoundManager::toggleSound();
-								std::cout << SoundManager::getSoundStatus() << std::endl;
+								//std::cout << SoundManager::getSoundStatus() << std::endl;
 							break;
 
 							case DIFFICULTY_BUTTON:
