@@ -2,11 +2,13 @@
 #include "View.h"
 #include "StateAGDevMenu.h"
 #include "StateAGDevOptions.h"
+#include "StateGameOver.h"
 
 #define HUD_DISPLAY_DELAY		3
 #define xSize					32
 #define ySize					25
 #define NUM_SWITCHES_LEVEL1		1
+#define NUM_SWITCHES_LEVEL2     2
 
 static int totalBoxes = 0;
 
@@ -74,6 +76,8 @@ void StateTest::Init()
 			loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
 	}
+
+	//highscore.ReadFromTextFile();
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -88,6 +92,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	{
 		testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
 	}
+
+	playerRecord.update(dt);
 
 	// LEVEL CLEARED
 	if (gameC)
@@ -109,7 +115,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 				break;
 
 				case 3:
-					loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+					state = GAMESTATE::STATE_GAMEOVER;
+					//loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 			}
 		}
@@ -223,6 +230,10 @@ void StateTest::HandleEvents(StateHandler * stateHandler)
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+	}
+	if (state == GAMESTATE::STATE_GAMEOVER)
+	{
+		stateHandler->ChangeState(new StateGameOver("AGDev Gameover State", theView));
 	}
 }
 
@@ -629,6 +640,74 @@ void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponen
 void StateTest::loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
 {
 	testMap->LoadData("MapData//level2_Background.csv");
+	LuaReader Script("Scripts//SaveMap.lua");
+	int currentLevelTotalBoxes = Script.get<int>("SaveMap.totalBoxes");
+
+	switch (gameType)
+	{// NEW GAME
+	case 1:
+		// BOXES
+		for (int i = 1; i < 7; i++)
+		{
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[15][i]->addGridEntity(testGridObject);
+			totalBoxes++;
+		}
+
+		// SWTICHES
+		testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+		testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+		graphicsComponent = new GraphicsComponent();
+		graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+		testGridObject->addComponent(graphicsComponent);
+		testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+		break;
+
+		// LOAD GAME
+	case 2:
+		for (int i = 0; i < currentLevelTotalBoxes; i++)
+		{
+			int x = Script.get<int>("SaveMap.entityX" + std::to_string(i + 1));
+			int y = Script.get<int>("SaveMap.entityY" + std::to_string(i + 1));
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
+		}
+
+		for (int i = 0; i < NUM_SWITCHES_LEVEL1; i++)
+		{
+			LuaReader Script2("Scripts//SaveDoors.lua");
+			int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
+			int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+		}
+		break;
+	}
+	// KEY
+	if (gameC)
+	{
+		if (!gameC->getHasKey())
+		{
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_KEY);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("key", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][2]->addGridEntity(testGridObject);
+		}
+	}
 }
 
 void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)

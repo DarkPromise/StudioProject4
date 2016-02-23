@@ -131,6 +131,7 @@
     <ClCompile Include="Source\StateAGDevMenu.cpp" />
     <ClCompile Include="Source\StateAGDevOptions.cpp" />
     <ClCompile Include="Source\StateCredits.cpp" />
+    <ClCompile Include="Source\StateGameOver.cpp" />
     <ClCompile Include="Source\StateHandler.cpp" />
     <ClCompile Include="Source\StateMainmenu.cpp" />
     <ClCompile Include="Source\StateMenu.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Source\StateAGDevMenu.h" />
     <ClInclude Include="Source\StateAGDevOptions.h" />
     <ClInclude Include="Source\StateCredits.h" />
+    <ClInclude Include="Source\StateGameOver.h" />
     <ClInclude Include="Source\StateHandler.h" />
     <ClInclude Include="Source\StateMainmenu.h" />
     <ClInclude Include="Source\StateMenu.h" />

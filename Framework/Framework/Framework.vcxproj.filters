@@ -317,6 +317,9 @@
     <ClCompile Include="Source\GameplayComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StateGameOver.cpp">
+      <Filter>Source Files\State Handling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Model.h">
@@ -501,6 +504,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameplayComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateGameOver.h">
+      <Filter>Header Files\State Handling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

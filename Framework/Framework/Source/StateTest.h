@@ -10,6 +10,7 @@
 #include "GridMap.h"
 #include "LuaReader.h"
 #include "SoundManager.h"
+#include "Highscore.h"
 
 class StateTest : public State
 {
@@ -29,7 +30,8 @@ public:
 	enum GAMESTATE
 	{
 		STATE_PLAY,
-		STATE_PAUSE
+		STATE_PAUSE,
+		STATE_GAMEOVER
 	};
 
 	State* getInstance();
@@ -67,6 +69,8 @@ private:
 	GAMESTATE state;
 	bool gameSaved;
 	float gameSavedTimer;
+	Highscore highscore;
+	CRecord playerRecord;
 	int gameType;
 };
 
