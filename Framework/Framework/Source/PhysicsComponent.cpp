@@ -13,7 +13,7 @@ PhysicsComponent::~PhysicsComponent()
 
 }
 
-void PhysicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void PhysicsComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 
 }

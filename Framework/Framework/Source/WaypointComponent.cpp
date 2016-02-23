@@ -12,7 +12,7 @@ WaypointComponent::~WaypointComponent()
 
 }
 
-void WaypointComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void WaypointComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 
 }

@@ -40,18 +40,21 @@ void StateTest::Init()
 	
 	// PLAYER
 	LuaReader playerScript("Scripts//Player.lua");
-	testEntity = playerScript.createEntity("Player",theCamera,theView->getInputHandler());
+	testEntity = playerScript.createEntity("Player",theCamera,theView->getInputHandler(),testMap);
 	auto informationComponent = testEntity->getComponent<InformationComponent>();
 	auto gameplayComponent = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	
+	// Test AI Guard
+	LuaReader guardScript("Scripts//Guard.lua");
+	testGuard = guardScript.createEntity("Guard",theCamera,theView->getInputHandler(),testMap);
+
 	switch (gameType)
 	{
 		case 1:
 			informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
 		break;
-		
 		case 2:
 			loadPlayer(testMap, informationComponent, gameC);
 		break;
@@ -63,11 +66,9 @@ void StateTest::Init()
 		case 1:
 			loadLevel1(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
-		
 		case 2:
 			loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);		
 		break;
-
 		case 3:
 			loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
@@ -81,6 +82,11 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
+
+	if (testGuard->getComponent<AIComponent>())
+	{
+		testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
+	}
 
 	// LEVEL CLEARED
 	if (gameC)
@@ -224,6 +230,11 @@ void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const b
 
 void StateTest::Cleanup()
 {
+	if (testGuard)
+	{
+		delete testGuard;
+	}
+
 	if (testEntity)
 	{
 		delete testEntity;
@@ -260,7 +271,7 @@ void StateTest::Resume()
 
 }
 
-void StateTest::renderPlayer()
+void StateTest::RenderPlayer()
 {
 	theView->modelStack.PushMatrix();
 	theView->modelStack.Translate(this->testEntity->getComponent<InformationComponent>()->getPosition().x, this->testEntity->getComponent<InformationComponent>()->getPosition().y, this->testEntity->getComponent<InformationComponent>()->getPosition().z);
@@ -279,7 +290,7 @@ void StateTest::renderPlayer()
 	}*/
 }
 
-void StateTest::renderGUI()
+void StateTest::RenderGUI()
 {
 	// GAME TIMER
 	std::ostringstream ss;
@@ -326,6 +337,15 @@ void StateTest::renderGUI()
 	}
 }
 
+void StateTest::RenderAI()
+{
+	theView->modelStack.PushMatrix();
+	theView->modelStack.Translate(this->testGuard->getComponent<InformationComponent>()->getPosition().x, this->testGuard->getComponent<InformationComponent>()->getPosition().y, this->testGuard->getComponent<InformationComponent>()->getPosition().z);
+	theView->modelStack.Rotate(this->testGuard->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
+	theView->RenderMesh(this->testGuard->getComponent<GraphicsComponent>()->getMesh(this->testGuard->getComponent<GraphicsComponent>()->getResLevel()), false, false);
+	theView->modelStack.PopMatrix();
+}
+
 void StateTest::Draw(StateHandler * stateHandler)
 {
 	if (testMap)
@@ -333,10 +353,11 @@ void StateTest::Draw(StateHandler * stateHandler)
 		theView->modelStack.PushMatrix();
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
 		//testMap->RenderGrids(theView, m_meshList[0], true);
-		testMap->RenderBackground(theView);
+		testMap->RenderLevel(theView);
 		testMap->RenderGridEntities(theView);
-		renderPlayer();
-		renderGUI();
+		RenderPlayer();
+		RenderGUI();
+		RenderAI();
 		theView->modelStack.PopMatrix();
 	}
 
@@ -432,7 +453,7 @@ void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationCo
 
 void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
 {
-	testMap->LoadData("MapData//level1_Background.csv", "MapData//level_Foreground.csv");
+	testMap->LoadData("MapData//level1_Background.csv");
 	
 	switch (gameType)
 	{
@@ -506,7 +527,7 @@ void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponen
 
 void StateTest::loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)
 {
-	testMap->LoadData("MapData//level2_Background.csv", "MapData//level_Foreground.csv");
+	testMap->LoadData("MapData//level2_Background.csv");
 }
 
 void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType)

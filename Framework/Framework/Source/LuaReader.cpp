@@ -122,20 +122,10 @@ bool LuaReader::lua_gettostack(const std::string & variableName)
 	return true;
 }
 
-Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera, InputHandler * inputHandler)
+Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera, InputHandler * inputHandler, GridMap * gridMap)
 {
-	using namespace luabridge;
-	
+	using namespace luabridge;	
 	auto newEntity = new Entity();
-	if (entityType == "Player")
-	{
-
-	}
-	else if (entityType == "NPC")
-	{
-
-	}
-
 	auto components = getTables(entityType);
 	LuaRef componentTable = getGlobal(L, entityType.c_str());
 
@@ -145,36 +135,50 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 		{
 			LuaRef infoTable = componentTable[componentName];
 			auto * infoComponent = new InformationComponent();
-			infoComponent->CreateComponent(infoTable);
+			infoComponent->CreateComponent(infoTable,entityType,gridMap);
 			newEntity->addComponent(infoComponent);
 		}
 		else if (componentName == "GraphicsComponent")
 		{
 			LuaRef graphicsTable = componentTable[componentName];
 			auto * graphicsComponent = new GraphicsComponent();
-			graphicsComponent->CreateComponent(graphicsTable);
+			graphicsComponent->CreateComponent(graphicsTable,entityType);
 			newEntity->addComponent(graphicsComponent);
 		}
 		else if (componentName == "CameraComponent")
 		{
 			LuaRef cameraTable = componentTable[componentName];
 			auto * cameraComponent = new CameraComponent(camera);
-			cameraComponent->CreateComponent(cameraTable);
+			cameraComponent->CreateComponent(cameraTable,entityType);
 			newEntity->addComponent(cameraComponent);
 		}
 		else if (componentName == "ControllerComponent")
 		{
 			LuaRef controllerTable = componentTable[componentName];
 			auto * controllerComponent = new ControllerComponent(inputHandler);
-			controllerComponent->CreateComponent(controllerTable);
+			controllerComponent->CreateComponent(controllerTable,entityType);
 			newEntity->addComponent(controllerComponent);
 		}
 		else if (componentName == "GameplayComponent")
 		{
 			LuaRef gameplayTable = componentTable[componentName];
 			auto * gameplayComponent = new GameplayComponent();
-			gameplayComponent->CreateComponent(gameplayTable);
+			gameplayComponent->CreateComponent(gameplayTable,entityType);
 			newEntity->addComponent(gameplayComponent);
+		}
+		else if (componentName == "AIComponent")
+		{
+			LuaRef aiTable = componentTable[componentName];
+			auto * aiComponent = new AIComponent();
+			aiComponent->CreateComponent(aiTable,entityType);
+			newEntity->addComponent(aiComponent);
+		}
+		else if (componentName == "WaypointComponent")
+		{
+			LuaRef waypointTable = componentTable[componentName];
+			auto * waypointComponent = new WaypointComponent();
+			waypointComponent->CreateComponent(waypointTable,entityType);
+			newEntity->addComponent(waypointComponent);
 		}
 	}
 	return newEntity;

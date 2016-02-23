@@ -12,7 +12,7 @@ public:
 	virtual ~CameraComponent();
 
 	// Generic Functions
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
 	void LookAround(double dt);
 

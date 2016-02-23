@@ -17,7 +17,7 @@ class Component
 public:
 	virtual ~Component();
 
-	virtual void CreateComponent(luabridge::LuaRef& tableInfo) = 0;
+	virtual void CreateComponent(luabridge::LuaRef& tableInfo, std::string name);
 	virtual void Update(double dt);
 
 	void setParent(Entity*);

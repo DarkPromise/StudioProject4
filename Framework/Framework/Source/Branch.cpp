@@ -156,7 +156,7 @@ void Branch::UpdateAIComponents(double dt, Entity * thePlayer)
 		auto aiComponent = entity->getComponent<AIComponent>();
 		if (aiComponent)
 		{
-			aiComponent->Update(dt,thePlayer);
+			//aiComponent->Update(dt,thePlayer);
 		}
 	}
 }

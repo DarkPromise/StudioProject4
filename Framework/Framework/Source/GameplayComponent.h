@@ -9,7 +9,7 @@ public:
 	GameplayComponent();
 	virtual ~GameplayComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
 
 

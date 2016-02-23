@@ -20,7 +20,7 @@ CameraComponent::~CameraComponent()
 	
 }
 
-void CameraComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void CameraComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 	auto cameraOffset = tableInfo["cameraOffset"];
 	if (cameraOffset.isTable())
@@ -32,14 +32,22 @@ void CameraComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{
-			std::cout << "CameraComponent.cameraOffset is not an array with 3 values!" << std::endl;
+			std::cout << "CameraComponent.cameraOffset for " + name + " is not an array with 3 values!" << std::endl;
 		}
+	}
+	else
+	{
+		std::cout << "CameraComponent.cameraOffset for " + name + " is not an array with 3 values!" << std::endl;
 	}
 
 	auto cameraMode = tableInfo["cameraMode"];
 	if (cameraMode.isNumber())
 	{
 		this->m_Camera->setCameraMode(Camera::CAMERA_MODE(cameraMode.cast<int>()));
+	}
+	else
+	{
+		std::cout << "CameraComponent.cameraMode for " + name + " is not a valid mode!" << std::endl;
 	}
 }
 

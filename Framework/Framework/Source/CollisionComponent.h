@@ -11,7 +11,7 @@ public:
 	CollisionComponent();
 	virtual ~CollisionComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
 
 	int collidesWith(CollisionComponent * collisionInfo, int & score);

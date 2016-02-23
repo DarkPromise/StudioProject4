@@ -35,13 +35,13 @@ public:
 
 	// Generic Functions
 	void Init(int xSize, int ySize, int tileSize = 32);
-	bool LoadData(std::string backgroundCSV, std::string foregroundCSV);
+	bool LoadData(std::string backgroundCSV);
 	void ResetData();
 	virtual void Update(double dt);
 
 	// Rendering Function
 	void RenderGrids(View * theView, Mesh * textMesh, bool renderBB = false);
-	void RenderBackground(View * theView);
+	void RenderLevel(View * theView);
 	void RenderForeground(View * theView);
 	void RenderGridEntities(View * theView);
 

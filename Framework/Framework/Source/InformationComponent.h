@@ -9,6 +9,8 @@
 #include "Vector3.h"
 #include "Branch.h"
 
+#include "GridMap.h"
+
 class InformationComponent : public Component
 {
 public:
@@ -23,7 +25,7 @@ public:
 	InformationComponent();
 	virtual ~InformationComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name, GridMap * gridMap);
 	void Update(double dt);
 
 	void setName(const std::string name);

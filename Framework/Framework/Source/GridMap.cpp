@@ -98,7 +98,7 @@ void GridMap::RenderGrids(View * theView, Mesh * textMesh, bool renderBB)
 	}
 }
 
-void GridMap::RenderBackground(View * theView)
+void GridMap::RenderLevel(View * theView)
 {
 	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
 	{
@@ -289,18 +289,12 @@ std::vector<std::vector<Grid*>> GridMap::getGridMap()
 	return this->m_cGridMap;
 }
 
-bool GridMap::LoadData(std::string backgroundCSV, std::string foregroundCSV)
+bool GridMap::LoadData(std::string backgroundCSV)
 {
 	if (LoadBackgroundMap(backgroundCSV))
 	{
+		std::cout << std::endl;
 		std::cout << backgroundCSV << " has been loaded. " << std::endl;
-		if (LoadForegroundMap(foregroundCSV))
-		{
-			std::cout << foregroundCSV << " has been loaded. " << std::endl << std::endl;
-			return true;
-		}
-		std::cout << "Failed to load foreground" << std::endl;
-		return false;
 	}
 	std::cout << "Failed to load background" << std::endl;
 	return false;
@@ -350,7 +344,24 @@ bool GridMap::LoadBackgroundMap(const std::string mapName)
 					{
 						if (atoi(token.c_str()) > 0)
 						{
-							this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
+							int tileValue = atoi(token.c_str());
+							EntityGridObject * newGridObject;
+							auto graphicsComponent = new GraphicsComponent();
+							switch (tileValue)
+							{
+							case Grid::TILE_BOX:
+								newGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+								graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+								graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+								newGridObject->addComponent(graphicsComponent);
+								this->m_cGridMap[Index + 1][theColumnCounter]->addGridEntity(newGridObject);
+								this->m_cGridMap[Index + 1][theColumnCounter]->addTile(Grid::TILE_FLOOR);
+								break;
+							default:
+								delete graphicsComponent;
+								this->m_cGridMap[Index + 1][theColumnCounter]->addTile(atoi(token.c_str()));
+								break;
+							}
 						}
 						backgroundData[Index+1][theColumnCounter++] = atoi(token.c_str());
 					}

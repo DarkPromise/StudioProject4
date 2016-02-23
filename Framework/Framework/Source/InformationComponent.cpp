@@ -16,7 +16,7 @@ InformationComponent::InformationComponent()
 	this->m_iUID = size_t(this);
 }
 
-void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name, GridMap * gridMap)
 {
 	using namespace luabridge;
 	auto infoName = tableInfo["name"];
@@ -26,21 +26,25 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	}
 	else
 	{
-		std::cout << "InformationComponent.name is not a string!" << std::endl;
+		std::cout << "InformationComponent.name for " + name + " is not a string!" << std::endl;
 	}
 
 	auto infoPosition = tableInfo["position"];
 	if (infoPosition.isTable())
 	{
-		if (infoPosition.length() == 3)
+		if (infoPosition.length() == 2)
 		{
 			// LuaRef starts indexes from 1, not 0
-			this->setPosition(Vector3(infoPosition.rawget<float>(1), infoPosition.rawget<float>(2), infoPosition.rawget<float>(3)));
+			this->setPosition(gridMap->getGridMap()[infoPosition.rawget<int>(1)][infoPosition.rawget<int>(2)]->getGridPos());
 		}
 		else
 		{
-			std::cout << "InformationComponent.position is not an array with 3 values!" << std::endl;
+			std::cout << "InformationComponent.position for " + name + " is not an array with 2 values!" << std::endl;
 		}
+	}
+	else
+	{
+		std::cout << "InformationComponent.position for " + name + " is not an array with 2 values!" << std::endl;
 	}
 
 	auto infoVelocity = tableInfo["velocity"];
@@ -53,8 +57,12 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{
-			std::cout << "InformationComponent.velocity is not an array with 3 values!" << std::endl;
+			std::cout << "InformationComponent.velocity for " + name + " is not an array with 3 values!" << std::endl;
 		}
+	}
+	else
+	{
+		std::cout << "InformationComponent.velocity for " + name + " is not an array with 3 values!" << std::endl;
 	}
 
 	auto infoDirection = tableInfo["direction"];
@@ -67,8 +75,12 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{
-			std::cout << "InformationComponent.direction is not an array with 3 values!" << std::endl;
+			std::cout << "InformationComponent.direction for " + name + " is not an array with 3 values!" << std::endl;
 		}
+	}
+	else
+	{
+		std::cout << "InformationComponent.direction for " + name + " is not an array with 3 values!" << std::endl;
 	}
 
 	auto infoRotation = tableInfo["rotation"];
@@ -81,8 +93,12 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{
-			std::cout << "InformationComponent.rotation is not an array with 3 values!" << std::endl;
+			std::cout << "InformationComponent.rotation for " + name + " is not an array with 3 values!" << std::endl;
 		}
+	}
+	else
+	{
+		std::cout << "InformationComponent.rotation for " + name + " is not an array with 3 values!" << std::endl;
 	}
 
 	auto infoType = tableInfo["type"];
@@ -92,7 +108,7 @@ void InformationComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	}
 	else
 	{
-		std::cout << "InformationComponent.type is not a string!" << std::endl;
+		std::cout << "InformationComponent.type for " + name + " is not a string!" << std::endl;
 	}
 }
 
@@ -103,27 +119,6 @@ InformationComponent::~InformationComponent()
 void InformationComponent::Update(double dt)
 {
 	this->getParent()->Update(dt);
-
-	if (this->m_type == TYPE_PLAYER || this->m_type == TYPE_NPC)
-	{
-		
-	}
-	else
-	{
-		this->m_v3Position += this->m_v3Velocity * dt;
-	}
-
-	if (partition != NULL)
-	{
-		// If the partition has other parts (Nodes)
-		// Or if the Entity cant fit into the domain
-		if ((partition->hasChild()) || (partition->canContain(this->getParent()) == false))
-		{
-			partition->removeObject(this->getUID());
-			// Update the tree
-			partition->getRoot()->addObject(this->getParent());
-		}
-	}
 }
 
 void InformationComponent::setName(const std::string name)

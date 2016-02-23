@@ -21,20 +21,20 @@ GraphicsComponent::~GraphicsComponent()
 	m_meshList.~vector();
 }
 
-void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 	using namespace luabridge;
 	auto meshType = tableInfo["meshType"];
 	auto meshName = tableInfo["meshName"];
 
-	std::string name = "undefined";
+	std::string meshname = "undefined";
 	if (meshName.isString())
 	{
-		name = meshName.cast<std::string>();
+		meshname = meshName.cast<std::string>();
 	}
 	else
 	{
-		std::cout << "GraphicsComponent.meshName is not a string!" << std::endl;
+		std::cout << "GraphicsComponent.meshName for " + name + " is not a string!" << std::endl;
 	}
 
 	auto meshImage = tableInfo["meshImage"];
@@ -45,7 +45,7 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	}
 	else
 	{
-		std::cout << "GraphicsComponent.meshImage is not a string!" << std::endl;
+		std::cout << "GraphicsComponent.meshImage for " + name + " is not a string!" << std::endl;
 	}
 
 	auto meshSize = tableInfo["meshSize"];
@@ -56,7 +56,7 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	}
 	else
 	{
-		std::cout << "GraphicsComponent.meshSize is not a number!" << std::endl;
+		std::cout << "GraphicsComponent.meshSize for " + name + " is not a number!" << std::endl;
 	}
 
 	auto meshColor = tableInfo["meshColor"];
@@ -69,7 +69,7 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{
-			std::cout << "GraphicsComponent.meshColor is not an array with 3 values!" << std::endl;
+			std::cout << "GraphicsComponent.meshColor for " + name + " is not an array with 3 values!" << std::endl;
 		}
 	}
 
@@ -81,7 +81,7 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 	}
 	else
 	{
-		std::cout << "GraphicsComponent.meshAlpha is not a number!" << std::endl;
+		std::cout << "GraphicsComponent.meshAlpha for " + name + " is not a number!" << std::endl;
 	}
 
 	if (meshType.isString())
@@ -102,12 +102,12 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		}
 		else
 		{ 
-			std::cout << "GraphicsComponent.meshType is undefined" << std::endl;
+			std::cout << "GraphicsComponent.meshType for " + name + " is undefined" << std::endl;
 		}
 	}
 	else
 	{
-		std::cout << "GraphicsComponent.meshType is not a string!" << std::endl;
+		std::cout << "GraphicsComponent.meshType for " + name + " is not a string!" << std::endl;
 	}
 }
 

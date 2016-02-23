@@ -18,8 +18,9 @@ public:
 	enum TILE_TYPE
 	{
 		TILE_FLOOR = 1,
-		TILE_WALL,
-		TILE_DOOR_CLEAR,
+		TILE_WALL = 2,
+		TILE_DOOR_CLEAR = 3,
+		TILE_BOX = 4,
 	};
 
 

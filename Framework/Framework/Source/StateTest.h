@@ -41,8 +41,13 @@ public:
 	void HandleEvents(StateHandler * stateHandler);
 	void HandleEvents(StateHandler * stateHandler, const int key, const bool status = true);
 	void Draw(StateHandler * stateHandler);
-	void renderPlayer();
-	void renderGUI();
+
+	// Rendering Functions
+	void RenderPlayer();
+	void RenderGUI();
+	void RenderAI();
+
+	// Saving 
 	void gameSave(InformationComponent *infoC);
 	void loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC);
 	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
@@ -55,6 +60,7 @@ private:
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
 	Entity * testEntity;
+	Entity * testGuard;
 	EntityGridObject *testGridObject;
 	float moveDelay;
 	float gameTimer;

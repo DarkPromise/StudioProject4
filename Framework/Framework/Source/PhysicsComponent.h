@@ -11,7 +11,7 @@ public:
 	PhysicsComponent();
 	virtual ~PhysicsComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
 
 	void setAcceleration(float acc);

@@ -2,6 +2,7 @@
 #define AI_COMPONENT_H
 
 #include "Component.h"
+#include "GridMap.h"
 #include "MessageBoard.h"
 
 class AIComponent : public Component
@@ -9,56 +10,53 @@ class AIComponent : public Component
 public:
 	enum AI_TYPE
 	{
-		AI_SUPPORT, // Medic and Ammo
-		AI_SOLDIER,
-		AI_GUNNER,
-		AI_ENEMY,
-		AI_WALL,
-		AI_NEUTRAL,
+		AI_GUARD,
+		AI_UNDEFINED,
+	};
+
+	enum AI_DIFFICULTY
+	{
+		DIFFICULTY_EASY,
+		DIFFICULTY_NORMAL,
+		DIFFICULTY_HARD,
 	};
 
 	enum AI_STATE
 	{
 		STATE_IDLE,
-		STATE_MOVE,
-		STATE_SEARCH,
-		STATE_KILL,
-		STATE_DEFEND,
-		STATE_SUPPORTING,
-		STATE_REQUEST_HELP,
-		STATE_REQUEST_SUPPLIES,
+		STATE_PATROL,
+		STATE_CHASE,
 	};
 
 	AIComponent();
 	virtual ~AIComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
-	void Update(double dt, Entity * thePlayer);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
+	void Update(double dt, GridMap * gridmap, Entity * thePlayer);
 
 	void setType(AI_TYPE type);
 	AI_TYPE getType();
 
-	void setState(AI_STATE type);
+	void setState(AI_STATE state);
 	AI_STATE getState();
+
+	void setDifficulty(AI_DIFFICULTY difficulty);
+	AI_DIFFICULTY getDifficulty();
+
+	void setSightRadius(int sightRadius);
+	int getSightRadius();
 
 	void setMessageBoard(MessageBoard * messageBoard);
 	MessageBoard * getMessageBoard();
 
 	void FindNearbyEntity(Entity * entity);
 	void MoveRandomly();
-
-	// Testing AI
-	float randomAngle;
-	float randomVelocity;
 private:
 	AI_TYPE m_eType;
 	AI_STATE m_eState;
-	MessageBoard * m_MessageBoard;
+	AI_DIFFICULTY m_eDifficulty;
 	Entity * m_eTargetEntity;
-
-	double m_dMovementDelay;
-	double m_dMovementDelay2;
-	double m_dAttackDelay;
+	int m_iSightRadius;
 };
 
 #endif

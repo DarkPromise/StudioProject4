@@ -15,7 +15,7 @@ ControllerComponent::~ControllerComponent()
 
 }
 
-void ControllerComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void ControllerComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 
 }

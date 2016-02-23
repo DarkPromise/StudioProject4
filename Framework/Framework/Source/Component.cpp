@@ -1,7 +1,13 @@
 #include "Component.h"
 #include "Entity.h"
+#include "LuaReader.h"
 
 Component::~Component()
+{
+
+}
+
+void Component::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 
 }

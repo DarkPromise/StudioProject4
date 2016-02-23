@@ -1,16 +1,13 @@
 #include "AIComponent.h"
 #include "Entity.h"
+#include "LuaReader.h"
 
 AIComponent::AIComponent()
-: m_eType(AI_NEUTRAL)
-, m_eState(STATE_IDLE)
-, m_MessageBoard(NULL)
-, m_eTargetEntity(NULL)
-, m_dMovementDelay(0.0)
-, m_dMovementDelay2(0.0)
-, m_dAttackDelay(0.0)
-// Testing AI
-, randomAngle(0.f)
+: m_eState(STATE_IDLE)
+, m_eType(AI_UNDEFINED)
+, m_eDifficulty(DIFFICULTY_NORMAL)
+, m_iSightRadius(0.f)
+, m_eTargetEntity(nullptr)
 {
 
 }
@@ -20,90 +17,96 @@ AIComponent::~AIComponent()
 
 }
 
-void AIComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void AIComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
+	using namespace luabridge;
 
-}
-
-void AIComponent::Update(double dt, Entity * thePlayer)
-{
-	auto infoC = this->getParent()->getComponent<InformationComponent>();
-
-	m_dMovementDelay += dt;
-	m_dMovementDelay2 += dt;
-	m_dAttackDelay += dt;
-
-	// RNG for "Should I continue being Idle or should I move?"
-	if (m_dMovementDelay2 > 1.0) // Move for 1s || Idle for 1s
+	auto aiState = tableInfo["aiState"];
+	if (aiState.isString())
 	{
-		if ((this->m_eState != STATE_SEARCH) && (this->m_eState != STATE_KILL))
+		if (aiState.cast<std::string>() == "Idle")
 		{
-			int Move = Math::RandIntMinMax(1, 2);
-			switch (Move)
-			{
-			case 1: // Move
-				m_eState = STATE_MOVE;
-				m_dMovementDelay2 = 0.0;
-				break;
-			case 2: // Dont Move
-				this->m_eState = STATE_IDLE;
-				infoC->setVelocity(Vector3(0.f, 0.f, 0.f));
-				m_dMovementDelay2 = 0.0;
-				break;
-			}
+			this->setState(STATE_IDLE);
+		}
+		else if (aiState.cast<std::string>() == "Patrol")
+		{
+			this->setState(STATE_PATROL);
+		}
+		else if (aiState.cast<std::string>() == "Chase")
+		{
+			this->setState(STATE_CHASE);
 		}
 	}
-
-	float distance;
-	float angle;
-	Vector3 rotation;
-
-	switch (m_eState)
+	else
 	{
-	case STATE_IDLE:
-		MoveRandomly();
-		break;
-	case STATE_MOVE:
-		infoC->setVelocity(randomVelocity);
-		break;
-	case STATE_SEARCH:
-		// Move Towards Player
-		// Get Distance
-		distance = abs((infoC->getPosition() - thePlayer->getComponent<InformationComponent>()->getPosition()).Length());
-		if (distance >= 30.f)
+		std::cout << "AIComponent.aiState for " + name + " is not a string!" << std::endl;
+	}
+	
+	auto aiType = tableInfo["aiType"];
+	if (aiType.isString())
+	{
+		if (aiType.cast<std::string>() == "Undefined")
 		{
-			angle = Math::RadianToDegree(atan2(thePlayer->getComponent<InformationComponent>()->getPosition().x - infoC->getPosition().x, thePlayer->getComponent<InformationComponent>()->getPosition().z - infoC->getPosition().z));
-			rotation = infoC->getRotation();
-			rotation.y = angle;
-			infoC->setRotation(rotation);
-			infoC->setVelocity(200.f);
+			this->setType(AI_UNDEFINED);
 		}
-		else
+		else if (aiType.cast<std::string>() == "Guard")
 		{
-			infoC->setVelocity(0.f);
-			this->m_eState = STATE_KILL;
+			this->setType(AI_GUARD);
 		}
-		break;
-	case STATE_KILL:
-		// Attack Player every ???seconds (atk speed?)
-		distance = abs((infoC->getPosition() - thePlayer->getComponent<InformationComponent>()->getPosition()).Length());
-		if (distance <= 30.f)
+	}
+	else
+	{
+		std::cout << "AIComponent.aiType for " + name + " is not a string!" << std::endl;
+	}
+
+	auto aiDifficulty = tableInfo["aiDifficulty"];
+	if (aiDifficulty.isString())
+	{
+		if (aiDifficulty.cast<std::string>() == "Easy")
 		{
-			if (m_dAttackDelay > 0.5)
-			{
-				auto * healthComponent = thePlayer->getComponent<HealthComponent>();
-				if (healthComponent)
-				{
-					healthComponent->setHealth(healthComponent->getHealth() - 1);
-				}
-				m_dAttackDelay = 0.0;
-			}
+			this->setDifficulty(DIFFICULTY_EASY);
 		}
-		else
+		else if (aiDifficulty.cast<std::string>() == "Normal")
 		{
-			this->m_eState = STATE_SEARCH;
+			this->setDifficulty(DIFFICULTY_NORMAL);
 		}
-		break;
+		else if (aiDifficulty.cast<std::string>() == "Hard")
+		{
+			this->setDifficulty(DIFFICULTY_HARD);
+		}
+	}
+	else
+	{
+		std::cout << "AIComponent.aiDifficulty for " + name + " is not a string!" << std::endl;
+	}
+
+	auto aiSightRadius = tableInfo["aiSightRadius"];
+	if (aiSightRadius.isNumber())
+	{
+		this->setSightRadius(aiSightRadius.cast<int>());
+	}
+	else
+	{
+		std::cout << "AIComponent.aiSightRadius for " + name + " is not a number!" << std::endl;
+	}
+}
+
+void AIComponent::Update(double dt, GridMap * gridmap, Entity * thePlayer)
+{
+	if (this->getParent()->getComponent<WaypointComponent>())
+	{
+		auto playerInfo = thePlayer->getComponent<InformationComponent>();
+		if (playerInfo)
+		{
+			float indexX = playerInfo->getPosition().x / (gridmap->getMapWidth() * gridmap->getTileSize()) * gridmap->getMapWidth();
+			float indexY = playerInfo->getPosition().y / (gridmap->getMapHeight() * gridmap->getTileSize()) * gridmap->getMapHeight();
+			int playerIndexX = (int)indexX;
+			int playerIndexY = gridmap->getMapHeight() - (int)indexY;
+		}
+	}
+	else
+	{
+
 	}
 }
 
@@ -127,63 +130,33 @@ AIComponent::AI_STATE AIComponent::getState()
 	return this->m_eState;
 }
 
-void AIComponent::setMessageBoard(MessageBoard * messageBoard)
+void AIComponent::setDifficulty(AI_DIFFICULTY difficulty)
 {
-	this->m_MessageBoard = messageBoard;
+	this->m_eDifficulty = difficulty;
 }
 
-MessageBoard * AIComponent::getMessageBoard()
+AIComponent::AI_DIFFICULTY AIComponent::getDifficulty()
 {
-	return this->m_MessageBoard;
+	return this->m_eDifficulty;
 }
+
+void AIComponent::setSightRadius(int sightRadius)
+{
+	this->m_iSightRadius = sightRadius;
+}
+
+int AIComponent::getSightRadius()
+{
+	return this->m_iSightRadius;
+}
+
 
 void AIComponent::FindNearbyEntity(Entity * entity)
 {
-	if (!m_eTargetEntity)
-	{
-		if (entity->getComponent<InformationComponent>()->getType() == InformationComponent::ENTITY_TYPE::TYPE_PLAYER)
-		{
-			std::cout << abs((entity->getComponent<InformationComponent>()->getPosition()- this->getParent()->getComponent<InformationComponent>()->getPosition()).Length()) << std::endl;
-		}
-	}
-
+	
 }
 
 void AIComponent::MoveRandomly()
 {
-	auto infoC = this->getParent()->getComponent<InformationComponent>();
-
-	if (randomAngle == 0)
-	{
-		if (m_dMovementDelay > 3.0)
-		{
-			// Generate a random direction
-			if (infoC)
-			{
-				randomAngle = Math::RandFloatMinMax(infoC->getRotation().y, infoC->getRotation().y + 180.f);
-				randomVelocity = Math::RandFloatMinMax(100.f, 120.f);
-			}
-
-			m_dMovementDelay = 0.0;
-		}
-	}
-	else
-	{
-		if (infoC->getRotation().y < randomAngle)
-		{
-			infoC->applyRotation(8.f, 1); // 8.f is the rotation speed
-			if (infoC->getRotation().y >= randomAngle)
-			{
-				randomAngle = 0.0;
-			}
-		}
-		else if (infoC->getRotation().y > randomAngle)
-		{
-			infoC->applyRotation(-8.f, 1);
-			if (infoC->getRotation().y <= randomAngle)
-			{
-				randomAngle = 0.0;
-			}
-		}
-	}
+	
 }

@@ -16,12 +16,16 @@ GameplayComponent::~GameplayComponent()
 
 }
 
-void GameplayComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void GameplayComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 	auto currLevel = tableInfo["currLevel"];
 	if (currLevel.isNumber())
 	{
 		this->setCurrLevel(currLevel);
+	}
+	else
+	{
+		std::cout << "GameplayComponent.currLevel for " + name + " is not a number!" << std::endl;
 	}
 
 	auto hasKey = tableInfo["hasKey"];
@@ -35,6 +39,10 @@ void GameplayComponent::CreateComponent(luabridge::LuaRef& tableInfo)
 		{
 			this->setHasKey(false);
 		}
+	}
+	else
+	{
+		std::cout << "GameplayComponent.hasKey for " + name + " is not a string!" << std::endl;
 	}
 }
 

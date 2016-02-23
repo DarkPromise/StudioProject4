@@ -109,7 +109,7 @@ public:
 
 public:
 	// Entity Creation (Test!!!)
-	Entity * createEntity(const std::string & entityType, Camera * camera = nullptr, InputHandler * inputHandler = nullptr);
+	Entity * createEntity(const std::string & entityType, Camera * camera = nullptr, InputHandler * inputHandler = nullptr, GridMap * gridmap = nullptr);
 private:
 	lua_State * L;
 	std::string filename;

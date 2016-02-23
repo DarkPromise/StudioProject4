@@ -1,7 +1,7 @@
 Player = {
 InformationComponent = {
     name = "Josh",
-    position = {0,0,0},
+    position = {0,0},
     direction = {0,0,0},
     type = "Player",
   },

@@ -12,7 +12,7 @@ HealthComponent::~HealthComponent()
 
 }
 
-void HealthComponent::CreateComponent(luabridge::LuaRef& tableInfo)
+void HealthComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
 
 }

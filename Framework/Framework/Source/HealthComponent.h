@@ -9,7 +9,7 @@ public:
 	HealthComponent();
 	virtual ~HealthComponent();
 
-	void CreateComponent(luabridge::LuaRef & tableInfo);
+	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
 
 	void setHealth(float health);
