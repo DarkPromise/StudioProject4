@@ -32,6 +32,7 @@ public:
 	static Mesh* GenerateTerrain(const std::string &meshName, std::vector<unsigned char> m_heightMap);
 	static Mesh* GenerateBoundingBox(const std::string &meshName, Vector3 max, Vector3 min, Color color);
 	static Mesh* GenerateTileMap(const std::string &meshName, Color color,std:: vector<std::vector<int> > map, unsigned int row, unsigned int col, int tileSize);
+	static Mesh* GenerateLineOfSight(const std::string &meshName, Color color, float length = 1.f, float tileSize = 32.f);
 };
 
 #endif

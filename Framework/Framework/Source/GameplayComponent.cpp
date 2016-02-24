@@ -4,6 +4,7 @@
 GameplayComponent::GameplayComponent()
 : m_bCurrLevel(1)
 , m_bHasKey(false)
+, m_bRestartLevel(false)
 , m_levelCleared(false)
 , m_showkeyRequired(false)
 , m_showKeyRequiredTimer(0.0)
@@ -106,4 +107,23 @@ void GameplayComponent::setKeyShowTimer(double time)
 double GameplayComponent::getKeyShowTimer()
 {
 	return this->m_showKeyRequiredTimer;
+}
+
+void GameplayComponent::setRestartLevel(bool status)
+{
+	this->m_bRestartLevel = status;
+}
+
+bool GameplayComponent::getRestartLevel()
+{
+	return this->m_bRestartLevel;
+}
+
+void GameplayComponent::Reset()
+{
+	this->m_bHasKey = false;
+	this->m_bRestartLevel = false;
+	this->m_levelCleared = false;
+	this->m_showkeyRequired = false;
+	this->m_showKeyRequiredTimer = 0.0;
 }

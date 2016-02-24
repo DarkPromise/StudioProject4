@@ -5,6 +5,9 @@
 #include "GridMap.h"
 #include "MessageBoard.h"
 
+#define LOOK_DELAY 0.1
+#define MOVE_DELAY 0.2
+
 class AIComponent : public Component
 {
 public:
@@ -33,7 +36,7 @@ public:
 
 	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt, GridMap * gridmap, Entity * thePlayer);
-
+	
 	void setType(AI_TYPE type);
 	AI_TYPE getType();
 
@@ -43,20 +46,31 @@ public:
 	void setDifficulty(AI_DIFFICULTY difficulty);
 	AI_DIFFICULTY getDifficulty();
 
-	void setSightRadius(int sightRadius);
-	int getSightRadius();
+	void setSightLength(int SightLength);
+	int getSightLength();
 
 	void setMessageBoard(MessageBoard * messageBoard);
 	MessageBoard * getMessageBoard();
 
-	void FindNearbyEntity(Entity * entity);
+	void FindNearbyEntity(GridMap * gridMap, Entity * entity);
 	void MoveRandomly();
+	void PatrolAround(GridMap * gridMap, double dt);
+	void LookAround(double dt);
+	void LookLeft();
+	void LookRight();
+	void RenderLineOfSight(View * theView);
+	void ChaseEntity(GridMap * gridMap, Entity * entity);
 private:
 	AI_TYPE m_eType;
 	AI_STATE m_eState;
 	AI_DIFFICULTY m_eDifficulty;
 	Entity * m_eTargetEntity;
-	int m_iSightRadius;
+	int m_iSightLength;
+	int m_iMoveCount;
+	Mesh * m_cSightMesh;
+
+	double m_dLookDelay;
+	double m_dMoveDelay;
 };
 
 #endif

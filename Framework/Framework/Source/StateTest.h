@@ -15,7 +15,7 @@
 class StateTest : public State
 {
 public:
-	StateTest(std::string name, View * theView, int gameType) 
+	StateTest(std::string name, View * theView, int gameType = 1) 
 		: State(name, theView)
 		, moveDelay(0.f)
 		, gameTimer(0)
@@ -55,6 +55,9 @@ public:
 	void RenderPlayer();
 	void RenderGUI();
 	void RenderAI();
+
+	// Game Functions
+	void RestartLevel();
 
 	// Saving 
 	void gameSave(InformationComponent *infoC);

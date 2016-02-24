@@ -177,7 +177,7 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 		{
 			LuaRef waypointTable = componentTable[componentName];
 			auto * waypointComponent = new WaypointComponent();
-			waypointComponent->CreateComponent(waypointTable,entityType);
+			waypointComponent->CreateComponent(waypointTable,entityType, gridMap);
 			newEntity->addComponent(waypointComponent);
 		}
 	}

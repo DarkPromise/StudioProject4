@@ -51,12 +51,14 @@ void StateTest::Init()
 	// Test AI Guard
 	LuaReader guardScript("Scripts//Guard.lua");
 	testGuard = guardScript.createEntity("Guard",theCamera,theView->getInputHandler(),testMap);
+	testMap->addGridEntity(testGuard);
 
 	switch (gameType)
 	{
 		case GAMETYPE_NEWGAME:
 			resetAllEntityCount();
 			informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+			testMap->addGridEntity(testEntity);
 		break;
 		
 		case GAMETYPE_LOADGAME:
@@ -102,7 +104,12 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	// LEVEL CLEARED
 	if (gameC)
 	{
-		if (gameC->getLevelCleared())
+		if (gameC->getRestartLevel())
+		{
+			gameC->setRestartLevel(false);
+			this->RestartLevel();
+		}
+		else if (gameC->getLevelCleared())
 		{
 			gameC->incrementLevel();
 			gameC->setLevelCleared(false);
@@ -131,26 +138,26 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	if (state == GAMESTATE::STATE_PLAY)
 	{
 		// PAUSE GAME
-		if (!click2 && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = true;
 			state = GAMESTATE::STATE_PAUSE;
 		}
 
-		else if (click2 && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = false;
 		}
 
 		// SAVE GAME
-		if (!click && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 		{
 			click = true;
 			gameSaved = true;
 			gameSave(infoC);
 		}
 
-		else if (click && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
 		{
 			click = false;
 		}
@@ -218,13 +225,13 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	else
 	{
 		// RESUME GAME
-		if (!click2 && controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = true;
 			state = GAMESTATE::STATE_PLAY;
 		}
 
-		else if (click2 && !controlC->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = false;
 		}
@@ -251,15 +258,16 @@ void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const b
 
 void StateTest::Cleanup()
 {
-	if (testGuard)
+	// TestGuard is deleted as a GridEntity from now on
+	/*if (testGuard)
 	{
 		delete testGuard;
-	}
+	}*/
 
-	if (testEntity)
+	/*if (testEntity)
 	{
 		delete testEntity;
-	}
+	}*/
 
 	if (testMap)
 	{
@@ -362,11 +370,23 @@ void StateTest::RenderGUI()
 
 void StateTest::RenderAI()
 {
-	theView->modelStack.PushMatrix();
-	theView->modelStack.Translate(this->testGuard->getComponent<InformationComponent>()->getPosition().x, this->testGuard->getComponent<InformationComponent>()->getPosition().y, this->testGuard->getComponent<InformationComponent>()->getPosition().z);
-	theView->modelStack.Rotate(this->testGuard->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
-	theView->RenderMesh(this->testGuard->getComponent<GraphicsComponent>()->getMesh(this->testGuard->getComponent<GraphicsComponent>()->getResLevel()), false, false);
-	theView->modelStack.PopMatrix();
+	if (testGuard)
+	{
+		if (testGuard->getComponent<InformationComponent>())
+		{
+			if (testGuard->getComponent<GraphicsComponent>())
+			{
+				theView->modelStack.PushMatrix();
+				theView->modelStack.Translate(this->testGuard->getComponent<InformationComponent>()->getPosition().x, this->testGuard->getComponent<InformationComponent>()->getPosition().y, this->testGuard->getComponent<InformationComponent>()->getPosition().z);
+				if (testGuard->getComponent<AIComponent>())
+				{
+					testGuard->getComponent<AIComponent>()->RenderLineOfSight(theView);
+				}
+				theView->RenderMesh(this->testGuard->getComponent<GraphicsComponent>()->getMesh(this->testGuard->getComponent<GraphicsComponent>()->getResLevel()), false, false);
+				theView->modelStack.PopMatrix();
+			}
+		}
+	}
 }
 
 void StateTest::Draw(StateHandler * stateHandler)
@@ -375,12 +395,12 @@ void StateTest::Draw(StateHandler * stateHandler)
 	{
 		theView->modelStack.PushMatrix();
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
-		//testMap->RenderGrids(theView, m_meshList[0], true);
+		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderLevel(theView);
 		testMap->RenderGridEntities(theView);
+		RenderAI();
 		RenderPlayer();
 		RenderGUI();
-		//RenderAI();
 		theView->modelStack.PopMatrix();
 	}
 
@@ -775,4 +795,37 @@ void StateTest::resetAllEntityCount()
 	totalBoxes = 0;
 	totalCloseDoors = 0;
 	totalOpenDoors = 0;
+}
+
+void StateTest::RestartLevel()
+{
+	testMap->ResetData();
+	testMap->Init(xSize, ySize);
+
+	auto infoC = testEntity->getComponent<InformationComponent>();
+	if (infoC)
+	{
+		infoC->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+		testMap->addGridEntity(testEntity);
+	}
+
+	LuaReader guardScript("Scripts//Guard.lua");
+	testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+	testMap->addGridEntity(testGuard);
+
+	auto gameC = testEntity->getComponent<GameplayComponent>();
+	gameC->Reset();
+	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
+	switch (gameC->getCurrLevel())
+	{
+	case 1:
+		loadLevel1(testMap, graphicsComponent, testGridObject, gameC, GAMETYPE_NEWGAME);
+		break;
+	case 2:
+		loadLevel2(testMap, graphicsComponent, testGridObject, gameC, GAMETYPE_NEWGAME);
+		break;
+	case 3:
+		loadLevel3(testMap, graphicsComponent, testGridObject, gameC, GAMETYPE_NEWGAME);
+		break;
+	}
 }

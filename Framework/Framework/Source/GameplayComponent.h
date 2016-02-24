@@ -11,8 +11,6 @@ public:
 
 	void CreateComponent(luabridge::LuaRef & tableInfo, std::string name);
 	void Update(double dt);
-
-
 public:
 	void setCurrLevel(int level);
 	int getCurrLevel();
@@ -30,11 +28,17 @@ public:
 	void setKeyShowTimer(double time);
 	double getKeyShowTimer();
 
+	void setRestartLevel(bool status);
+	bool getRestartLevel();
+
+	void Reset();
 private:
 	int m_bCurrLevel;
+
 	bool m_bHasKey;
 	bool m_levelCleared;
 	bool m_showkeyRequired;
+	bool m_bRestartLevel;
 
 	double m_showKeyRequiredTimer;
 	double m_switchActivatedTimer;

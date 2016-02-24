@@ -19,9 +19,9 @@ GridMap::~GridMap()
 	collisionData.clear();
 	collisionData.~vector();
 
-	for (unsigned int i = 0; i < m_cGridMap.size(); i++)
+	for (unsigned int i = 0; i < m_iNumTilesHeight; i++)
 	{
-		for (unsigned int j = 0; j < m_cGridMap[i].size(); j++)
+		for (unsigned int j = 0; j < m_iNumTilesWidth; j++)
 		{
 			delete m_cGridMap[i][j];
 		}
@@ -149,9 +149,9 @@ void GridMap::RenderGridEntities(View * theView)
 	}
 }
 
-bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * Player)
+bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityType, Entity * entity)
 {
-	auto gameC = Player->getComponent<GameplayComponent>();
+	auto gameC = entity->getComponent<GameplayComponent>();
 
 	switch (GRID_DIRECTION(direction))
 	{
@@ -284,6 +284,19 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 	return false;
 }
 
+void GridMap::addGridEntity(Entity * entity)
+{
+	auto infoC = entity->getComponent<InformationComponent>();
+	if (infoC)
+	{
+		float indexX = infoC->getPosition().x / (this->getMapWidth() * this->getTileSize()) * this->getMapWidth();
+		float indexY = infoC->getPosition().y / (this->getMapHeight() * this->getTileSize()) * this->getMapHeight();
+		int aiIndexX = (int)indexX;
+		int aiIndexY = this->getMapHeight() - (int)indexY;
+		this->m_cGridMap[aiIndexY][aiIndexX]->addGridEntity(entity);
+	}
+}
+
 std::vector<std::vector<Grid*>> GridMap::getGridMap()
 {
 	return this->m_cGridMap;
@@ -295,8 +308,13 @@ bool GridMap::LoadData(std::string backgroundCSV)
 	{
 		std::cout << std::endl;
 		std::cout << backgroundCSV << " has been loaded. " << std::endl;
+		return true;
 	}
-	std::cout << "Failed to load background" << std::endl;
+	else
+	{
+		std::cout << "Failed to load background" << std::endl;
+		return false;
+	}
 	return false;
 }
 

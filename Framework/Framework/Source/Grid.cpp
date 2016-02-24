@@ -18,7 +18,7 @@ Grid::~Grid()
 {
 	if (m_cGridEntity)
 	{
-		delete m_cGridEntity;
+		delete this->m_cGridEntity;
 	}
 
 	if (!m_cGridTiles.empty())
@@ -156,7 +156,7 @@ Entity * Grid::getGridEntity()
 
 void Grid::removeEntity()
 {
-	this->m_cGridEntity = NULL;
+	this->m_cGridEntity = nullptr;
 }
 
 void Grid::deleteEntity()
@@ -164,7 +164,7 @@ void Grid::deleteEntity()
 	if (this->m_cGridEntity)
 	{
 		delete this->m_cGridEntity;
-		this->m_cGridEntity = NULL;
+		this->m_cGridEntity = nullptr;
 	}
 }
 
