@@ -1,4 +1,4 @@
-SaveMap = {
+SaveBoxes = {
 entityY1="5",
 entityY2="5",
 entityY3="5",
@@ -103,5 +103,5 @@ entityX49="15",
 entityX50="19",
 entityX51="23",
 entityX52="27",
-totalBoxes = "104",
+totalBoxes = "52",
 }

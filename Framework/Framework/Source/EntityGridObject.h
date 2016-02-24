@@ -30,6 +30,9 @@ public:
 	void toggleObject(GridMap * currMap);
 	void setToggleable(bool status);
 	bool hasToggleAbility();
+
+	int get_m_iIndexX();
+	int get_m_iIndexY();
 private:
 	OBJECT_TYPE m_eObjectType;
 	std::vector<EntityGridObject*> m_cChildren;

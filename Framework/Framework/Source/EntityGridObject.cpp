@@ -132,3 +132,13 @@ bool EntityGridObject::hasToggleAbility()
 {
 	return this->m_bToggleable;
 }
+
+int EntityGridObject::get_m_iIndexX()
+{
+	return m_iIndexX;
+}
+
+int EntityGridObject::get_m_iIndexY()
+{
+	return m_iIndexY;
+}

@@ -22,9 +22,9 @@ public:
 		, state(STATE_PLAY)
 		, gameSaved(false)
 		, gameSavedTimer(0)
-		, gameType(gameType)
 	{
 		this->theView = theView;
+		this->gameType = static_cast<GAMETYPE>(gameType);
 	}
 
 	enum GAMESTATE
@@ -32,6 +32,12 @@ public:
 		STATE_PLAY,
 		STATE_PAUSE,
 		STATE_GAMEOVER
+	};
+
+	enum GAMETYPE
+	{
+		GAMETYPE_NEWGAME = 1,
+		GAMETYPE_LOADGAME,
 	};
 
 	State* getInstance();
@@ -43,6 +49,7 @@ public:
 	void HandleEvents(StateHandler * stateHandler);
 	void HandleEvents(StateHandler * stateHandler, const int key, const bool status = true);
 	void Draw(StateHandler * stateHandler);
+	void resetAllEntityCount();
 
 	// Rendering Functions
 	void RenderPlayer();
@@ -52,9 +59,9 @@ public:
 	// Saving 
 	void gameSave(InformationComponent *infoC);
 	void loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC);
-	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
-	void loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
-	void loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, int gameType);
+	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
+	void loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
+	void loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
 
 	GridMap * testMap;
 private:
@@ -71,7 +78,7 @@ private:
 	float gameSavedTimer;
 	Highscore highscore;
 	CRecord playerRecord;
-	int gameType;
+	GAMETYPE gameType;
 };
 
 #endif

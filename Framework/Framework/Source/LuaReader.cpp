@@ -198,11 +198,11 @@ void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m
 	file.close();
 }
 
-void LuaReader::saveMap(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes)
+void LuaReader::saveBoxes(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes)
 {
 	ofstream file;
-	file.open("Scripts//SaveMap.lua");
-	file << "SaveMap = {" << std::endl;
+	file.open("Scripts//SaveBoxes.lua");
+	file << "SaveBoxes = {" << std::endl;
 	for (int i = 0; i < entityBoxesX.size(); i++)
 	{
 		file << "entityY" + std::to_string(i + 1) + "=\"" + std::to_string(entityBoxesX[i]) + "\"," << std::endl;
@@ -239,6 +239,23 @@ void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entity
 	}
 	file << "totalCloseDoors = \"" + std::to_string(totalCloseDoors) + "\"," << std::endl;
 	file << "totalOpenDoors = \"" + std::to_string(totalOpenDoors) + "\"," << std::endl;
+	file << "}" << std::endl;
+	file.close();
+}
+
+void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> entitySwitchesY)
+{
+	ofstream file;
+	file.open("Scripts//SaveSwitches.lua");
+	file << "SaveSwitches= {" << std::endl;
+	for (int j = 0; j < entitySwitchesY.size(); j++)
+	{
+		file << "entitySwitchX" + std::to_string(j + 1) + "=\"" + std::to_string(entitySwitchesY[j]) + "\"," << std::endl;
+	}
+	for (int i = 0; i < entitySwitchesX.size(); i++)
+	{
+		file << "entitySwitchY" + std::to_string(i + 1) + "=\"" + std::to_string(entitySwitchesX[i]) + "\"," << std::endl;
+	}
 	file << "}" << std::endl;
 	file.close();
 }
