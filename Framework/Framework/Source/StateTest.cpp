@@ -118,18 +118,27 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			resetAllEntityCount();
 			gameType = GAMETYPE_NEWGAME;
 
+			testMap->removeGridEntity(testEntity);
 			testMap->ResetData();
 			testMap->Init(xSize, ySize);
+
+			if (infoC)
+			{
+				infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
+				testMap->addGridEntity(testEntity);
+			}
+
+			LuaReader guardScript("Scripts//Guard.lua");
+			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+			testMap->addGridEntity(testGuard);
+
 			switch (gameC->getCurrLevel())
 			{
-				case 2:
-					infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
-					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
+			case 2:
+				loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
-
-				case 3:
-					state = GAMESTATE::STATE_GAMEOVER;
-					//loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+			case 3:
+				loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 			}
 		}

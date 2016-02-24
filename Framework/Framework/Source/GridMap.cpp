@@ -297,6 +297,19 @@ void GridMap::addGridEntity(Entity * entity)
 	}
 }
 
+void GridMap::removeGridEntity(Entity * entity)
+{
+	auto infoC = entity->getComponent<InformationComponent>();
+	if (infoC)
+	{
+		float indexX = infoC->getPosition().x / (this->getMapWidth() * this->getTileSize()) * this->getMapWidth();
+		float indexY = infoC->getPosition().y / (this->getMapHeight() * this->getTileSize()) * this->getMapHeight();
+		int aiIndexX = (int)indexX;
+		int aiIndexY = this->getMapHeight() - (int)indexY;
+		this->m_cGridMap[aiIndexY][aiIndexX]->removeEntity();
+	}
+}
+
 std::vector<std::vector<Grid*>> GridMap::getGridMap()
 {
 	return this->m_cGridMap;
