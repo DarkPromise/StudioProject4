@@ -26,6 +26,7 @@ public:
 	static void toggleSound();
 	static bool getSoundStatus();
 	static void playSound(const char * soundPath, bool loop);
+	static void stopAllSounds();
 private:
 	static ISoundEngine * soundEngine;
 	static bool m_soundStatus;

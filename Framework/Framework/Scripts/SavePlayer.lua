@@ -1,7 +1,7 @@
 SavePlayer = {
-playerGridX = "1",
-playerGridY = "22",
+playerGridX = "4",
+playerGridY = "6",
 level = "1",
-hasKey = "0",
-timing = "0.850876",
+hasKey = "1",
+timing = "10.591169",
 }

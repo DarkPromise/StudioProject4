@@ -30,3 +30,8 @@ void SoundManager::playSound(const char * soundPath, bool loop)
 {
 	soundEngine->play2D(soundPath, loop);
 }
+
+void SoundManager::stopAllSounds()
+{
+	soundEngine->stopAllSounds();
+}
