@@ -93,11 +93,6 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 
-	if (testGuard->getComponent<AIComponent>())
-	{
-		testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
-	}
-
 	//std::cout << "Closedoors: " << totalCloseDoors << " Opendoors: " << totalOpenDoors << std::endl;
 	//std::cout << "Boxes: " << totalBoxes << std::endl;
 
@@ -122,23 +117,24 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			testMap->ResetData();
 			testMap->Init(xSize, ySize);
 
-			if (infoC)
-			{
-				infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
-				testMap->addGridEntity(testEntity);
-			}
-
 			LuaReader guardScript("Scripts//Guard.lua");
 			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
 			testMap->addGridEntity(testGuard);
 
 			switch (gameC->getCurrLevel())
 			{
-			case 2:
-				loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
+				case 2:
+					if (infoC)
+					{
+						infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
+						testMap->addGridEntity(testEntity);
+					}
+					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
-			case 3:
-				loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+				
+				case 3:
+					//loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+					state = GAMESTATE::STATE_GAMEOVER;
 				break;
 			}
 		}
@@ -147,14 +143,20 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	// GAME RUNNING
 	if (state == GAMESTATE::STATE_PLAY)
 	{
+		// UPDATE AI
+		if (testGuard->getComponent<AIComponent>())
+		{
+			testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
+		}
+
 		// PAUSE GAME
-		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		if (!click2 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = true;
 			state = GAMESTATE::STATE_PAUSE;
 		}
 
-		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		else if (click2 && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = false;
 		}
@@ -235,13 +237,13 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	else
 	{
 		// RESUME GAME
-		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		if (!click2 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = true;
 			state = GAMESTATE::STATE_PLAY;
 		}
 
-		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
+		else if (click2 && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
 			click2 = false;
 		}
