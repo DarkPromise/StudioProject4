@@ -259,3 +259,65 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	file << "}" << std::endl;
 	file.close();
 }
+
+void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int number)
+{
+	std::string numberString;
+	if (number == 0)
+	{
+		numberString = "";
+	}
+	else
+	{
+		numberString = std::to_string(number + 1);
+	}
+
+	ofstream file;
+	std::stringstream positionX, positionY;
+	std::stringstream directionX, directionY, directionZ;
+	std::stringstream rotationX, rotationY, rotationZ;
+	positionX.precision(2); positionY.precision(2);
+	directionX.precision(2); directionY.precision(2); directionZ.precision(2);
+	rotationX.precision(2); rotationY.precision(2); rotationZ.precision(2);
+	positionX << position.x; positionY << position.y;
+	directionX << direction.x; directionY << direction.y; directionZ << direction.z;
+	rotationX << rotation.x; rotationY << rotation.y; rotationZ << rotation.z;
+
+	file.open("Scripts//GuardSave" + numberString + ".lua");
+
+	file << "Guard = {" << std::endl;
+	file << "InformationComponent = {" << std::endl;
+	file << "name = \"Guard\"," << std::endl;
+	file << "position = {" + positionX.str() + "," + positionY.str() + "}," << std::endl;
+	file << "direction = {" + directionX.str() + "," + directionY.str() + "," + directionZ.str() + "}," << std::endl;
+	file << "rotation = {" + rotationX.str() + "," + rotationY.str() + "," + rotationZ.str() + "}," << std::endl;
+	file << "type = \"NPC\"," << std::endl;
+	file << "}," << std::endl;
+
+	file << "GraphicsComponent = {" << std::endl;
+	file << "meshType = \"Quad\"," << std::endl;
+	file << "meshName = \"Guard Mesh\"," << std::endl;
+	file << "meshImage = \"Images//guard.tga\"," << std::endl;
+	file << "meshSize = 32," << std::endl;
+	file << "meshColor = {1, 1, 1}," << std::endl;
+	file << "meshAlpha = 1," << std::endl;
+	file << "}," << std::endl;
+
+	file << "AIComponent = {" << std::endl;
+	file << "aiState = \"" + state + "\"," << std::endl;
+	file << "aiType = \"Guard\"," << std::endl;
+	file << "aiDifficulty = \"Normal\"," << std::endl;
+	file << "aiSightLength = 5," << std::endl;
+	file << "}," << std::endl;
+
+	file << "WaypointComponent = {" << std::endl;
+	file << "numberOfPoints = 4," << std::endl;
+	file << "point1 = {18,5}," << std::endl;
+	file << "point2 = {16,5}," << std::endl;
+	file << "point3 = {16,10}," << std::endl;
+	file << "point4 = {18,10}," << std::endl;
+	file << "}," << std::endl;
+
+	file << "}" << std::endl;
+	file.close();
+}

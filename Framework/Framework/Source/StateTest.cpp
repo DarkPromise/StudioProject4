@@ -48,37 +48,46 @@ void StateTest::Init()
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 
-	// Test AI Guard
-	/*LuaReader guardScript("Scripts//Guard.lua");
-	testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-	testMap->addGridEntity(testGuard);*/
-
 	switch (gameType)
 	{
-	case GAMETYPE_NEWGAME:
-		resetAllEntityCount();
-		informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
-		testMap->addGridEntity(testEntity);
+		case GAMETYPE_NEWGAME:
+		{
+			// TEST AI GUARD
+			LuaReader guardScript("Scripts//Guard.lua");
+			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+			testMap->addGridEntity(testGuard);
+			// PLAYER
+			resetAllEntityCount();
+			informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
+			testMap->addGridEntity(testEntity);
+		}
 		break;
 
-	case GAMETYPE_LOADGAME:
-		loadPlayer(testMap, informationComponent, gameC);
+		case GAMETYPE_LOADGAME:
+		{
+			// TEST AI GUARD
+			LuaReader guardScript("Scripts//GuardSave.lua");
+			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+			testMap->addGridEntity(testGuard);
+			// PLAYER
+			loadPlayer(testMap, informationComponent, gameC);
+		}
 		break;
 	}
 
 	// INTIALISE LEVELS
 	switch (gameC->getCurrLevel())
 	{
-	case 1:
-		loadLevel1(testMap, graphicsComponent, testGridObject, gameC, gameType);
+		case 1:
+			loadLevel1(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
 
-	case 2:
-		loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
+		case 2:
+			loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
 
-	case 3:
-		loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+		case 3:
+			loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 		break;
 	}
 
@@ -118,9 +127,9 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			testMap->ResetData();
 			testMap->Init(xSize, ySize);
 
-			/*LuaReader guardScript("Scripts//Guard.lua");
+			LuaReader guardScript("Scripts//Guard.lua");
 			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			testMap->addGridEntity(testGuard);*/
+			testMap->addGridEntity(testGuard);
 
 			switch (gameC->getCurrLevel())
 			{
@@ -145,10 +154,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	if (state == GAMESTATE::STATE_PLAY)
 	{
 		// UPDATE AI
-		/*if (testGuard->getComponent<AIComponent>())
+		if (testGuard->getComponent<AIComponent>())
 		{
 			testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
-		}*/
+		}
 
 		// PAUSE GAME
 		if (!click2 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
@@ -266,7 +275,6 @@ void StateTest::HandleEvents(StateHandler * stateHandler)
 
 void StateTest::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
 {
-
 }
 
 void StateTest::Cleanup()
@@ -409,7 +417,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderLevel(theView);
 		testMap->RenderGridEntities(theView);
-		//RenderAI();
+		RenderAI();
 		RenderPlayer();
 		RenderGUI();
 		theView->modelStack.PopMatrix();
@@ -460,39 +468,39 @@ void StateTest::gameSave(InformationComponent *infoC)
 
 				switch (objType)
 				{
-				case EntityGridObject::OBJECT_BOX:
-					entityBoxesX.push_back(i);
-					entityBoxesY.push_back(j);
+					case EntityGridObject::OBJECT_BOX:
+						entityBoxesX.push_back(i);
+						entityBoxesY.push_back(j);
 					break;
 
-				case EntityGridObject::OBJECT_DOOR:
-					entityDoorsX.push_back(i);
-					entityDoorsY.push_back(j);
-					totalCloseDoors++;
-					for (unsigned int x = 0; x < testMap->getGridMap().size(); x++)
-					{
-						for (unsigned int y = 0; y < testMap->getGridMap()[x].size(); y++)
+					case EntityGridObject::OBJECT_DOOR:
+						entityDoorsX.push_back(i);
+						entityDoorsY.push_back(j);
+						totalCloseDoors++;
+						for (unsigned int x = 0; x < testMap->getGridMap().size(); x++)
 						{
-							if (testMap->getGridMap()[x][y]->getGridEntity() != NULL)
+							for (unsigned int y = 0; y < testMap->getGridMap()[x].size(); y++)
 							{
-								if (testMap->getGridMap()[x][y]->getGridEntityType() == EntityGridObject::OBJECT_SWITCH)
+								if (testMap->getGridMap()[x][y]->getGridEntity() != NULL)
 								{
-									auto gridObject = dynamic_cast<EntityGridObject*>(testMap->getGridMap()[x][y]->getGridEntity());
-									if (gridObject)
+									if (testMap->getGridMap()[x][y]->getGridEntityType() == EntityGridObject::OBJECT_SWITCH)
 									{
-										for (int k = 0; k < gridObject->getChildren().size(); k++)
+										auto gridObject = dynamic_cast<EntityGridObject*>(testMap->getGridMap()[x][y]->getGridEntity());
+										if (gridObject)
 										{
-											if (i == gridObject->getChildren()[k]->get_m_iIndexY() && j == gridObject->getChildren()[k]->get_m_iIndexX())
+											for (int k = 0; k < gridObject->getChildren().size(); k++)
 											{
-												entitySwitchesX.push_back(x);
-												entitySwitchesY.push_back(y);
+												if (i == gridObject->getChildren()[k]->get_m_iIndexY() && j == gridObject->getChildren()[k]->get_m_iIndexX())
+												{
+													entitySwitchesX.push_back(x);
+													entitySwitchesY.push_back(y);
+												}
 											}
 										}
 									}
 								}
 							}
 						}
-					}
 					break;
 				}
 			}
@@ -507,6 +515,47 @@ void StateTest::gameSave(InformationComponent *infoC)
 		}
 	}
 
+	// SAVE ENEMIES DATA
+	float indexX2 = testGuard->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+	float indexY2 = testGuard->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+	int aiIndexX = (int)indexX2;
+	int aiIndexY = testMap->getMapHeight() - (int)indexY2;
+	Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
+	Vector3 direction = testGuard->getComponent<InformationComponent>()->getDirection();
+	Vector3 rotation = testGuard->getComponent<InformationComponent>()->getRotation();
+	std::string state = std::to_string(testGuard->getComponent<AIComponent>()->getState());
+	if (state == "0")
+	{
+		state = "Idle";
+	}
+	else if (state == "1")
+	{
+		state = "Patrol";
+	}
+	else if (state == "2")
+	{
+		state = "Chase";
+	}
+	else if (state == "3")
+	{
+		state = "Pathing";
+	}
+
+	/*for (int i = 0; i < 1; i++)
+	{
+	std::string number;
+	if (i == 0)
+	{
+	number = "";
+	}
+	else
+	{
+	number = std::to_string(i + 1);
+	}
+
+	LuaReader script2("Scripts//Guard" + number + ".lua");
+	}*/
+
 	// SAVING DATA INTO SCRIPTS
 	if (gameC)
 	{
@@ -514,6 +563,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 		script.saveBoxes(entityBoxesX, entityBoxesY, totalBoxes);
 		script.saveDoors(entityDoorsX, entityDoorsY, entityDoorsOpenX, entityDoorsOpenY, totalCloseDoors, totalOpenDoors);
 		script.saveSwitches(entitySwitchesX, entitySwitchesY);
+		script.saveEnemies(position, direction, rotation, state, 0);
 		entityBoxesX.clear(); entityBoxesY.clear();
 		entityDoorsX.clear(); entityDoorsY.clear();
 		entityDoorsOpenX.clear(); entityDoorsOpenY.clear();

@@ -18,9 +18,9 @@ using std::ios;
 // Lua Includes
 extern "C"
 {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+	#include "lua.h"
+	#include "lauxlib.h"
+	#include "lualib.h"
 }
 #include "LuaBridge.h"
 using namespace luabridge;
@@ -105,6 +105,7 @@ public:
 	void saveBoxes(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes);
 	void saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY, int totalCloseDoors, int totalOpenDoors);
 	void saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> entitySwitchesY);
+	void saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int number);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);
