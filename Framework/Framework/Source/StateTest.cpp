@@ -123,18 +123,18 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 
 			switch (gameC->getCurrLevel())
 			{
-			case 2:
-				if (infoC)
-				{
-					infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
-					testMap->addGridEntity(testEntity);
-				}
-				loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
+				case 2:
+					if (infoC)
+					{
+						infoC->setPosition(testMap->getGridMap()[23][30]->getGridPos());
+						testMap->addGridEntity(testEntity);
+					}
+					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 
-			case 3:
-				//loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
-				state = GAMESTATE::STATE_GAMEOVER;
+				case 3:
+					//loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
+					state = GAMESTATE::STATE_GAMEOVER;
 				break;
 			}
 		}
@@ -552,173 +552,260 @@ void StateTest::loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponen
 
 	switch (gameType)
 	{
-	case GAMETYPE_NEWGAME:
-	{
-							 // BOXES
-							 for (int i = 1; i < 7; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[15][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+		case GAMETYPE_NEWGAME:
+		{
+			// BOXES
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[17][4]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 for (int i = 1; i < 7; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			for (int i = 3; i < 6; i += 2)
+			{
 
-							 for (int i = 1; i < 7; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[5][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[5][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 for (int i = 11; i < 28; i += 4)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[9][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			for (int i = 2; i < 7; i += 2)
+			{
 
-							 for (int i = 12; i < 28; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[6][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 for (int i = 13; i < 28; i += 4)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[11][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			for (int i = 1; i < 7; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[7][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 for (int i = 11; i < 28; i += 4)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[18][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			for (int i = 2; i < 7; i += 2)
+			{
 
-							 for (int i = 12; i < 28; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[17][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[8][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 for (int i = 13; i < 28; i += 4)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[16][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			for (int i = 1; i < 7; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[9][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 // SWITCHES
-							 for (int i = 0; i < 1; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-								 testGridObject->addChildren(19, 4 + i, EntityGridObject::OBJECT_DOOR, testMap);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[23][5 + i]->addGridEntity(testGridObject);
-							 }
-	}
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[4][1]->addGridEntity(testGridObject);
+			totalBoxes++;
+
+			for (int i = 11; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[9][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 12; i < 28; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[10][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 13; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[11][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 12; i < 28; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[17][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 13; i < 28; i += 4)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[16][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 19; i < 21; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][10]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 22; i < 24; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][10]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			for (int i = 20; i < 23; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][11]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[19][12]->addGridEntity(testGridObject);
+			totalBoxes++;
+
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][12]->addGridEntity(testGridObject);
+			totalBoxes++;
+
+			for (int i = 20; i < 23; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][13]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+
+			// SWITCHES
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[23][6]->addGridEntity(testGridObject);
+		}
 		break;
 
-	case GAMETYPE_LOADGAME:
-	{
-							  LuaReader Script("Scripts//SaveBoxes.lua");
-							  int currentLevelTotalBoxes = Script.get<int>("SaveBoxes.totalBoxes");
-							  LuaReader Script2("Scripts//SaveDoors.lua");
-							  int currentTotalCloseDoors = Script2.get<int>("SaveDoors.totalCloseDoors");
-							  int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
-							  LuaReader Script3("Scripts//SaveSwitches.lua");
+		case GAMETYPE_LOADGAME:
+		{
+			LuaReader Script("Scripts//SaveBoxes.lua");
+			int currentLevelTotalBoxes = Script.get<int>("SaveBoxes.totalBoxes");
+			LuaReader Script2("Scripts//SaveDoors.lua");
+			int currentTotalCloseDoors = Script2.get<int>("SaveDoors.totalCloseDoors");
+			int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
+			LuaReader Script3("Scripts//SaveSwitches.lua");
 
-							  // BOXES
-							  for (int i = 0; i < currentLevelTotalBoxes; i++)
-							  {
-								  int x = Script.get<int>("SaveBoxes.entityX" + std::to_string(i + 1));
-								  int y = Script.get<int>("SaveBoxes.entityY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
-							  }
+			// BOXES
+			for (int i = 0; i < currentLevelTotalBoxes; i++)
+			{
+				int x = Script.get<int>("SaveBoxes.entityX" + std::to_string(i + 1));
+				int y = Script.get<int>("SaveBoxes.entityY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
+			}
 
-							  // SWITCHES
-							  for (int i = 0; i < currentTotalCloseDoors; i++)
-							  {
-								  int x = Script2.get<int>("SaveDoors.entityDoorX" + std::to_string(i + 1));
-								  int y = Script2.get<int>("SaveDoors.entityDoorY" + std::to_string(i + 1));
-								  int x2 = Script3.get<int>("SaveSwitches.entitySwitchX" + std::to_string(i + 1));
-								  int y2 = Script3.get<int>("SaveSwitches.entitySwitchY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-								  testGridObject->addChildren(y, x, EntityGridObject::OBJECT_DOOR, testMap);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[y2][x2]->addGridEntity(testGridObject);
-							  }
+			// SWITCHES
+			for (int i = 0; i < currentTotalCloseDoors; i++)
+			{
+				int x = Script2.get<int>("SaveDoors.entityDoorX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveDoors.entityDoorY" + std::to_string(i + 1));
+				int x2 = Script3.get<int>("SaveSwitches.entitySwitchX" + std::to_string(i + 1));
+				int y2 = Script3.get<int>("SaveSwitches.entitySwitchY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_DOOR, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[y2][x2]->addGridEntity(testGridObject);
+			}
 
-							  for (int i = 0; i < currentTotalOpenDoors; i++)
-							  {
-								  int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
-								  int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-								  testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 32.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[0][0]->addGridEntity(testGridObject);
-							  }
-	}
+			for (int i = 0; i < currentTotalOpenDoors; i++)
+			{
+				int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[0][0]->addGridEntity(testGridObject);
+			}
+		}
 		break;
 	}
 
@@ -742,345 +829,336 @@ void StateTest::loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponen
 	testMap->LoadData("MapData//level2_Background.csv");
 
 	switch (gameType)
-	{// NEW GAME
-
-	case GAMETYPE_NEWGAME:
 	{
-							 // BOXES
-							 for (int i = 1; i < 17; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[11][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 for (int i = 12; i < 19; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][1]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 /*	for (int i = 2; i < 9; ++i)
-							 {
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[15][i]->addGridEntity(testGridObject);
-							 totalBoxes++;
-							 }*/
-							 for (int i = 12; i < 18; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][4]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+		case GAMETYPE_NEWGAME:
+		{
+			// BOXES
+			for (int i = 1; i < 17; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[11][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			for (int i = 12; i < 19; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][1]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 for (int i = 2; i < 4; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[13][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[15][2]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			for (int i = 12; i < 18; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][4]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[16][3]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			for (int i = 2; i < 4; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[13][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[15][2]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[18][2]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[16][3]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 for (int i = 12; i < 18; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][6]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[18][2]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 for (int i = 7; i < 9; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[13][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[15][8]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			for (int i = 12; i < 18; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][6]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[16][7]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			for (int i = 7; i < 9; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[13][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[15][8]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[18][8]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[16][7]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[16][5]->addGridEntity(testGridObject);
-							 totalBoxes++;
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[18][8]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 for (int i = 12; i < 19; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][9]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 for (int i = 1; i < 17; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[19][i]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 for (int i = 10; i < 17; i++)
-							 {
-								 for (int j = 12; j < 14; ++j)
-								 {
-									 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-									 graphicsComponent = new GraphicsComponent();
-									 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-									 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-									 testGridObject->addComponent(graphicsComponent);
-									 testMap->getGridMap()[j][i]->addGridEntity(testGridObject);
-									 totalBoxes++;
-								 }
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[16][5]->addGridEntity(testGridObject);
+			totalBoxes++;
 
-							 }
-							 for (int i = 10; i < 13; i++)
-							 {
-								 for (int j = 14; j < 16; ++j)
-								 {
-									 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-									 graphicsComponent = new GraphicsComponent();
-									 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-									 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-									 testGridObject->addComponent(graphicsComponent);
-									 testMap->getGridMap()[j][i]->addGridEntity(testGridObject);
-									 totalBoxes++;
-								 }
+			for (int i = 12; i < 19; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][9]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			for (int i = 1; i < 17; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[19][i]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			for (int i = 10; i < 17; i++)
+			{
+				for (int j = 12; j < 14; ++j)
+				{
+					testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+					graphicsComponent = new GraphicsComponent();
+					graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+					graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+					testGridObject->addComponent(graphicsComponent);
+					testMap->getGridMap()[j][i]->addGridEntity(testGridObject);
+					totalBoxes++;
+				}
 
-							 }
+			}
+		
+			for (int i = 10; i < 13; i++)
+			{
+				for (int j = 14; j < 16; ++j)
+				{
+					testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+					graphicsComponent = new GraphicsComponent();
+					graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+					graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+					testGridObject->addComponent(graphicsComponent);
+					testMap->getGridMap()[j][i]->addGridEntity(testGridObject);
+					totalBoxes++;
+				}
 
-							 for (int i = 14; i < 19; ++i)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][16]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
-							 for (int i = 14; i < 18; i++)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][15]->addGridEntity(testGridObject);
-								 totalBoxes++;
-							 }
+			}
 
-							 for (int i = 4; i < 9; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][12]->addGridEntity(testGridObject);
-								 totalBoxes++;
+			for (int i = 14; i < 19; ++i)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][16]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
+		
+			for (int i = 14; i < 18; i++)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][15]->addGridEntity(testGridObject);
+				totalBoxes++;
+			}
 
-							 }
+			for (int i = 4; i < 9; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][12]->addGridEntity(testGridObject);
+				totalBoxes++;
+
+			}
 
 
-							 for (int i = 3; i < 8; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][13]->addGridEntity(testGridObject);
-								 totalBoxes++;
+			for (int i = 3; i < 8; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][13]->addGridEntity(testGridObject);
+				totalBoxes++;
 
-							 }
+			}
 
-							 for (int i = 4; i < 9; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][14]->addGridEntity(testGridObject);
-								 totalBoxes++;
+			for (int i = 4; i < 9; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][14]->addGridEntity(testGridObject);
+				totalBoxes++;
 
-							 }
-							 for (int i = 3; i < 8; i += 2)
-							 {
-								 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								 graphicsComponent = new GraphicsComponent();
-								 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								 testGridObject->addComponent(graphicsComponent);
-								 testMap->getGridMap()[i][15]->addGridEntity(testGridObject);
-								 totalBoxes++;
+			}
+		
+			for (int i = 3; i < 8; i += 2)
+			{
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[i][15]->addGridEntity(testGridObject);
+				totalBoxes++;
 
-							 }
+			}
 
-							 // SWTICHES
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-							 testGridObject->addChildren(6, 23, EntityGridObject::OBJECT_DOOR, testMap);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[5][1]->addGridEntity(testGridObject);
+			// SWTICHES
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(6, 23, EntityGridObject::OBJECT_DOOR, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[5][1]->addGridEntity(testGridObject);
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-							 testGridObject->addChildren(6, 25, EntityGridObject::OBJECT_DOOR, testMap);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[18][5]->addGridEntity(testGridObject);
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(6, 25, EntityGridObject::OBJECT_DOOR, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[18][5]->addGridEntity(testGridObject);
 
-							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-							 testGridObject->addChildren(6, 27, EntityGridObject::OBJECT_DOOR, testMap);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-							 graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[17][13]->addGridEntity(testGridObject);
-
-							 /*testGridObject->addChildren(19, 4, EntityGridObject::OBJECT_DOOR, testMap);
-							 graphicsComponent = new GraphicsComponent();
-							 graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-							 testGridObject->addComponent(graphicsComponent);
-							 testMap->getGridMap()[14][5]->addGridEntity(testGridObject);*/
-	}
+			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+			testGridObject->addChildren(6, 27, EntityGridObject::OBJECT_DOOR, testMap);
+			graphicsComponent = new GraphicsComponent();
+			graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+			graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+			testGridObject->addComponent(graphicsComponent);
+			testMap->getGridMap()[17][13]->addGridEntity(testGridObject);
+		}
 		break;
 
-		// LOAD GAME
-	case GAMETYPE_LOADGAME:
-	{
-							  LuaReader Script("Scripts//SaveBoxes.lua");
-							  int currentLevelTotalBoxes = Script.get<int>("SaveBoxes.totalBoxes");
-							  LuaReader Script2("Scripts//SaveDoors.lua");
-							  int currentTotalCloseDoors = Script2.get<int>("SaveDoors.totalCloseDoors");
-							  int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
-							  LuaReader Script3("Scripts//SaveSwitches.lua");
+		case GAMETYPE_LOADGAME:
+		{
+			LuaReader Script("Scripts//SaveBoxes.lua");
+			int currentLevelTotalBoxes = Script.get<int>("SaveBoxes.totalBoxes");
+			LuaReader Script2("Scripts//SaveDoors.lua");
+			int currentTotalCloseDoors = Script2.get<int>("SaveDoors.totalCloseDoors");
+			int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
+			LuaReader Script3("Scripts//SaveSwitches.lua");
 
-							  // BOXES
-							  for (int i = 0; i < currentLevelTotalBoxes; i++)
-							  {
-								  int x = Script.get<int>("SaveBoxes.entityX" + std::to_string(i + 1));
-								  int y = Script.get<int>("SaveBoxes.entityY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
-							  }
+			// BOXES
+			for (int i = 0; i < currentLevelTotalBoxes; i++)
+			{
+				int x = Script.get<int>("SaveBoxes.entityX" + std::to_string(i + 1));
+				int y = Script.get<int>("SaveBoxes.entityY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("Box", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
+			}
 
-							  // SWITCHES
-							  for (int i = 0; i < currentTotalCloseDoors; i++)
-							  {
-								  int x = Script2.get<int>("SaveDoors.entityDoorX" + std::to_string(i + 1));
-								  int y = Script2.get<int>("SaveDoors.entityDoorY" + std::to_string(i + 1));
-								  int x2 = Script3.get<int>("SaveSwitches.entitySwitchX" + std::to_string(i + 1));
-								  int y2 = Script3.get<int>("SaveSwitches.entitySwitchY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-								  testGridObject->addChildren(y, x, EntityGridObject::OBJECT_DOOR, testMap);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[y2][x2]->addGridEntity(testGridObject);
-							  }
+			// SWITCHES
+			for (int i = 0; i < currentTotalCloseDoors; i++)
+			{
+				int x = Script2.get<int>("SaveDoors.entityDoorX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveDoors.entityDoorY" + std::to_string(i + 1));
+				int x2 = Script3.get<int>("SaveSwitches.entitySwitchX" + std::to_string(i + 1));
+				int y2 = Script3.get<int>("SaveSwitches.entitySwitchY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_DOOR, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 16.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[y2][x2]->addGridEntity(testGridObject);
+			}
 
-							  for (int i = 0; i < currentTotalOpenDoors; i++)
-							  {
-								  int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
-								  int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
-								  testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
-								  testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
-								  graphicsComponent = new GraphicsComponent();
-								  graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 32.f));
-								  graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
-								  testGridObject->addComponent(graphicsComponent);
-								  testMap->getGridMap()[0][0]->addGridEntity(testGridObject);
-							  }
-
-	}
+			for (int i = 0; i < currentTotalOpenDoors; i++)
+			{
+				int x = Script2.get<int>("SaveDoors.entityDoorOpenX" + std::to_string(i + 1));
+				int y = Script2.get<int>("SaveDoors.entityDoorOpenY" + std::to_string(i + 1));
+				testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
+				testGridObject->addChildren(y, x, EntityGridObject::OBJECT_UNDEFINED, testMap);
+				graphicsComponent = new GraphicsComponent();
+				graphicsComponent->addMesh(MeshBuilder::GenerateQuad("switch", Color(1.f, 0.f, 0.f), 32.f));
+				graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile2.tga");
+				testGridObject->addComponent(graphicsComponent);
+				testMap->getGridMap()[0][0]->addGridEntity(testGridObject);
+			}
+		}
 		break;
 	}
+	
 	// KEY
 	if (gameC)
 	{
