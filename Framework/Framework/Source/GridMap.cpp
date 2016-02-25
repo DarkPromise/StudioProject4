@@ -173,14 +173,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 				break;
 			
 				case EntityGridObject::OBJECT_KEY:
-					if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
+					if (gameC)
 					{
-						m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
-						if (gameC)
+						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 						{
+							m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
+							return true;
 						}
-						return true;
 					}
 				break;
 			}
@@ -205,14 +205,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 				break;
 			
 				case EntityGridObject::OBJECT_KEY:
-					if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
+					if (gameC)
 					{
-						m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
-						if (gameC)
+						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 						{
+							m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
+							return true;
 						}
-						return true;
 					}
 				break;
 			}
@@ -236,14 +236,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 				break;
 			
 				case EntityGridObject::OBJECT_KEY:
-					if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
+					if (gameC)
 					{
-						m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
-						if (gameC)
+						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 						{
+							m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
 							gameC->setHasKey(true);
+							return true;
 						}
-						return true;
 					}
 				break;
 			}
@@ -267,14 +267,14 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 				break;
 			
 				case EntityGridObject::OBJECT_KEY:
-					if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
+					if (gameC)
 					{
-						m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
-						if (gameC)
+						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 						{
+							m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
 							gameC->setHasKey(true);
+							return true;
 						}
-						return true;
 					}
 				break;
 			}

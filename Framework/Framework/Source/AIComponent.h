@@ -7,6 +7,7 @@
 
 #define LOOK_DELAY 0.1
 #define MOVE_DELAY 0.2
+#define SWITCH_DELAY 0.5
 
 class AIComponent : public Component
 {
@@ -29,6 +30,7 @@ public:
 		STATE_IDLE,
 		STATE_PATROL,
 		STATE_CHASE,
+		STATE_PATHING,
 	};
 
 	AIComponent();
@@ -59,7 +61,8 @@ public:
 	void LookLeft();
 	void LookRight();
 	void RenderLineOfSight(View * theView);
-	void ChaseEntity(GridMap * gridMap, Entity * entity);
+	void ChaseEntity(GridMap * gridMap, Entity * entity, double dt);
+	void WalkToPoint(GridMap * gridMap, Entity * entity, double dt);
 private:
 	AI_TYPE m_eType;
 	AI_STATE m_eState;
@@ -71,6 +74,10 @@ private:
 
 	double m_dLookDelay;
 	double m_dMoveDelay;
+
+	bool m_bPathing;
+
+	std::vector<Vector3> m_PathList;
 };
 
 #endif

@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AIComponent.cpp" />
+    <ClCompile Include="Source\AStar.cpp" />
     <ClCompile Include="Source\AxisAlignedBoundingBox.cpp" />
     <ClCompile Include="Source\Branch.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AIComponent.h" />
+    <ClInclude Include="Source\AStar.h" />
     <ClInclude Include="Source\AxisAlignedBoundingBox.h" />
     <ClInclude Include="Source\Branch.h" />
     <ClInclude Include="Source\Camera.h" />

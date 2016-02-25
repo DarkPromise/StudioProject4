@@ -147,6 +147,12 @@
     <Filter Include="Source Files\Highscore">
       <UniqueIdentifier>{023d04fb-ad91-4d43-a341-cb0425e3a2a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Pathfinding">
+      <UniqueIdentifier>{8cf24434-9f9d-4aae-a594-b076e3634bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pathfinding">
+      <UniqueIdentifier>{816df245-bc46-4edb-a664-5169c290f6e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -319,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateGameOver.cpp">
       <Filter>Source Files\State Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AStar.cpp">
+      <Filter>Source Files\Pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,6 +516,9 @@
     </ClInclude>
     <ClInclude Include="Source\StateGameOver.h">
       <Filter>Header Files\State Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AStar.h">
+      <Filter>Header Files\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

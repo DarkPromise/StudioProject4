@@ -4,6 +4,7 @@ NumberOfLevels = 6,
     NumberOfMaps = 1,
       Map1 = {
          mapPath = "MapData//Level1_1.csv",
+         playerStartPosition = {0,0},
          numberOfEnemies = 3,
          Enemies = {
            enemy1 = "guard1.lua",

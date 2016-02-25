@@ -89,8 +89,6 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 		int playerIndexX = (int)indexX;
 		int playerIndexY = currMap->getMapHeight() - (int)indexY;
 
-		std::cout << currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity()->getComponent<InformationComponent>()->toString() << std::endl;
-
 		if (playerIndexY - 1 >= 0)
 		{
 			if (currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getTileID() == Grid::TILE_FLOOR)
@@ -250,7 +248,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
 		int playerIndexX = (int)indexX;
 		int playerIndexY = currMap->getMapHeight() - (int)indexY;
-		auto thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 
 		// Checking 4 Sides
 		if (currMap->getGridMap()[playerIndexY + 1][playerIndexX]->hasInteractableEntity())

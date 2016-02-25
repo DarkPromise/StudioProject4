@@ -39,7 +39,6 @@ void WaypointComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::strin
 					newPoint->indexX = point.rawget<int>(2);
 					newPoint->indexY = point.rawget<int>(1);
 					newPoint->position = gridMap->getGridMap()[point.rawget<int>(1)][point.rawget<int>(2)]->getGridPos();
-					std::cout << newPoint->position << std::endl;
 					this->addWaypoint(newPoint);
 				}
 				else

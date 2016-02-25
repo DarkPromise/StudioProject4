@@ -102,7 +102,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		if (gameC->getRestartLevel())
 		{
 			gameC->setRestartLevel(false);
-			this->RestartLevel();
+			//this->RestartLevel();
+			std::cout << "RESTART" << std::endl;
 		}
 
 		else if (gameC->getLevelCleared())
