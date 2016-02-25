@@ -1,6 +1,7 @@
 #include "GridMap.h"
 #include "EntityGridObject.h"
 #include "EntityTest.h"
+#include "SoundManager.h"
 
 GridMap::GridMap()
 : m_iTileSize(0)
@@ -165,6 +166,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//slide.wav", false);
+							}
 							m_cGridMap[pIndexY - 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity());
 							m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
 							return true;
@@ -197,6 +202,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//slide.wav", false);
+							}
 							m_cGridMap[pIndexY + 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity());
 							m_cGridMap[pIndexY + 1][pIndexX]->removeEntity();
 							return true;
@@ -228,6 +237,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//slide.wav", false);
+							}
 							m_cGridMap[pIndexY][pIndexX - 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity());
 							m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
 							return true;
@@ -259,6 +272,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//slide.wav", false);
+							}
 							m_cGridMap[pIndexY][pIndexX + 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity());
 							m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
 							return true;

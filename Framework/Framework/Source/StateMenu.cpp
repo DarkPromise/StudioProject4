@@ -4,6 +4,7 @@
 
 #include "StateTest.h"
 #include "StateAGDevMenu.h"
+#include "SoundManager.h"
 
 StateMenu::~StateMenu()
 {
@@ -41,16 +42,12 @@ void StateMenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("NewGame Button", "New Game", 0.5f, 0.5f, 48.f);
+	newGui = new GuiButton("NewGame Button", "New Game", 0.5f, 0.55f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("NewGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("LoadGame Button", "Load Game", 0.5f, 0.6f, 48.f);
+	newGui = new GuiButton("LoadGame Button", "Load Game", 0.5f, 0.65f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
-	m_guiList.push_back(newGui);
-
-	newGui = new GuiButton("Multiplayer Button", "Multiplayer", 0.5f, 0.7f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("MultiplayerBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
 	m_bStartFadeIn = true;
@@ -78,6 +75,7 @@ void StateMenu::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
+		SoundManager::playSound("Sounds//return.ogg", false);
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
@@ -166,13 +164,12 @@ void StateMenu::UpdateSelection(StateHandler * stateHandler)
 						case NEWGAME_BUTTON:
 							gameType = 1;
 							m_bStartFadeOut = true;
+							SoundManager::playSound("Sounds//select.ogg", false);
 							break;
 						case LOADGAME_BUTTON:
 							gameType = 2;
 							m_bStartFadeOut = true;
-							break;
-						case MULTIPLAYER_BUTTON:
-							gameType = 3;
+							SoundManager::playSound("Sounds//select.ogg", false);
 							break;
 						}
 						theView->getInputHandler()->setClickDelay(0.2);

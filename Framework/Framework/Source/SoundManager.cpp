@@ -1,7 +1,7 @@
 #include "SoundManager.h"
 
 bool SoundManager::m_soundStatus = true;
-ISoundEngine * SoundManager::soundEngine;
+ISoundEngine *SoundManager::soundEngine;
 
 SoundManager::SoundManager()
 {
@@ -34,4 +34,9 @@ void SoundManager::playSound(const char * soundPath, bool loop)
 void SoundManager::stopAllSounds()
 {
 	soundEngine->stopAllSounds();
+}
+
+void SoundManager::setSoundVolume(float volumeLevel)
+{
+	soundEngine->setSoundVolume(volumeLevel);
 }

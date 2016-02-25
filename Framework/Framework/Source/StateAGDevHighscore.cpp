@@ -3,6 +3,7 @@
 #include "LoadTGA.h"
 
 #include "StateAGDevMenu.h"
+#include "SoundManager.h"
 
 StateAGDevHighscore::~StateAGDevHighscore()
 {
@@ -64,6 +65,7 @@ void StateAGDevHighscore::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
+		SoundManager::playSound("Sounds//return.ogg", false);
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }

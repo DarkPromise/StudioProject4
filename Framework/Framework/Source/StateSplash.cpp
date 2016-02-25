@@ -2,6 +2,7 @@
 #include "View.h"
 #include "StateAGDevMenu.h"
 #include "StateTest.h"
+#include "SoundManager.h"
 
 StateSplash::~StateSplash()
 {
@@ -29,6 +30,9 @@ void StateSplash::Init()
 
 	m_bStartFadeOut = true;
 	m_dFadeDelay = 0.0;
+
+	SoundManager::playSound("Sounds//splash.wav", false);
+	SoundManager::setSoundVolume(0.3);
 }
 
 void StateSplash::Update(StateHandler * stateHandler, double dt)
@@ -95,8 +99,9 @@ void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 {	
 	for (Mesh * mesh : m_meshList)
 	{
-		mesh->alpha -= 2.f * dt;
+		mesh->alpha -= 1.f * dt;
 	}
+	
 	if (m_meshList[0]->alpha < 0)
 	{
 		stateHandler->ChangeState(new StateAGDevMenu("Menu State", theView, true));

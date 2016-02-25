@@ -3,6 +3,7 @@
 #include "StateAGDevMenu.h"
 #include "LoadTGA.h"
 #include "StateMainmenu.h"
+#include "SoundManager.h"
 
 StateCredits::~StateCredits()
 {
@@ -58,6 +59,7 @@ void StateCredits::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
+		SoundManager::playSound("Sounds//return.ogg", false);
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }

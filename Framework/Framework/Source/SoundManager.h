@@ -27,8 +27,9 @@ public:
 	static bool getSoundStatus();
 	static void playSound(const char * soundPath, bool loop);
 	static void stopAllSounds();
+	static void setSoundVolume(float volumeLevel);
 private:
-	static ISoundEngine * soundEngine;
+	static ISoundEngine *soundEngine;
 	static bool m_soundStatus;
 };
 

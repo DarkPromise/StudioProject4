@@ -13,7 +13,6 @@ public:
 	{
 		NEWGAME_BUTTON,
 		LOADGAME_BUTTON,
-		MULTIPLAYER_BUTTON,
 	};
 
 	StateMenu(std::string name, View * theView)

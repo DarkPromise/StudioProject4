@@ -2,6 +2,7 @@
 #include "View.h"
 #include "LoadTGA.h"
 #include "StateAGDevMenu.h"
+#include "SoundManager.h"
 
 int StateAGDevOptions::difficulty = 1;
 
@@ -41,7 +42,7 @@ void StateAGDevOptions::Init()
 	
 	// Create Gui
 	Gui * newGui;
-	newGui = new GuiButton("Sound Button", "Sound:", 0.47f, 0.76f, 48.f);
+	newGui = new GuiButton("Sound Button", "Game Sounds:", 0.42f, 0.76f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OnBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
@@ -76,6 +77,7 @@ void StateAGDevOptions::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
+		SoundManager::playSound("Sounds//return.ogg", false);
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 	}
 }
@@ -157,11 +159,12 @@ void StateAGDevOptions::UpdateSelection(StateHandler * stateHandler)
 						switch (BUTTON(i))
 						{
 							case SOUND_BUTTON:
+								SoundManager::playSound("Sounds//toggle.wav", false);
 								SoundManager::toggleSound();
-								//std::cout << SoundManager::getSoundStatus() << std::endl;
 							break;
 
 							case DIFFICULTY_BUTTON:
+								SoundManager::playSound("Sounds//toggle.wav", false);
 								toggleDifficulty();
 								break;
 						}

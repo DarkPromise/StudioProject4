@@ -27,16 +27,12 @@ void StateTest::Init()
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(testMesh);
 
-	// SOUND
-	if (SoundManager::getSoundStatus())
-	{
-		SoundManager::playSound("Sounds//movesfx.wav", false);
-	}
-
+	// CAMERA
 	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
 	theView->getInputHandler()->setMouseEnabled(false);
 
+	// MAP
 	testMap = new GridMap();
 	testMap->Init(xSize, ySize);
 
@@ -52,10 +48,10 @@ void StateTest::Init()
 	{
 		case GAMETYPE_NEWGAME:
 		{
-			// TEST AI GUARD
-			LuaReader guardScript("Scripts//Guard.lua");
+			// AI
+			/*LuaReader guardScript("Scripts//Guard.lua");
 			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			testMap->addGridEntity(testGuard);
+			testMap->addGridEntity(testGuard);*/
 			// PLAYER
 			resetAllEntityCount();
 			informationComponent->setPosition(testMap->getGridMap()[23][1]->getGridPos());
@@ -65,10 +61,10 @@ void StateTest::Init()
 
 		case GAMETYPE_LOADGAME:
 		{
-			// TEST AI GUARD
-			LuaReader guardScript("Scripts//GuardSave.lua");
+			// AI
+			/*LuaReader guardScript("Scripts//GuardSave.lua");
 			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			testMap->addGridEntity(testGuard);
+			testMap->addGridEntity(testGuard);*/
 			// PLAYER
 			loadPlayer(testMap, informationComponent, gameC);
 		}
@@ -127,9 +123,9 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			testMap->ResetData();
 			testMap->Init(xSize, ySize);
 
-			LuaReader guardScript("Scripts//Guard.lua");
+			/*LuaReader guardScript("Scripts//Guard.lua");
 			testGuard = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			testMap->addGridEntity(testGuard);
+			testMap->addGridEntity(testGuard);*/
 
 			switch (gameC->getCurrLevel())
 			{
@@ -154,10 +150,10 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	if (state == GAMESTATE::STATE_PLAY)
 	{
 		// UPDATE AI
-		if (testGuard->getComponent<AIComponent>())
+		/*if (testGuard->getComponent<AIComponent>())
 		{
 			testGuard->getComponent<AIComponent>()->Update(dt, testMap, testEntity);
-		}
+		}*/
 
 		// PAUSE GAME
 		if (!click2 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
@@ -264,6 +260,7 @@ void StateTest::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
+		SoundManager::playSound("Sounds//return.ogg", false);
 		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
 	}
 
@@ -417,7 +414,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderLevel(theView);
 		testMap->RenderGridEntities(theView);
-		RenderAI();
+		//RenderAI();
 		RenderPlayer();
 		RenderGUI();
 		theView->modelStack.PopMatrix();
@@ -516,44 +513,36 @@ void StateTest::gameSave(InformationComponent *infoC)
 	}
 
 	// SAVE ENEMIES DATA
-	float indexX2 = testGuard->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-	float indexY2 = testGuard->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-	int aiIndexX = (int)indexX2;
-	int aiIndexY = testMap->getMapHeight() - (int)indexY2;
-	Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
-	Vector3 direction = testGuard->getComponent<InformationComponent>()->getDirection();
-	Vector3 rotation = testGuard->getComponent<InformationComponent>()->getRotation();
-	std::string state = std::to_string(testGuard->getComponent<AIComponent>()->getState());
-	if (state == "0")
-	{
-		state = "Idle";
-	}
-	else if (state == "1")
-	{
-		state = "Patrol";
-	}
-	else if (state == "2")
-	{
-		state = "Chase";
-	}
-	else if (state == "3")
-	{
-		state = "Pathing";
-	}
-
 	/*for (int i = 0; i < 1; i++)
 	{
-	std::string number;
-	if (i == 0)
-	{
-	number = "";
-	}
-	else
-	{
-	number = std::to_string(i + 1);
-	}
-
-	LuaReader script2("Scripts//Guard" + number + ".lua");
+		float indexX2 = testGuard->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+		float indexY2 = testGuard->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+		int aiIndexX = (int)indexX2;
+		int aiIndexY = testMap->getMapHeight() - (int)indexY2;
+		Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
+		Vector3 direction = testGuard->getComponent<InformationComponent>()->getDirection();
+		Vector3 rotation = testGuard->getComponent<InformationComponent>()->getRotation();
+		std::string state = std::to_string(testGuard->getComponent<AIComponent>()->getState());		
+		if (state == "0")
+		{
+			state = "Idle";
+		}
+		
+		else if (state == "1")
+		{
+			state = "Patrol";
+		}
+		
+		else if (state == "2")
+		{
+			state = "Chase";
+		}
+		
+		else if (state == "3")
+		{
+			state = "Pathing";
+		}	
+		script.saveEnemies(position, direction, rotation, state, i);
 	}*/
 
 	// SAVING DATA INTO SCRIPTS
@@ -562,8 +551,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer);
 		script.saveBoxes(entityBoxesX, entityBoxesY, totalBoxes);
 		script.saveDoors(entityDoorsX, entityDoorsY, entityDoorsOpenX, entityDoorsOpenY, totalCloseDoors, totalOpenDoors);
-		script.saveSwitches(entitySwitchesX, entitySwitchesY);
-		script.saveEnemies(position, direction, rotation, state, 0);
+		script.saveSwitches(entitySwitchesX, entitySwitchesY);	
 		entityBoxesX.clear(); entityBoxesY.clear();
 		entityDoorsX.clear(); entityDoorsY.clear();
 		entityDoorsOpenX.clear(); entityDoorsOpenY.clear();

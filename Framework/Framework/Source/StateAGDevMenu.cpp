@@ -7,6 +7,7 @@
 #include "StateAGDevOptions.h"
 #include "StateCredits.h"
 #include "StateMenu.h"
+#include "SoundManager.h"
 
 StateAGDevMenu::~StateAGDevMenu()
 {
@@ -172,19 +173,23 @@ void StateAGDevMenu::UpdateSelection(StateHandler * stateHandler)
 						switch (MENU_BUTTONS(i))
 						{
 						case START_BUTTON:
-							//m_bStartFadeOut = true;
+							SoundManager::playSound("Sounds//select.ogg", false);
 							stateHandler->ChangeState(new StateMenu("AGDev GameMenu State", theView));
 							break;
 						case INSTRUCTIONS_BUTTON:
+							SoundManager::playSound("Sounds//select.ogg", false);
 							stateHandler->ChangeState(new StateAGDevInstructions("AGDev Instructions State", theView));
 							break;
 						case HIGHSCORE_BUTTON:
+							SoundManager::playSound("Sounds//select.ogg", false);
 							stateHandler->ChangeState(new StateAGDevHighscore("AGDev Highscore State", theView));
 							break;
 						case OPTIONS_BUTTON:
+							SoundManager::playSound("Sounds//select.ogg", false);
 							stateHandler->ChangeState(new StateAGDevOptions("AGDev Options State", theView));
 							break;
 						case CREDITS_BUTTON:
+							SoundManager::playSound("Sounds//select.ogg", false);
 							stateHandler->ChangeState(new StateCredits("AGDev Credits State", theView));
 							break;
 						case EXIT_BUTTON:
