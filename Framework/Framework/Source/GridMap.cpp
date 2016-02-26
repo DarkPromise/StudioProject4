@@ -182,6 +182,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//collect.wav", false);
+							}
 							m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -218,6 +222,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//collect.wav", false);
+							}
 							m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -253,6 +261,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//collect.wav", false);
+							}
 							m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -288,6 +300,10 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 						{
+							if (SoundManager::getSoundStatus())
+							{
+								SoundManager::playSound("Sounds//collect.wav", false);
+							}
 							m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;

@@ -2,6 +2,7 @@
 #include "EntityGridObject.h"
 #include "glfw3.h"
 #include "EntityTest.h"
+#include "SoundManager.h"
 
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
 : m_cInputHandler(theInputHandler)
@@ -255,14 +256,22 @@ void ControllerComponent::Interact(GridMap * currMap)
 			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridEntityType());
 			switch (objType)
 			{
-			case EntityGridObject::OBJECT_BOX:
+				case EntityGridObject::OBJECT_BOX:
 				break;
-			case EntityGridObject::OBJECT_KEY:
+				
+				case EntityGridObject::OBJECT_KEY:
 				break;
-			case EntityGridObject::OBJECT_SWITCH:
-				currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
+				
+				case EntityGridObject::OBJECT_SWITCH:
+					if (SoundManager::getSoundStatus())
+					{
+						SoundManager::playSound("Sounds//lever.wav", false);
+						SoundManager::playSound("Sounds//opendoor.wav", false);
+					}
+					currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
 				break;
-			case EntityGridObject::OBJECT_DOOR:
+				
+				case EntityGridObject::OBJECT_DOOR:
 				break;
 			}
 		}
@@ -271,14 +280,22 @@ void ControllerComponent::Interact(GridMap * currMap)
 			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridEntityType());
 			switch (objType)
 			{
-			case EntityGridObject::OBJECT_BOX:
+				case EntityGridObject::OBJECT_BOX:
 				break;
-			case EntityGridObject::OBJECT_KEY:
+				
+				case EntityGridObject::OBJECT_KEY:
 				break;
-			case EntityGridObject::OBJECT_SWITCH:
-				currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
+				
+				case EntityGridObject::OBJECT_SWITCH:
+					if (SoundManager::getSoundStatus())
+					{
+						SoundManager::playSound("Sounds//lever.wav", false);
+						SoundManager::playSound("Sounds//opendoor.wav", false);
+					}
+					currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
 				break;
-			case EntityGridObject::OBJECT_DOOR:
+				
+				case EntityGridObject::OBJECT_DOOR:
 				break;
 			}
 		}
@@ -287,14 +304,22 @@ void ControllerComponent::Interact(GridMap * currMap)
 			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridEntityType());
 			switch (objType)
 			{
-			case EntityGridObject::OBJECT_BOX:
+				case EntityGridObject::OBJECT_BOX:
 				break;
-			case EntityGridObject::OBJECT_KEY:
+				
+				case EntityGridObject::OBJECT_KEY:
 				break;
-			case EntityGridObject::OBJECT_SWITCH:
-				currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
+				
+				case EntityGridObject::OBJECT_SWITCH:
+					if (SoundManager::getSoundStatus())
+					{
+						SoundManager::playSound("Sounds//lever.wav", false);
+						SoundManager::playSound("Sounds//opendoor.wav", false);
+					}
+					currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
 				break;
-			case EntityGridObject::OBJECT_DOOR:
+				
+				case EntityGridObject::OBJECT_DOOR:
 				break;
 			}
 		}
@@ -303,14 +328,22 @@ void ControllerComponent::Interact(GridMap * currMap)
 			EntityGridObject::OBJECT_TYPE objType = EntityGridObject::OBJECT_TYPE(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridEntityType());
 			switch (objType)
 			{
-			case EntityGridObject::OBJECT_BOX:
+				case EntityGridObject::OBJECT_BOX:
 				break;
-			case EntityGridObject::OBJECT_KEY:
+				
+				case EntityGridObject::OBJECT_KEY:
 				break;
-			case EntityGridObject::OBJECT_SWITCH:
-				currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
+				
+				case EntityGridObject::OBJECT_SWITCH:
+					if (SoundManager::getSoundStatus())
+					{
+						SoundManager::playSound("Sounds//lever.wav", false);
+						SoundManager::playSound("Sounds//opendoor.wav", false);
+					}
+					currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
 				break;
-			case EntityGridObject::OBJECT_DOOR:
+				
+				case EntityGridObject::OBJECT_DOOR:
 				break;
 			}
 		}
@@ -321,10 +354,19 @@ void ControllerComponent::Interact(GridMap * currMap)
 		{
 			if (gameC->getHasKey())
 			{
+				if (SoundManager::getSoundStatus())
+				{
+					SoundManager::playSound("Sounds//levelclear.wav", false);
+				}
 				gameC->setLevelCleared(true);
 			}
+			
 			else
 			{
+				if (SoundManager::getSoundStatus())
+				{
+					SoundManager::playSound("Sounds//leveldenied.wav", false);
+				}
 				gameC->setKeyShowTimer(3.0);
 			}
 		}

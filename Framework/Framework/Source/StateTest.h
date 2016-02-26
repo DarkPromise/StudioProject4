@@ -55,6 +55,7 @@ public:
 	void RenderPlayer();
 	void RenderGUI();
 	void RenderAI();
+	void RenderBackground();
 
 	// Game Functions
 	void RestartLevel();

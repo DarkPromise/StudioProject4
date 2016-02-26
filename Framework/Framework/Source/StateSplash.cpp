@@ -32,7 +32,7 @@ void StateSplash::Init()
 	m_dFadeDelay = 0.0;
 
 	SoundManager::playSound("Sounds//splash.wav", false);
-	SoundManager::setSoundVolume(0.3);
+	SoundManager::setSoundVolume(0.3f);
 }
 
 void StateSplash::Update(StateHandler * stateHandler, double dt)

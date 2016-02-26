@@ -27,6 +27,10 @@ void StateTest::Init()
 	testMesh->textureID = LoadTGA("Fonts//source.tga");
 	m_meshList.push_back(testMesh);
 
+	testMesh = MeshBuilder::GenerateQuad("Background", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Gamebg.tga");
+	m_meshList.push_back(testMesh);
+
 	// CAMERA
 	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
@@ -410,6 +414,11 @@ void StateTest::RenderAI()
 			}
 		}
 	}
+}
+
+void StateTest::RenderBackground()
+{
+	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 }
 
 void StateTest::Draw(StateHandler * stateHandler)
