@@ -179,6 +179,11 @@ void AStar::removeFromCloseList(AStarNode * node)
 
 void AStar::createBestPath(AStarNode * node)
 {
+	if (node->x == openList[0]->x && node->y == openList[0]->y)
+	{
+		return;
+	}
+
 	node = node->parentNode;
 	//this->bestPath.push_back(Vector3(goalNode->y,goalNode->x));	// Goal Indexes
 	while (node->parentNode != NULL)
@@ -188,7 +193,7 @@ void AStar::createBestPath(AStarNode * node)
 	}
 	//this->bestPath.push_back(Vector3(startNode->y,startNode->x));	// Start Indexes
 
-	std::cout << std::endl;
+	/*std::cout << std::endl;
 	for (int y = 0; y < gridMap->backgroundData.size(); y++)
 	{
 		for (int x = 0; x <gridMap->backgroundData[y].size(); x++)
@@ -197,7 +202,7 @@ void AStar::createBestPath(AStarNode * node)
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 }
 
 AStarNode * AStar::getBestNode()

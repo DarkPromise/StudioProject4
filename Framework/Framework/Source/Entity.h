@@ -42,7 +42,7 @@ public:
 				return result;
 			}
 		}
-		std::cout << "Component does not exist" << std::endl;
+		//std::cout << "Component does not exist" << std::endl;
 		return nullptr;
 	}
 

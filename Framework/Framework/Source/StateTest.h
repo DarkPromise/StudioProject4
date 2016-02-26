@@ -66,6 +66,7 @@ public:
 	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
 	void loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
 	void loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
+	void loadLevel4(GridMap * testMap, GraphicsComponent * graphicsComponent, EntityGridObject * gridObject, GameplayComponent * gameC, GAMETYPE gameType);
 
 	GridMap * testMap;
 private:
@@ -74,6 +75,7 @@ private:
 	Camera * theCamera;
 	Entity * testEntity;
 	Entity * testGuard;
+	std::vector<Entity*> m_guardList;
 	EntityGridObject *testGridObject;
 	float moveDelay;
 	float gameTimer;

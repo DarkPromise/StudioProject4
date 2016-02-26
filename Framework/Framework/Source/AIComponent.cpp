@@ -689,7 +689,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 				int diffX = playerIndexX - aiIndexX;
 				int diffY = playerIndexY - aiIndexY;
 
-				if ((abs(diffX) > this->getSightLength() + 1) || (abs(diffY) > this->getSightLength() + 1))
+				if ((abs(diffX) > this->getSightLength()) || (abs(diffY) > this->getSightLength() ))
 				{
 					auto wayC = this->getParent()->getComponent<WaypointComponent>();
 					if (wayC)
@@ -902,7 +902,6 @@ void AIComponent::WalkToPoint(GridMap * gridMap, Entity * entity, double dt)
 		if (m_dMoveDelay > MOVE_DELAY)
 		{
 			auto infoC = this->getParent()->getComponent<InformationComponent>();
-			auto playerInfo = entity->getComponent<InformationComponent>();
 			if (infoC)
 			{
 				float indexX = infoC->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();

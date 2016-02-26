@@ -6,7 +6,7 @@
 #include "MessageBoard.h"
 
 #define LOOK_DELAY 0.1
-#define MOVE_DELAY 0.2
+#define MOVE_DELAY 0.25
 #define SWITCH_DELAY 0.5
 
 class AIComponent : public Component
