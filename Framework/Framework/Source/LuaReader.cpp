@@ -260,18 +260,8 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	file.close();
 }
 
-void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int number)
+void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int enemyListIndex)
 {
-	std::string numberString;
-	if (number == 0)
-	{
-		numberString = "";
-	}
-	else
-	{
-		numberString = std::to_string(number + 1);
-	}
-
 	ofstream file;
 	std::stringstream positionX, positionY;
 	std::stringstream directionX, directionY, directionZ;
@@ -283,7 +273,7 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	directionX << direction.x; directionY << direction.y; directionZ << direction.z;
 	rotationX << rotation.x; rotationY << rotation.y; rotationZ << rotation.z;
 
-	file.open("Scripts//GuardSave" + numberString + ".lua");
+	file.open("Scripts//Guards//GuardSave" + std::to_string(enemyListIndex + 1) + ".lua");
 
 	file << "Guard = {" << std::endl;
 	file << "InformationComponent = {" << std::endl;
@@ -311,11 +301,68 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	file << "}," << std::endl;
 
 	file << "WaypointComponent = {" << std::endl;
-	file << "numberOfPoints = 4," << std::endl;
-	file << "point1 = {18,5}," << std::endl;
-	file << "point2 = {16,5}," << std::endl;
-	file << "point3 = {16,10}," << std::endl;
-	file << "point4 = {18,10}," << std::endl;
+	if (enemyListIndex == 0)
+	{
+		file << "numberOfPoints = 2," << std::endl;
+		file << "point1 = {1,27}," << std::endl;
+		file << "point2 = {1,27}," << std::endl;
+	}
+	else if (enemyListIndex == 1)
+	{
+		file << "numberOfPoints = 6," << std::endl;
+		file << "point1 = {6,25}," << std::endl;
+		file << "point2 = {8,25}," << std::endl;
+		file << "point3 = {8,22}," << std::endl;
+		file << "point4 = {6,22}," << std::endl;
+		file << "point5 = {8,22}," << std::endl;
+		file << "point6 = {8,25}," << std::endl;
+	}
+	else if (enemyListIndex == 2)
+	{
+		file << "numberOfPoints = 6," << std::endl;
+		file << "point1 = {10,22}," << std::endl;
+		file << "point2 = {10,16}," << std::endl;
+		file << "point3 = {14,16}," << std::endl;
+		file << "point4 = {14,22}," << std::endl;
+	}
+	else if (enemyListIndex == 3)
+	{
+		file << "numberOfPoints = 2," << std::endl;
+		file << "point1 = {6,13}," << std::endl;
+		file << "point2 = {6,13}," << std::endl;
+	}
+	else if (enemyListIndex == 4)
+	{
+		file << "numberOfPoints = 6," << std::endl;
+		file << "point1 = {6,25}," << std::endl;
+		file << "point2 = {4,2}," << std::endl;
+		file << "point3 = {11,2}," << std::endl;
+		file << "point4 = {11,4}," << std::endl;
+		file << "point5 = {11,2}," << std::endl;
+		file << "point6 = {4,2}," << std::endl;
+	}
+	else if (enemyListIndex == 5)
+	{
+		file << "numberOfPoints = 10," << std::endl;
+		file << "point1 = {17,2}," << std::endl;
+		file << "point2 = {14,2}," << std::endl;
+		file << "point3 = {14,4}," << std::endl;
+		file << "point4 = {17,4}," << std::endl;
+		file << "point5 = {17,6}," << std::endl;
+		file << "point6 = {10,6}," << std::endl;
+		file << "point7 = {17,6}," << std::endl;
+		file << "point8 = {17,4}," << std::endl;
+		file << "point9 = {14,4}," << std::endl;
+		file << "point10 = {14,2}," << std::endl;
+	}
+	else if (enemyListIndex == 6)
+	{
+		file << "numberOfPoints = 4," << std::endl;
+		file << "point1 = {7,11}," << std::endl;
+		file << "point2 = {7,4}," << std::endl;
+		file << "point3 = {9,4}," << std::endl;
+		file << "point4 = {9,11}," << std::endl;
+	}
 	file << "}," << std::endl;
 
 	file << "}" << std::endl;

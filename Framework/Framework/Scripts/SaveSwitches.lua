@@ -1,4 +1,16 @@
 SaveSwitches= {
-entitySwitchX1="6",
-entitySwitchY1="23",
+entitySwitchX1="17",
+entitySwitchX2="24",
+entitySwitchX3="14",
+entitySwitchX4="30",
+entitySwitchX5="18",
+entitySwitchX6="30",
+entitySwitchX7="18",
+entitySwitchY1="8",
+entitySwitchY2="1",
+entitySwitchY3="8",
+entitySwitchY4="16",
+entitySwitchY5="12",
+entitySwitchY6="12",
+entitySwitchY7="21",
 }

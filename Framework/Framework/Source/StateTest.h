@@ -74,7 +74,6 @@ private:
 	std::vector<Mesh*> m_meshList;
 	Camera * theCamera;
 	Entity * testEntity;
-	Entity * testGuard;
 	std::vector<Entity*> m_guardList;
 	EntityGridObject *testGridObject;
 	float moveDelay;
