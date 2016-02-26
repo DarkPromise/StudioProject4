@@ -108,8 +108,8 @@ void StateCredits::RenderNames()
 {
 	//theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Done by: ", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.5);
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Giggs 140169M", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.4);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Joshua 123132", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.3);
-	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Darren 123132", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.2);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Joshua 141404R", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.3);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "Darren 141396J", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.4f, (float)theView->getWindowHeight() * 0.2);
 }
 
 void StateCredits::FadeInEffect(double dt)
