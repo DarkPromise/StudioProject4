@@ -111,7 +111,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			if (gameC->getCurrLevel() == 4)
 			{
 				SoundManager::playSound("Sounds//return.ogg", false);
-				stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+				//stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+				state = STATE_GAMEOVER;
 				return;
 			}
 			else
@@ -131,17 +132,11 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 				case 2:
 					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 					break;
-
 				case 3:
-					if (infoC)
-					{
-						infoC->setPosition(testMap->getGridMap()[12][29]->getGridPos());
-						testMap->addGridEntity(testEntity);
-					}
 					loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 					break;
 				case 4:
-					state = GAMESTATE::STATE_GAMEOVER;
+					loadLevel4(testMap, graphicsComponent, testGridObject, gameC, gameType);
 					break;
 				}
 			}
@@ -1227,6 +1222,9 @@ void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponen
 
 	case GAMETYPE_NEWGAME:
 	{
+
+			 testEntity->getComponent<InformationComponent>()->setPosition(testMap->getGridMap()[12][29]->getGridPos());
+			 testMap->addGridEntity(testEntity);
 
 							 // BOXES
 							 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
