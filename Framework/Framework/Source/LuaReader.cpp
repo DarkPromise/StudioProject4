@@ -260,7 +260,7 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	file.close();
 }
 
-void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int enemyListIndex)
+void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int enemyListIndex, int currentLevel)
 {
 	ofstream file;
 	std::stringstream positionX, positionY;
@@ -273,7 +273,15 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	directionX << direction.x; directionY << direction.y; directionZ << direction.z;
 	rotationX << rotation.x; rotationY << rotation.y; rotationZ << rotation.z;
 
-	file.open("Scripts//Guards//GuardSave" + std::to_string(enemyListIndex + 1) + ".lua");
+	if (currentLevel == 3)
+	{
+		file.open("Scripts//Guards//GuardSave8.lua");
+	}
+
+	else
+	{
+		file.open("Scripts//Guards//GuardSave" + std::to_string(enemyListIndex + 1) + ".lua");
+	}
 
 	file << "Guard = {" << std::endl;
 	file << "InformationComponent = {" << std::endl;
@@ -303,9 +311,21 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	file << "WaypointComponent = {" << std::endl;
 	if (enemyListIndex == 0)
 	{
-		file << "numberOfPoints = 2," << std::endl;
-		file << "point1 = {1,27}," << std::endl;
-		file << "point2 = {1,27}," << std::endl;
+		if (currentLevel == 3)
+		{
+			file << "numberOfPoints = 4," << std::endl;
+			file << "point1 = {3,8}," << std::endl;
+			file << "point2 = {3,23}," << std::endl;
+			file << "point3 = {21,23}," << std::endl;
+			file << "point4 = {21,8}," << std::endl;
+		}
+		
+		else
+		{
+			file << "numberOfPoints = 2," << std::endl;
+			file << "point1 = {1,27}," << std::endl;
+			file << "point2 = {1,27}," << std::endl;
+		}
 	}
 	else if (enemyListIndex == 1)
 	{
@@ -319,7 +339,7 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	}
 	else if (enemyListIndex == 2)
 	{
-		file << "numberOfPoints = 6," << std::endl;
+		file << "numberOfPoints = 4," << std::endl;
 		file << "point1 = {10,22}," << std::endl;
 		file << "point2 = {10,16}," << std::endl;
 		file << "point3 = {14,16}," << std::endl;

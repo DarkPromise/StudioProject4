@@ -21,7 +21,7 @@ aiDifficulty = "Normal",
 aiSightLength = 5,
 },
 WaypointComponent = {
-numberOfPoints = 6,
+numberOfPoints = 4,
 point1 = {10,22},
 point2 = {10,16},
 point3 = {14,16},

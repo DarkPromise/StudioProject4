@@ -538,7 +538,11 @@ void StateTest::gameSave(InformationComponent *infoC)
 				{
 					state = "Pathing";
 				}
-				script.saveEnemies(position, direction, rotation, state, i);
+
+				if (gameC)
+				{
+					script.saveEnemies(position, direction, rotation, state, i, gameC->getCurrLevel());
+				}
 			}
 		}
 	}
@@ -1215,6 +1219,7 @@ void StateTest::loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponen
 void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType)
 {
 	testMap->LoadData("MapData//level3_Background.csv");
+	Entity * guardEntity;
 
 	switch (gameType)
 	{
@@ -1222,6 +1227,12 @@ void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponen
 		{
 			 testEntity->getComponent<InformationComponent>()->setPosition(testMap->getGridMap()[12][29]->getGridPos());
 			 testMap->addGridEntity(testEntity);
+
+			 // AI
+			 LuaReader guardScript("Scripts//Guards//Guard8.lua");
+			 guardEntity = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+			 m_guardList.push_back(guardEntity);
+			 testMap->addGridEntity(guardEntity);
 
 			 // BOXES
 			 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
@@ -1508,7 +1519,6 @@ void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponen
 					 testMap->getGridMap()[21][i]->addGridEntity(testGridObject);
 					 totalBoxes++;
 				 }
-
 			 }
 
 			 testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
@@ -1531,7 +1541,6 @@ void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponen
 					 testMap->getGridMap()[23][i]->addGridEntity(testGridObject);
 					 totalBoxes++;
 				 }
-
 			 }
 
 			 // SWTICHES
@@ -1585,6 +1594,12 @@ void StateTest::loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponen
 			int currentTotalCloseDoors = Script2.get<int>("SaveDoors.totalCloseDoors");
 			int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
 			LuaReader Script3("Scripts//SaveSwitches.lua");
+
+			// AI
+			LuaReader guardScript("Scripts//Guards//GuardSave8.lua");
+			guardEntity = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+			m_guardList.push_back(guardEntity);
+			testMap->addGridEntity(guardEntity);
 
 			// BOXES
 			for (int i = 0; i < currentLevelTotalBoxes; i++)

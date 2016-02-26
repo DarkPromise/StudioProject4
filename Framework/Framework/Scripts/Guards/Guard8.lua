@@ -1,7 +1,7 @@
 Guard = {
 InformationComponent = {
     name = "Guard",
-    position = {12,8},
+    position = {3,8},
     direction = {1,0,0},
     rotation = {90,0,0},
     type = "NPC",

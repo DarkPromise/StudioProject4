@@ -1,9 +1,9 @@
 Guard = {
 InformationComponent = {
 name = "Guard",
-position = {4,7},
-direction = {1,0,0},
-rotation = {90,0,0},
+position = {4,2},
+direction = {0,-1,0},
+rotation = {1.8e+002,0,0},
 type = "NPC",
 },
 GraphicsComponent = {
