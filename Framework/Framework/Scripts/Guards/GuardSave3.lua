@@ -18,7 +18,7 @@ AIComponent = {
 aiState = "Patrol",
 aiType = "Guard",
 aiDifficulty = "Normal",
-aiSightLength = 5,
+aiSightLength = 0,
 },
 WaypointComponent = {
 numberOfPoints = 4,

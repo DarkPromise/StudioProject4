@@ -260,7 +260,7 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	file.close();
 }
 
-void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int enemyListIndex, int currentLevel)
+void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int enemyListIndex, int currentLevel)
 {
 	ofstream file;
 	std::stringstream positionX, positionY;
@@ -305,7 +305,7 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	file << "aiState = \"" + state + "\"," << std::endl;
 	file << "aiType = \"Guard\"," << std::endl;
 	file << "aiDifficulty = \"Normal\"," << std::endl;
-	file << "aiSightLength = 5," << std::endl;
+	file << "aiSightLength = " + std::to_string(aiSightLength) + "," << std::endl;
 	file << "}," << std::endl;
 
 	file << "WaypointComponent = {" << std::endl;

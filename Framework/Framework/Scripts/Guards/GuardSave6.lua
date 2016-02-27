@@ -1,9 +1,9 @@
 Guard = {
 InformationComponent = {
 name = "Guard",
-position = {17,4},
-direction = {0,-1,0},
-rotation = {1.8e+002,0,0},
+position = {14,2},
+direction = {0,1,0},
+rotation = {0,0,0},
 type = "NPC",
 },
 GraphicsComponent = {
@@ -15,10 +15,10 @@ meshColor = {1, 1, 1},
 meshAlpha = 1,
 },
 AIComponent = {
-aiState = "Patrol",
+aiState = "Idle",
 aiType = "Guard",
 aiDifficulty = "Normal",
-aiSightLength = 5,
+aiSightLength = 0,
 },
 WaypointComponent = {
 numberOfPoints = 10,

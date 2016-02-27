@@ -87,7 +87,7 @@ void StateTest::Init()
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
-	static bool click = false, click2 = false;
+	static bool click = false, click2 = false, click3 = false;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
@@ -108,7 +108,6 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if (gameC->getCurrLevel() == 4)
 			{
-				SoundManager::playSound("Sounds//return.ogg", false);
 				state = STATE_GAMEOVER;
 				return;
 			}
@@ -155,6 +154,19 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			}
 		}
 
+		// SAVE GAME
+		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		{
+			click = true;
+			gameSaved = true;
+			gameSave(infoC);
+		}
+
+		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		{
+			click = false;
+		}
+
 		// PAUSE GAME
 		if (!click2 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_P))
 		{
@@ -167,17 +179,16 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			click2 = false;
 		}
 
-		// SAVE GAME
-		if (!click && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		// RESET LEVEL MANUALLY
+		if (!click3 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
 		{
-			click = true;
-			gameSaved = true;
-			gameSave(infoC);
+			click3 = true;
+			//RestartLevel();
 		}
 
-		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
+		else if (click3 && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
 		{
-			click = false;
+			click3 = false;
 		}
 
 		// SHOW GAME SAVING
@@ -431,7 +442,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 	// OPEN SCRIPT
 	LuaReader script("Scripts//SavePlayer.lua");
 
-	// RESET ENTITY DOORS FOR ENTITY COUNT
+	// RESET ENTITY DOORS COUNT EVERYTIME GAME SAVES
 	totalCloseDoors = 0;
 	totalOpenDoors = 0;
 
@@ -511,37 +522,35 @@ void StateTest::gameSave(InformationComponent *infoC)
 		{
 			if (m_guardList[i]->getComponent<AIComponent>())
 			{
-				float indexX2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-				float indexY2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-				int aiIndexX = (int)indexX2;
-				int aiIndexY = testMap->getMapHeight() - (int)indexY2;
-				Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
-				Vector3 direction = m_guardList[i]->getComponent<InformationComponent>()->getDirection();
-				Vector3 rotation = m_guardList[i]->getComponent<InformationComponent>()->getRotation();
-				std::string state = std::to_string(m_guardList[i]->getComponent<AIComponent>()->getState());
-				if (state == "0")
-				{
-					state = "Idle";
-				}
-
-				else if (state == "1")
-				{
-					state = "Patrol";
-				}
-
-				else if (state == "2")
-				{
-					state = "Chase";
-				}
-
-				else if (state == "3")
-				{
-					state = "Pathing";
-				}
-
 				if (gameC)
 				{
-					script.saveEnemies(position, direction, rotation, state, i, gameC->getCurrLevel());
+					float indexX2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+					float indexY2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+					int aiIndexX = (int)indexX2;
+					int aiIndexY = testMap->getMapHeight() - (int)indexY2;
+					Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
+					Vector3 direction = m_guardList[i]->getComponent<InformationComponent>()->getDirection();
+					Vector3 rotation = m_guardList[i]->getComponent<InformationComponent>()->getRotation();
+					std::string state = std::to_string(m_guardList[i]->getComponent<AIComponent>()->getState());				
+					if (state == "0")
+					{
+						state = "Idle";
+					}
+					else if (state == "1")
+					{
+						state = "Patrol";
+					}
+					else if (state == "2")
+					{
+						state = "Chase";
+					}
+					else if (state == "3")
+					{
+						state = "Pathing";
+					}
+					int aiSightLength = m_guardList[i]->getComponent<AIComponent>()->getSightLength();
+
+					script.saveEnemies(position, direction, rotation, state, aiSightLength, i, gameC->getCurrLevel());
 				}
 			}
 		}
@@ -1673,13 +1682,14 @@ void StateTest::loadLevel4(GridMap *testMap, GraphicsComponent *graphicsComponen
 			testEntity->getComponent<InformationComponent>()->setPosition(testMap->getGridMap()[23][16]->getGridPos());
 			testMap->addGridEntity(testEntity);
 
-			LuaReader guardScript1("Scripts//Guards//Guard1.lua");
-			LuaReader guardScript2("Scripts//Guards//Guard2.lua");
-			LuaReader guardScript3("Scripts//Guards//Guard3.lua");
-			LuaReader guardScript4("Scripts//Guards//Guard4.lua");
-			LuaReader guardScript5("Scripts//Guards//Guard5.lua");
-			LuaReader guardScript6("Scripts//Guards//Guard6.lua");
-			LuaReader guardScript7("Scripts//Guards//Guard7.lua");
+			// AI
+			for (int i = 0; i < 7; i++)
+			{
+				LuaReader guardScript("Scripts//Guards//Guard" + std::to_string(i + 1) + ".lua");
+				guardEntity = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+				m_guardList.push_back(guardEntity);
+				testMap->addGridEntity(guardEntity);
+			}
 
 			// BOXES
 			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_BOX);
@@ -2079,35 +2089,6 @@ void StateTest::loadLevel4(GridMap *testMap, GraphicsComponent *graphicsComponen
 			testMap->getGridMap()[23][29]->addGridEntity(testGridObject);
 			totalBoxes++;
 
-			// AI
-			guardEntity = guardScript1.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript2.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript3.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript4.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript5.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript6.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-			
-			guardEntity = guardScript7.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
 			// SWITCHES
 			testGridObject = new EntityGridObject(EntityGridObject::OBJECT_SWITCH);
 			testGridObject->addChildren(5, 26, EntityGridObject::OBJECT_DOOR, testMap);
@@ -2180,13 +2161,14 @@ void StateTest::loadLevel4(GridMap *testMap, GraphicsComponent *graphicsComponen
 			int currentTotalOpenDoors = Script2.get<int>("SaveDoors.totalOpenDoors");
 			LuaReader Script3("Scripts//SaveSwitches.lua");
 
-			LuaReader guardScript1("Scripts//Guards//GuardSave1.lua");
-			LuaReader guardScript2("Scripts//Guards//GuardSave2.lua");
-			LuaReader guardScript3("Scripts//Guards//GuardSave3.lua");
-			LuaReader guardScript4("Scripts//Guards//GuardSave4.lua");
-			LuaReader guardScript5("Scripts//Guards//GuardSave5.lua");
-			LuaReader guardScript6("Scripts//Guards//GuardSave6.lua");
-			LuaReader guardScript7("Scripts//Guards//GuardSave7.lua");
+			// AI
+			for (int i = 0; i < 7; i++)
+			{
+				LuaReader guardScript("Scripts//Guards//GuardSave" + std::to_string(i + 1) + ".lua");
+				guardEntity = guardScript.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
+				m_guardList.push_back(guardEntity);
+				testMap->addGridEntity(guardEntity);
+			}
 
 			// BOXES
 			for (int i = 0; i < currentLevelTotalBoxes; i++)
@@ -2200,35 +2182,6 @@ void StateTest::loadLevel4(GridMap *testMap, GraphicsComponent *graphicsComponen
 				testGridObject->addComponent(graphicsComponent);
 				testMap->getGridMap()[y][x]->addGridEntity(testGridObject);
 			}
-
-			// AI
-			guardEntity = guardScript1.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript2.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript3.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript4.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript5.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript6.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
-
-			guardEntity = guardScript7.createEntity("Guard", theCamera, theView->getInputHandler(), testMap);
-			m_guardList.push_back(guardEntity);
-			testMap->addGridEntity(guardEntity);
 
 			// SWITCHES
 			for (int i = 0; i < currentTotalCloseDoors; i++)
@@ -2304,12 +2257,15 @@ void StateTest::RestartLevel()
 			switch (gameC->getCurrLevel())
 			{
 				case 1:
+					loadLevel1(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 				
 				case 2:
+					loadLevel2(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 				
 				case 3:
+					loadLevel3(testMap, graphicsComponent, testGridObject, gameC, gameType);
 				break;
 				
 				case 4:
