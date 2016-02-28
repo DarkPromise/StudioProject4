@@ -22,9 +22,9 @@ aiSightLength = 0,
 },
 WaypointComponent = {
 numberOfPoints = 4,
-point1 = {10,22},
 point2 = {10,16},
 point3 = {14,16},
 point4 = {14,22},
+point1 = {10,22},
 },
 }

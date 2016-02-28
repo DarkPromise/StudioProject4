@@ -55,10 +55,7 @@ void StateTest::Init()
 		break;
 
 		case GAMETYPE_LOADGAME:
-		{
-			// LOAD PLAYER'S SAVE FILE
 			loadPlayer(testMap, informationComponent, gameC);
-		}
 		break;
 	}
 
@@ -456,6 +453,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 	std::vector<int> entityDoorsX; std::vector<int> entityDoorsY;
 	std::vector<int> entityDoorsOpenX; std::vector<int> entityDoorsOpenY;
 	std::vector<int> entitySwitchesX; std::vector<int> entitySwitchesY;
+	std::vector<int> entityWaypointX; std::vector<int> entityWaypointY;
 	//std::cout << "X:" + std::to_string(playerIndexX) << " Y:" + std::to_string(playerIndexY) << std::endl;
 
 	// SAVE MAP DATA
@@ -524,33 +522,42 @@ void StateTest::gameSave(InformationComponent *infoC)
 			{
 				if (gameC)
 				{
-					float indexX2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
-					float indexY2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
-					int aiIndexX = (int)indexX2;
-					int aiIndexY = testMap->getMapHeight() - (int)indexY2;
-					Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
-					Vector3 direction = m_guardList[i]->getComponent<InformationComponent>()->getDirection();
-					Vector3 rotation = m_guardList[i]->getComponent<InformationComponent>()->getRotation();
-					std::string state = std::to_string(m_guardList[i]->getComponent<AIComponent>()->getState());				
-					if (state == "0")
+					auto wayC = m_guardList[i]->getComponent<WaypointComponent>();
+					if (wayC)
 					{
-						state = "Idle";
+						float indexX2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().x / (testMap->getMapWidth() * testMap->getTileSize()) * testMap->getMapWidth();
+						float indexY2 = m_guardList[i]->getComponent<InformationComponent>()->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
+						int aiIndexX = (int)indexX2;
+						int aiIndexY = testMap->getMapHeight() - (int)indexY2;
+						Vector3 position = Vector3(aiIndexY, aiIndexX, 0);
+						Vector3 direction = m_guardList[i]->getComponent<InformationComponent>()->getDirection();
+						Vector3 rotation = m_guardList[i]->getComponent<InformationComponent>()->getRotation();
+						std::string state = std::to_string(m_guardList[i]->getComponent<AIComponent>()->getState());
+						if (state == "0")
+						{
+							state = "Idle";
+						}
+						else if (state == "1")
+						{
+							state = "Patrol";
+						}
+						else if (state == "2")
+						{
+							state = "Chase";
+						}
+						else if (state == "3")
+						{
+							state = "Pathing";
+						}
+						int aiSightLength = m_guardList[i]->getComponent<AIComponent>()->getSightLength();
+						for (int k = 0; k < wayC->getWaypoints().size(); k++)
+						{
+							entityWaypointX.push_back(wayC->getWaypoints()[k]->indexX);
+							entityWaypointY.push_back(wayC->getWaypoints()[k]->indexY);
+						}
+						script.saveEnemies(position, direction, rotation, state, aiSightLength, wayC->getWaypoints().size(), entityWaypointX, entityWaypointY, i, gameC->getCurrLevel(), wayC->getNextWaypointIndex());
+						entityWaypointX.clear(); entityWaypointY.clear();
 					}
-					else if (state == "1")
-					{
-						state = "Patrol";
-					}
-					else if (state == "2")
-					{
-						state = "Chase";
-					}
-					else if (state == "3")
-					{
-						state = "Pathing";
-					}
-					int aiSightLength = m_guardList[i]->getComponent<AIComponent>()->getSightLength();
-
-					script.saveEnemies(position, direction, rotation, state, aiSightLength, i, gameC->getCurrLevel());
 				}
 			}
 		}
@@ -2246,6 +2253,7 @@ void StateTest::RestartLevel()
 
 	LuaReader playerScript("Scripts//Player.lua");
 	testEntity = playerScript.createEntity("Player", theCamera, theView->getInputHandler(), testMap);
+	gameType = GAMETYPE_NEWGAME;
 
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();

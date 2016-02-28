@@ -1,7 +1,7 @@
 Guard = {
 InformationComponent = {
 name = "Guard",
-position = {21,19},
+position = {21,15},
 direction = {-1,0,0},
 rotation = {-90,0,0},
 type = "NPC",
@@ -22,9 +22,9 @@ aiSightLength = 3,
 },
 WaypointComponent = {
 numberOfPoints = 4,
-point1 = {3,8},
-point2 = {3,23},
-point3 = {21,23},
-point4 = {21,8},
+point2 = {21,8},
+point3 = {3,8},
+point4 = {3,23},
+point1 = {21,23},
 },
 }
