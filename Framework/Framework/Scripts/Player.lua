@@ -30,7 +30,7 @@ HealthComponent = {
     maxHp = "100",
   },
  GameplayComponent = {
-    currLevel = 4,
+    currLevel = 1,
     hasKey = "false",
   },
 }

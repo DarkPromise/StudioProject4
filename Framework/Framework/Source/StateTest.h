@@ -15,7 +15,7 @@
 class StateTest : public State
 {
 public:
-	StateTest(std::string name, View * theView, int gameType = 1) 
+	StateTest(std::string name, View * theView, int gameType, int levelSelected)
 		: State(name, theView)
 		, moveDelay(0.f)
 		, gameTimer(0)
@@ -25,6 +25,7 @@ public:
 	{
 		this->theView = theView;
 		this->gameType = static_cast<GAMETYPE>(gameType);
+		this->levelSelected = levelSelected;
 	}
 
 	enum GAMESTATE
@@ -84,6 +85,7 @@ private:
 	Highscore highscore;
 	CRecord playerRecord;
 	GAMETYPE gameType;
+	int levelSelected;
 };
 
 #endif

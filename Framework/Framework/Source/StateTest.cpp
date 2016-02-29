@@ -51,7 +51,14 @@ void StateTest::Init()
 	switch (gameType)
 	{
 		case GAMETYPE_NEWGAME:
-			resetAllEntityCount();
+			if (levelSelected != 0)
+			{
+				gameC->setCurrLevel(levelSelected);
+			}
+			else
+			{
+				resetAllEntityCount();
+			}
 		break;
 
 		case GAMETYPE_LOADGAME:
@@ -2410,7 +2417,12 @@ void StateTest::RestartLevel()
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	if (gameC)
 	{
-		gameC->Reset();
+		gameC->Reset();		
+		if (levelSelected != 0)
+		{
+			gameC->setCurrLevel(levelSelected);
+		}
+		
 		if (graphicsComponent)
 		{
 			switch (gameC->getCurrLevel())

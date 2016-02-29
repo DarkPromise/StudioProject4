@@ -329,6 +329,9 @@
     <ClCompile Include="Source\AStar.cpp">
       <Filter>Source Files\Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StateLevelSelect.cpp">
+      <Filter>Source Files\State Handling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Model.h">
@@ -519,6 +522,9 @@
     </ClInclude>
     <ClInclude Include="Source\AStar.h">
       <Filter>Header Files\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateLevelSelect.h">
+      <Filter>Header Files\State Handling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

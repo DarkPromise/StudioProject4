@@ -1,29 +1,30 @@
-#ifndef STATE_MENU_H
-#define STATE_MENU_H
+#ifndef STATE_LEVEL_SELECT_H
+#define STATE_LEVEL_SELECT_H
 
 #include "State.h"
 #include "GuiButton.h"
 
 #define TEXT_FONT 0
 
-class StateMenu : public State
+class StateLevelSelect : public State
 {
 public:
 	enum MENU_BUTTONS
 	{
-		NEWGAME_BUTTON,
-		LOADGAME_BUTTON,
-		LEVELSELECT_BUTTON,
+		LEVEL1_BUTTON,
+		LEVEL2_BUTTON,
+		LEVEL3_BUTTON,
+		LEVEL4_BUTTON,
 	};
 
-	StateMenu(std::string name, View * theView)
+	StateLevelSelect(std::string name, View * theView)
 		: State(name, theView)
-		, gameType(1)
 		, runOnce(false)
+		, levelSelected(1)
 	{
 		this->theView = theView;
 	}
-	~StateMenu();
+	~StateLevelSelect();
 
 	State* getInstance();
 	void Init();
@@ -53,8 +54,8 @@ private:
 	double m_dFadeDelay;
 	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
-	int gameType;
 	bool runOnce;
+	int levelSelected;
 };
 
 #endif

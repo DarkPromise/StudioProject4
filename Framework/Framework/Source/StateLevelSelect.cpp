@@ -1,23 +1,22 @@
-#include "StateMenu.h"
+#include "StateLevelSelect.h"
 #include "View.h"
 #include "LoadTGA.h"
 
 #include "StateTest.h"
-#include "StateAGDevMenu.h"
-#include "StateLevelSelect.h"
+#include "StateMenu.h"
 #include "SoundManager.h"
 
-StateMenu::~StateMenu()
+StateLevelSelect::~StateLevelSelect()
 {
 
 }
 
-State * StateMenu::getInstance()
+State * StateLevelSelect::getInstance()
 {
 	return this;
 }
 
-void StateMenu::Init()
+void StateLevelSelect::Init()
 {
 	// Menu in 2D
 	theView->LoadOrthoCamera();
@@ -43,16 +42,20 @@ void StateMenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("NewGame Button", "New Game", 0.5f, 0.55f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("NewGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("Level1 Button", "Level 1", 0.5f, 0.55f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("Level1", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("LoadGame Button", "Load Game", 0.5f, 0.65f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("Level2 Button", "Level 2", 0.5f, 0.65f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LLevel2", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Levelselect Button", "Level select", 0.5f, 0.75f, 48.f);
-	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	newGui = new GuiButton("Level3 Button", "Level 3", 0.5f, 0.75f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("Level3", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
+	m_guiList.push_back(newGui);
+
+	newGui = new GuiButton("Level4 Button", "Level 4", 0.5f, 0.85f, 48.f);
+	newGui->setMesh(MeshBuilder::GenerateBoundingBox("Level4", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
 	m_bStartFadeIn = true;
@@ -60,7 +63,7 @@ void StateMenu::Init()
 	m_dFadeDelay = 0.0;
 }
 
-void StateMenu::Update(StateHandler * stateHandler, double dt)
+void StateLevelSelect::Update(StateHandler * stateHandler, double dt)
 {
 	if (m_bStartFadeIn)
 	{
@@ -76,21 +79,21 @@ void StateMenu::Update(StateHandler * stateHandler, double dt)
 	theView->Update(dt);
 }
 
-void StateMenu::HandleEvents(StateHandler * stateHandler)
+void StateLevelSelect::HandleEvents(StateHandler * stateHandler)
 {
 	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
 	{
 		SoundManager::playSound("Sounds//return.ogg", false);
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
+		stateHandler->ChangeState(new StateMenu("AGDev GameMenu State", theView));
 	}
 }
 
-void StateMenu::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
+void StateLevelSelect::HandleEvents(StateHandler * stateHandler, const int key, const bool status)
 {
 
 }
 
-void StateMenu::Cleanup()
+void StateLevelSelect::Cleanup()
 {
 	if (!m_guiList.empty())
 	{
@@ -113,30 +116,30 @@ void StateMenu::Cleanup()
 	m_meshList.~vector(); // There will be a memory leak if you dont deallocate the memory given to the vector itself
 }
 
-void StateMenu::Pause()
+void StateLevelSelect::Pause()
 {
 
 }
 
-void StateMenu::Resume()
+void StateLevelSelect::Resume()
 {
 
 }
 
-void StateMenu::Draw(StateHandler * stateHandler)
+void StateLevelSelect::Draw(StateHandler * stateHandler)
 {
 	RenderBackground();
 	RenderButtons();
 	theView->SwapBuffers();
 }
 
-void StateMenu::RenderBackground()
+void StateLevelSelect::RenderBackground()
 {
 	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 	theView->Render2DMesh(m_meshList[2], false, false, 400.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), 150.f * ((float)theView->getWindowWidth() / theView->getWindowHeight()), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.7f);
 }
 
-void StateMenu::RenderButtons()
+void StateLevelSelect::RenderButtons()
 {
 	for (unsigned int i = 0; i < m_guiList.size(); i++)
 	{
@@ -144,7 +147,7 @@ void StateMenu::RenderButtons()
 	}
 }
 
-void StateMenu::UpdateSelection(StateHandler * stateHandler)
+void StateLevelSelect::UpdateSelection(StateHandler * stateHandler)
 {
 	if (!m_bStartFadeIn)
 	{
@@ -166,20 +169,27 @@ void StateMenu::UpdateSelection(StateHandler * stateHandler)
 					{
 						switch (MENU_BUTTONS(i))
 						{
-							case NEWGAME_BUTTON:
-								gameType = 1;
+							case LEVEL1_BUTTON:
+								levelSelected = 1;
 								m_bStartFadeOut = true;
 								SoundManager::playSound("Sounds//select.ogg", false);
 							break;
 
-							case LOADGAME_BUTTON:
-								gameType = 2;
+							case LEVEL2_BUTTON:
+								levelSelected = 2;
 								m_bStartFadeOut = true;
 								SoundManager::playSound("Sounds//select.ogg", false);
 							break;
 
-							case LEVELSELECT_BUTTON:
-								stateHandler->ChangeState(new StateLevelSelect("Level select Menu", theView));
+							case LEVEL3_BUTTON:
+								levelSelected = 3;
+								m_bStartFadeOut = true;
+								SoundManager::playSound("Sounds//select.ogg", false);
+							break;
+
+							case LEVEL4_BUTTON:
+								levelSelected = 4;
+								m_bStartFadeOut = true;
 								SoundManager::playSound("Sounds//select.ogg", false);
 							break;
 						}
@@ -195,7 +205,7 @@ void StateMenu::UpdateSelection(StateHandler * stateHandler)
 	}
 }
 
-void StateMenu::FadeInEffect(double dt)
+void StateLevelSelect::FadeInEffect(double dt)
 {
 	if (m_meshList[0]->alpha < 1)
 	{
@@ -210,7 +220,7 @@ void StateMenu::FadeInEffect(double dt)
 	}
 }
 
-void StateMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
+void StateLevelSelect::FadeOutEffect(double dt, StateHandler * stateHandler)
 {
 	for (Mesh * mesh : m_meshList)
 	{
@@ -225,6 +235,6 @@ void StateMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
 
 	if (m_meshList[0]->alpha < 0)
 	{
-		stateHandler->ChangeState(new StateTest("Test Game State", theView, gameType, 0));
+		stateHandler->ChangeState(new StateTest("Test Game State", theView, 1, levelSelected));
 	}
 }
