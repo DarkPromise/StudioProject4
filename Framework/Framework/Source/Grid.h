@@ -21,6 +21,8 @@ public:
 		TILE_WALL = 2,
 		TILE_DOOR_CLEAR = 3,
 		TILE_BOX = 4,
+		TILE_SWITCH = 5,
+		TILE_SWITCH_ACTIVATED = 6,
 	};
 
 
@@ -30,7 +32,7 @@ public:
 	// Set and Get Functions
 	void addTile(int tileID);
 	void replaceTile(int tileID, int index = 0);
-	void replaceMesh(Mesh * mesh, int index = 0);
+	void replaceMesh(int tileID, int index = 0);
 	Mesh * getMesh(int index = 0);
 	std::vector<Mesh*> getGridTiles();
 

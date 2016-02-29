@@ -108,6 +108,9 @@ void EntityGridObject::toggleObject(GridMap * currMap)
 		m_bToggled = false;
 	}
 
+	auto graphicsComponent = this->getComponent<GraphicsComponent>();
+	Mesh * newMesh;
+
 	switch (this->m_eObjectType)
 	{
 	case OBJECT_BOX:
@@ -115,6 +118,10 @@ void EntityGridObject::toggleObject(GridMap * currMap)
 	case OBJECT_KEY:
 		break;
 	case OBJECT_SWITCH:
+		delete graphicsComponent->getMesh();
+		graphicsComponent->setMesh(MeshBuilder::GenerateQuad("Activated", Color(0.f, 0.f, 0.f), 16.f));
+		graphicsComponent->getMesh()->textureArray[0] = LoadTGA("Images//Tiles//tile_switch_activate.tga");
+		graphicsComponent->getMesh()->alpha = 1.f;
 		break;
 	case OBJECT_DOOR:
 		if (SoundManager::getSoundStatus())

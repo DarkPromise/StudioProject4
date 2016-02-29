@@ -60,14 +60,9 @@ void Grid::addTile(int tileID)
 	}
 }
 
-void Grid::replaceMesh(Mesh * mesh, int index)
+void Grid::replaceMesh(int tileID, int index)
 {
-	auto graphicsC = m_cGridEntity->getComponent<GraphicsComponent>();
-	if (graphicsC)
-	{
-		delete graphicsC->getMesh(index);
-		graphicsC->getMeshList()[index] = mesh;
-	}
+
 }
 
 void Grid::replaceTile(int tileID, int index)
@@ -95,6 +90,10 @@ void Grid::replaceTile(int tileID, int index)
 			newMesh = MeshBuilder::GenerateQuad("Tile 3", Color(1.f, 1.f, 1.f), m_iTileSize);
 			newMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");
 			m_cGridTiles[index] = newMesh;
+			break;
+		case TILE_SWITCH:
+			break;
+		case TILE_SWITCH_ACTIVATED:
 			break;
 		}
 	}
@@ -222,6 +221,7 @@ void Grid::toggleObjects(GridMap * currMap)
 			switch (gridObject->getObjectType())
 			{
 			case EntityGridObject::OBJECT_SWITCH:
+				gridObject->toggleObject(currMap);
 				break;
 			}
 

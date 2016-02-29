@@ -24,6 +24,7 @@ public:
 	// Mesh Creation
 	void addMesh(Mesh * mesh);
 	Mesh * getMesh(int index = 0);
+	void setMesh(Mesh * mesh, int index = 0);
 	std::vector<Mesh*> getMeshList() { return m_meshList; }
 
 	void setResLevel(int i);

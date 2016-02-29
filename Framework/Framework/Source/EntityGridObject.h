@@ -31,6 +31,8 @@ public:
 	void setToggleable(bool status);
 	bool hasToggleAbility();
 
+	void setIndexX(int x) { this->m_iIndexX = x; }
+	void setIndexY(int y) { this->m_iIndexY = y; }
 	int get_m_iIndexX();
 	int get_m_iIndexY();
 private:

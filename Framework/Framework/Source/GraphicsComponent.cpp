@@ -165,3 +165,8 @@ int GraphicsComponent::getResLevel()
 {
 	return this->m_iResLevel;
 }
+
+void GraphicsComponent::setMesh(Mesh * mesh, int index)
+{
+	this->m_meshList[index] = mesh;
+}

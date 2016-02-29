@@ -331,9 +331,9 @@ void GridMap::addGridEntity(Entity * entity)
 	{
 		float indexX = infoC->getPosition().x / (this->getMapWidth() * this->getTileSize()) * this->getMapWidth();
 		float indexY = infoC->getPosition().y / (this->getMapHeight() * this->getTileSize()) * this->getMapHeight();
-		int aiIndexX = (int)indexX;
-		int aiIndexY = this->getMapHeight() - (int)indexY;
-		this->m_cGridMap[aiIndexY][aiIndexX]->addGridEntity(entity);
+		int objIndexX = (int)indexX;
+		int objIndexY = this->getMapHeight() - (int)indexY;
+		this->m_cGridMap[objIndexY][objIndexX]->addGridEntity(entity);
 	}
 }
 
@@ -344,9 +344,9 @@ void GridMap::removeGridEntity(Entity * entity)
 	{
 		float indexX = infoC->getPosition().x / (this->getMapWidth() * this->getTileSize()) * this->getMapWidth();
 		float indexY = infoC->getPosition().y / (this->getMapHeight() * this->getTileSize()) * this->getMapHeight();
-		int aiIndexX = (int)indexX;
-		int aiIndexY = this->getMapHeight() - (int)indexY;
-		this->m_cGridMap[aiIndexY][aiIndexX]->removeEntity();
+		int objIndexX = (int)indexX;
+		int objIndexY = this->getMapHeight() - (int)indexY;
+		this->m_cGridMap[objIndexY][objIndexX]->removeEntity();
 	}
 }
 
