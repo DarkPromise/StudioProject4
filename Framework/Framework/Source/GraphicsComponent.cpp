@@ -37,17 +37,6 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::strin
 		std::cout << "GraphicsComponent.meshName for " + name + " is not a string!" << std::endl;
 	}
 
-	auto meshImage = tableInfo["meshImage"];
-	std::string imagePath = "Images//Tiles//unknown.tga";
-	if (meshImage.isString())
-	{
-		imagePath = meshImage.cast<std::string>();
-	}
-	else
-	{
-		std::cout << "GraphicsComponent.meshImage for " + name + " is not a string!" << std::endl;
-	}
-
 	auto meshSize = tableInfo["meshSize"];
 	float size = 1.f;
 	if (meshSize.isNumber())
@@ -88,9 +77,50 @@ void GraphicsComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::strin
 	{
 		if (meshType.cast<std::string>() == "Quad")
 		{
-			addMesh(MeshBuilder::GenerateQuad(name, color, size));
-			getMesh()->textureArray[0] = LoadTGA(imagePath.c_str());
-			getMesh()->alpha = alpha;
+			auto numberofimages = tableInfo["meshNumberOfImages"];
+			if (numberofimages.isNumber())
+			{
+				if (numberofimages.cast<int>() > 1)
+				{
+					for (int i = 1; i <= numberofimages.cast<int>(); i++)
+					{
+						std::ostringstream ss1;
+						ss1 << i;
+						auto meshImage = tableInfo["meshImage" + ss1.str()];
+						std::string imagePath = "Images//Tiles//unknown.tga";
+						if (meshImage.isString())
+						{
+							imagePath = meshImage.cast<std::string>();
+						}
+						else
+						{
+							std::cout << "GraphicsComponent.meshImage" << ss1.str() << " for " + name + " is not a string!" << std::endl;
+						}
+						std::cout << imagePath.c_str() << std::endl;
+						addMesh(MeshBuilder::GenerateQuad(name, color, size));
+						getMesh(i-1)->textureArray[0] = LoadTGA(imagePath.c_str());
+						getMesh(i-1)->alpha = alpha;
+					}
+				}
+			}
+			else
+			{
+				std::cout << "GraphicsComponent.meshNumberOfImages for " + name + " is not a number!" << std::endl;
+
+				auto meshImage = tableInfo["meshImage"];
+				std::string imagePath = "Images//Tiles//unknown.tga";
+				if (meshImage.isString())
+				{
+					imagePath = meshImage.cast<std::string>();
+				}
+				else
+				{
+					std::cout << "GraphicsComponent.meshImage for " + name + " is not a string!" << std::endl;
+				}
+				addMesh(MeshBuilder::GenerateQuad(name, color, size));
+				getMesh()->textureArray[0] = LoadTGA(imagePath.c_str());
+				getMesh()->alpha = alpha;
+			}
 		}
 		else if (meshType.cast<std::string>() == "AABB")
 		{

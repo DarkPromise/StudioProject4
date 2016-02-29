@@ -11,8 +11,6 @@ AStarNode::AStarNode()
 
 AStar::AStar(int sX, int sY, int gX, int gY, GridMap * gridMap)
 {
-	std::cout << gX << " " << gY << std::endl;
-
 	this->startNode = new AStarNode();
 	this->goalNode = new AStarNode();
 	startNode->x = sX;

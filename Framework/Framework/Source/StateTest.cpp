@@ -180,7 +180,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		if (!click3 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
 		{
 			click3 = true;
-			//RestartLevel();
+			RestartLevel();
+			return;
 		}
 
 		else if (click3 && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
@@ -217,10 +218,16 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		}
 
 		// PLAYER UPDATE
-		testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha += dt;
-		if (testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha > 2)
+		if (graphicsComponent)
 		{
-			testEntity->getComponent<GraphicsComponent>()->getMesh()->alpha = 0.f;
+			for (int i = 0; i < graphicsComponent->getMeshList().size(); i++)
+			{
+				graphicsComponent->getMesh(i)->alpha += dt;
+				if (graphicsComponent->getMesh(i)->alpha > 2)
+				{
+					graphicsComponent->getMesh(i)->alpha = 0.f;
+				}
+			}
 		}
 
 		if (testEntity)
@@ -318,11 +325,27 @@ void StateTest::Resume()
 
 void StateTest::RenderPlayer()
 {
-	theView->modelStack.PushMatrix();
-	theView->modelStack.Translate(this->testEntity->getComponent<InformationComponent>()->getPosition().x, this->testEntity->getComponent<InformationComponent>()->getPosition().y, this->testEntity->getComponent<InformationComponent>()->getPosition().z);
-	theView->modelStack.Rotate(this->testEntity->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
-	theView->RenderMesh(this->testEntity->getComponent<GraphicsComponent>()->getMesh(this->testEntity->getComponent<GraphicsComponent>()->getResLevel()), false, false);
-	theView->modelStack.PopMatrix();
+	auto infoC = testEntity->getComponent<InformationComponent>();
+	auto graphicsC = testEntity->getComponent<GraphicsComponent>();
+	if (infoC)
+	{
+		if (graphicsC)
+		{
+
+				theView->modelStack.PushMatrix();
+				theView->modelStack.Translate(infoC->getPosition().x, infoC->getPosition().y, infoC->getPosition().z);
+				switch ((int)infoC->getRotation().y)
+				{
+				case 0:
+					theView->RenderMesh(graphicsC->getMesh(0), false, false);
+					break;
+				case 180:
+					theView->RenderMesh(graphicsC->getMesh(1), false, false);
+					break;
+				}
+				theView->modelStack.PopMatrix();
+		}
+	}
 
 	/*auto collisionC = this->testEntity->getComponent<CollisionComponent>();
 	if (collisionC)
@@ -403,11 +426,16 @@ void StateTest::RenderAI()
 
 void StateTest::RenderBackground()
 {
-	theView->Render2DMesh(m_meshList[1], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
+	theView->modelStack.PushMatrix();
+	theView->modelStack.Translate(testEntity->getComponent<InformationComponent>()->getPosition().x, testEntity->getComponent<InformationComponent>()->getPosition().y, testEntity->getComponent<InformationComponent>()->getPosition().z);
+	theView->modelStack.Scale(theView->getWindowWidth(), theView->getWindowHeight(), 1.f);
+	theView->RenderMesh(m_meshList[1], false, false);
+	theView->modelStack.PopMatrix();
 }
 
 void StateTest::Draw(StateHandler * stateHandler)
 {
+	this->RenderBackground();
 	if (testMap)
 	{
 		theView->modelStack.PushMatrix();
@@ -454,7 +482,6 @@ void StateTest::gameSave(InformationComponent *infoC)
 	std::vector<int> entityDoorsOpenX; std::vector<int> entityDoorsOpenY;
 	std::vector<int> entitySwitchesX; std::vector<int> entitySwitchesY;
 	std::vector<int> entityWaypointX; std::vector<int> entityWaypointY;
-	//std::cout << "X:" + std::to_string(playerIndexX) << " Y:" + std::to_string(playerIndexY) << std::endl;
 
 	// SAVE MAP DATA
 	for (unsigned int i = 0; i < testMap->getGridMap().size(); i++)

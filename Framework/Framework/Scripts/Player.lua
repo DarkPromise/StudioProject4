@@ -8,7 +8,9 @@ InformationComponent = {
 GraphicsComponent = {
     meshType = "Quad",
     meshName = "Player",
-    meshImage = "Images//player.tga",
+    meshNumberOfImages = 2,
+    meshImage1 = "Images//player.tga",
+    meshImage2 = "Images//player_left.tga",
     meshSize = 32,
     meshAlpha = 0.7,
     meshColor = {1,0,0},
@@ -28,7 +30,7 @@ HealthComponent = {
     maxHp = "100",
   },
  GameplayComponent = {
-    currLevel = 1,
+    currLevel = 4,
     hasKey = "false",
   },
 }

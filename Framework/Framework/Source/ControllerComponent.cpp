@@ -7,6 +7,8 @@
 ControllerComponent::ControllerComponent(InputHandler * theInputHandler)
 : m_cInputHandler(theInputHandler)
 , m_dInputDelay(0.0)
+, m_dMoveDelay(0.0)
+, m_sMovement(-1,-1,GridMap::DIRECTION_NONE, Vector3(0.f, 0.f, 0.f), false)
 {
 
 }
@@ -24,37 +26,95 @@ void ControllerComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::str
 void ControllerComponent::Update(double dt, GridMap * currMap)
 {
 	m_dInputDelay += dt;
+	m_dMoveDelay += dt;
 
 	EntityTest * thePlayer = dynamic_cast<EntityTest*>(this->getParent());
 	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
 		// CONTROL PLAYER
-		if (m_dInputDelay > MOVEMENT_DELAY)
+		if (!this->m_sMovement.m_bIsMoving)
 		{
-			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_UP))
+
+			if (m_dMoveDelay > MOVEMENT_DELAY)
 			{
-				MoveForward(currMap);
+				if (m_cInputHandler->IsKeyPressed(GLFW_KEY_UP))
+				{
+					MoveForward(currMap);
+				}
+				else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_LEFT))
+				{
+					MoveLeft(currMap);
+				}
+				else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_DOWN))
+				{
+					MoveBackwards(currMap);
+				}
+				else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_RIGHT))
+				{
+					MoveRight(currMap);
+				}
 			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_LEFT))
+
+			if (m_dInputDelay > INTERACTION_DELAY)
 			{
-				MoveLeft(currMap);
-			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_DOWN))
-			{
-				MoveBackwards(currMap);
-			}
-			else if (m_cInputHandler->IsKeyPressed(GLFW_KEY_RIGHT))
-			{
-				MoveRight(currMap);
+				if (m_cInputHandler->IsKeyPressed(GLFW_KEY_E))
+				{
+					Interact(currMap);
+				}
 			}
 		}
-
-		if (m_dInputDelay > INTERACTION_DELAY)
+		else
 		{
-			if (m_cInputHandler->IsKeyPressed(GLFW_KEY_E))
+			float newX, newY;
+			int absX, absY;
+			Vector3 prevPosition = infoC->getPosition();
+			switch (this->m_sMovement.m_eMoveDirection)
 			{
-				Interact(currMap);
+			case GridMap::DIRECTION_UP: // X does not Change
+				newY = Math::SmoothDamp(infoC->getPosition().y, this->m_sMovement.m_v3NextPosition.y, 4096.f, 0.001f, 4096.f, dt);
+				infoC->setPosition(Vector3(prevPosition.x, newY, 0.f));
+				absY = (int)newY;
+				if (m_sMovement.m_v3NextPosition.y == absY)
+				{
+					m_sMovement.m_bIsMoving = false;
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY - 1][m_sMovement.m_iPlayerIndexX]->addGridEntity(currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->getGridEntity());
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->removeEntity();
+				}
+				break;
+			case GridMap::DIRECTION_DOWN: // X does not Change
+				newY = Math::SmoothDamp(infoC->getPosition().y, this->m_sMovement.m_v3NextPosition.y, 4096.f, 0.001f, 4096.f, dt);
+				infoC->setPosition(Vector3(prevPosition.x, newY, 0.f));
+				absY = (int)newY;
+				if (m_sMovement.m_v3NextPosition.y == absY)
+				{
+					m_sMovement.m_bIsMoving = false;
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY + 1][m_sMovement.m_iPlayerIndexX]->addGridEntity(currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->getGridEntity());
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->removeEntity();
+				}
+				break;
+			case GridMap::DIRECTION_LEFT: // Y does not Change
+				newX = Math::SmoothDamp(infoC->getPosition().x, this->m_sMovement.m_v3NextPosition.x, 4096.f, 0.001f, 4096.f, dt);
+				infoC->setPosition(Vector3(newX, prevPosition.y, 0.f));
+				absX = (int)newX;
+				if (m_sMovement.m_v3NextPosition.x == absX)
+				{
+					m_sMovement.m_bIsMoving = false;
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX - 1]->addGridEntity(currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->getGridEntity());
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->removeEntity();
+				}
+				break;
+			case GridMap::DIRECTION_RIGHT: // Y does not Change
+				newX = Math::SmoothDamp(infoC->getPosition().x, this->m_sMovement.m_v3NextPosition.x, 4096.f, 0.001f, 4096.f, dt);
+				infoC->setPosition(Vector3(newX, prevPosition.y, 0.f));
+				absX = (int)newX;
+				if (m_sMovement.m_v3NextPosition.x == absX)
+				{
+					m_sMovement.m_bIsMoving = false;
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX + 1]->addGridEntity(currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->getGridEntity());
+					currMap->getGridMap()[m_sMovement.m_iPlayerIndexY][m_sMovement.m_iPlayerIndexX]->removeEntity();
+				}
+				break;
 			}
 		}
 	}
@@ -101,22 +161,32 @@ void ControllerComponent::MoveForward(GridMap * currMap)
 					{
 						if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_UP, gridObject->getObjectType(), this->getParent()))
 						{
-							infoC->setPosition(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos());
-							currMap->getGridMap()[playerIndexY - 1][playerIndexX]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-							currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							this->m_sMovement = MovementUpdate(
+								playerIndexX,
+								playerIndexY,
+								GridMap::DIRECTION_UP,
+								currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos(),
+								true
+								);
 						}
 					}
 				}
 				else
 				{
-					infoC->setPosition(currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos());
-					currMap->getGridMap()[playerIndexY - 1][playerIndexX]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-					currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					this->m_sMovement = MovementUpdate(
+						playerIndexX,
+						playerIndexY,
+						GridMap::DIRECTION_UP,
+						currMap->getGridMap()[playerIndexY - 1][playerIndexX]->getGridPos(),
+						true
+						);
 				}
 			}
 		}
 	}
-	m_dInputDelay = 0.0;
+	m_dMoveDelay = 0.0;
 }
 
 void ControllerComponent::MoveBackwards(GridMap * currMap)
@@ -140,23 +210,33 @@ void ControllerComponent::MoveBackwards(GridMap * currMap)
 					{
 						if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_DOWN, gridObject->getObjectType(), this->getParent()))
 						{
-							infoC->setPosition(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos());
-							currMap->getGridMap()[playerIndexY + 1][playerIndexX]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-							currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							this->m_sMovement = MovementUpdate(
+								playerIndexX,
+								playerIndexY,
+								GridMap::DIRECTION_DOWN,
+								currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos(),
+								true
+								);
 						}
 					}
 				}
 				else
 				{
-					infoC->setPosition(currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos());
-					currMap->getGridMap()[playerIndexY + 1][playerIndexX]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-					currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					this->m_sMovement = MovementUpdate(
+						playerIndexX,
+						playerIndexY,
+						GridMap::DIRECTION_DOWN,
+						currMap->getGridMap()[playerIndexY + 1][playerIndexX]->getGridPos(),
+						true
+						);
 				}
 			}
 		}
 	}
 
-	m_dInputDelay = 0.0;
+	m_dMoveDelay = 0.0;
 }
 
 void ControllerComponent::MoveLeft(GridMap * currMap)
@@ -164,6 +244,8 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
+		infoC->setRotation(Vector3(0.f, 180.f, 0.f));
+
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
 		int playerIndexX = (int)indexX;
@@ -180,23 +262,32 @@ void ControllerComponent::MoveLeft(GridMap * currMap)
 					{
 						if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_LEFT, gridObject->getObjectType(), this->getParent()))
 						{
-							infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridPos());
-							currMap->getGridMap()[playerIndexY][playerIndexX - 1]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-							currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							this->m_sMovement = MovementUpdate(
+								playerIndexX,
+								playerIndexY,
+								GridMap::DIRECTION_LEFT,
+								currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridPos(),
+								true
+								);
 						}
 					}
 				}
 				else
 				{
-					infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX-1]->getGridPos());
-					currMap->getGridMap()[playerIndexY][playerIndexX - 1]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-					currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
-
+					//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					this->m_sMovement = MovementUpdate(
+						playerIndexX,
+						playerIndexY,
+						GridMap::DIRECTION_LEFT,
+						currMap->getGridMap()[playerIndexY][playerIndexX - 1]->getGridPos(),
+						true
+						);
 				}
 			}
 		}
 	}
-	m_dInputDelay = 0.0;
+	m_dMoveDelay = 0.0;
 }
 
 void ControllerComponent::MoveRight(GridMap * currMap)
@@ -204,6 +295,8 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 	auto infoC = this->getParent()->getComponent<InformationComponent>();
 	if (infoC)
 	{
+		infoC->setRotation(Vector3(0.f, 0.f, 0.f));
+
 		float indexX = infoC->getPosition().x / (currMap->getMapWidth() * currMap->getTileSize()) * currMap->getMapWidth();
 		float indexY = infoC->getPosition().y / (currMap->getMapHeight() * currMap->getTileSize()) * currMap->getMapHeight();
 		int playerIndexX = (int)indexX;
@@ -220,22 +313,32 @@ void ControllerComponent::MoveRight(GridMap * currMap)
 					{
 						if (currMap->PushObjects(playerIndexX, playerIndexY, GridMap::DIRECTION_RIGHT, gridObject->getObjectType(), this->getParent()))
 						{
-							infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos());
-							currMap->getGridMap()[playerIndexY][playerIndexX + 1]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-							currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+							this->m_sMovement = MovementUpdate(
+								playerIndexX,
+								playerIndexY,
+								GridMap::DIRECTION_RIGHT,
+								currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos(),
+								true
+								);
 						}
 					}
 				}
 				else
 				{
-					infoC->setPosition(currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos());
-					currMap->getGridMap()[playerIndexY][playerIndexX + 1]->addGridEntity(currMap->getGridMap()[playerIndexY][playerIndexX]->getGridEntity());
-					currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					//currMap->getGridMap()[playerIndexY][playerIndexX]->removeEntity();
+					this->m_sMovement = MovementUpdate(
+						playerIndexX,
+						playerIndexY,
+						GridMap::DIRECTION_RIGHT,
+						currMap->getGridMap()[playerIndexY][playerIndexX + 1]->getGridPos(),
+						true
+						);
 				}
 			}
 		}
 	}
-	m_dInputDelay = 0.0;
+	m_dMoveDelay = 0.0;
 }
 
 void ControllerComponent::Interact(GridMap * currMap)

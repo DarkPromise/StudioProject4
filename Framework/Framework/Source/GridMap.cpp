@@ -141,10 +141,17 @@ void GridMap::RenderGridEntities(View * theView)
 		{
 			if (m_cGridMap[i][j]->getGridEntity() != NULL)
 			{
-				theView->modelStack.PushMatrix();
-				theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0.1f);
-				theView->RenderMesh(m_cGridMap[i][j]->getGridEntity()->getComponent<GraphicsComponent>()->getMesh(), false, false);
-				theView->modelStack.PopMatrix();
+				if (m_cGridMap[i][j]->getGridEntity()->getComponent<ControllerComponent>())
+				{
+
+				}
+				else
+				{
+					theView->modelStack.PushMatrix();
+					theView->modelStack.Translate(m_cGridMap[i][j]->getGridPos().x, m_cGridMap[i][j]->getGridPos().y, 0.1f);
+					theView->RenderMesh(m_cGridMap[i][j]->getGridEntity()->getComponent<GraphicsComponent>()->getMesh(), false, false);
+					theView->modelStack.PopMatrix();
+				}
 			}
 		}
 	}

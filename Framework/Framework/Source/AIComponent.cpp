@@ -14,6 +14,7 @@ AIComponent::AIComponent()
 , m_cSightMesh(nullptr)
 , m_dLookDelay(0.0)
 , m_dMoveDelay(0.0)
+, m_dSightDelay(0.0)
 , m_iMoveCount(0)
 , m_bPathing(false)
 {
@@ -123,7 +124,11 @@ void AIComponent::Update(double dt, GridMap * gridMap, Entity * thePlayer)
 		this->WalkToPoint(gridMap, thePlayer, dt);
 		this->FindNearbyEntity(gridMap, thePlayer);
 		break;
+	}
 
+	if (m_eState != STATE_CHASE)
+	{
+		m_dSightDelay = 0.0;
 	}
 }
 
@@ -684,245 +689,249 @@ void AIComponent::LookRight()
 void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 {
 	m_dMoveDelay += dt;
-	if (m_dMoveDelay > MOVE_DELAY)
+	m_dSightDelay += dt;
+	if (m_dSightDelay > SIGHT_DELAY)
 	{
-		auto infoC = this->getParent()->getComponent<InformationComponent>();
-		auto playerInfo = entity->getComponent<InformationComponent>();
-		if (infoC)
+		if (m_dMoveDelay > MOVE_DELAY)
 		{
-			float indexX = infoC->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
-			float indexY = infoC->getPosition().y / (gridMap->getMapHeight() * gridMap->getTileSize()) * gridMap->getMapHeight();
-			int aiIndexX = (int)indexX;
-			int aiIndexY = gridMap->getMapHeight() - (int)indexY;
-
-			if (playerInfo)
+			auto infoC = this->getParent()->getComponent<InformationComponent>();
+			auto playerInfo = entity->getComponent<InformationComponent>();
+			if (infoC)
 			{
-				float indexX = playerInfo->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
-				float indexY = playerInfo->getPosition().y / (gridMap->getMapHeight() * gridMap->getTileSize()) * gridMap->getMapHeight();
-				int playerIndexX = (int)indexX;
-				int playerIndexY = gridMap->getMapHeight() - (int)indexY;
+				float indexX = infoC->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
+				float indexY = infoC->getPosition().y / (gridMap->getMapHeight() * gridMap->getTileSize()) * gridMap->getMapHeight();
+				int aiIndexX = (int)indexX;
+				int aiIndexY = gridMap->getMapHeight() - (int)indexY;
 
-				int diffX = playerIndexX - aiIndexX;
-				int diffY = playerIndexY - aiIndexY;
-
-				if ((abs(diffX) > this->getSightLength()) || (abs(diffY) > this->getSightLength() ))
+				if (playerInfo)
 				{
-					auto wayC = this->getParent()->getComponent<WaypointComponent>();
-					if (wayC)
+					float indexX = playerInfo->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
+					float indexY = playerInfo->getPosition().y / (gridMap->getMapHeight() * gridMap->getTileSize()) * gridMap->getMapHeight();
+					int playerIndexX = (int)indexX;
+					int playerIndexY = gridMap->getMapHeight() - (int)indexY;
+
+					int diffX = playerIndexX - aiIndexX;
+					int diffY = playerIndexY - aiIndexY;
+
+					if ((abs(diffX) > this->getSightLength()) || (abs(diffY) > this->getSightLength()))
 					{
-						// *Pathfind way back to waypoint
-						AStar test(aiIndexX, aiIndexY, wayC->getWaypoints()[wayC->getNextWaypointIndex()]->indexX, wayC->getWaypoints()[wayC->getNextWaypointIndex()]->indexY,gridMap);
-						if (test.StartPathfinding())
+						auto wayC = this->getParent()->getComponent<WaypointComponent>();
+						if (wayC)
 						{
-							this->m_PathList = test.bestPath;
-							m_eState = STATE_PATHING;
+							// *Pathfind way back to waypoint
+							AStar test(aiIndexX, aiIndexY, wayC->getWaypoints()[wayC->getNextWaypointIndex()]->indexX, wayC->getWaypoints()[wayC->getNextWaypointIndex()]->indexY, gridMap);
+							if (test.StartPathfinding())
+							{
+								this->m_PathList = test.bestPath;
+								m_eState = STATE_PATHING;
+							}
+							else
+							{
+								std::cout << "Could not find a path back to waypoint" << std::endl;
+							}
 						}
-						else
-						{
-							std::cout << "Could not find a path back to waypoint" << std::endl;
-						}
+						return;
 					}
-					return;
-				}
-				else
-				{
-					// Random Chance (50%) to Resolve on either Axis (X or Y)
-					Math::InitRNG();
-					int moveWhere = Math::RandIntMinMax(1, 2);
-					if (diffX == 0) // No need to resolve on X
+					else
 					{
-						moveWhere = 2;
-					}
-					else if (diffY == 0) // No need to resolve on Y
-					{
-						moveWhere = 1;
-					}
-					switch (moveWhere)
-					{
-					case 1: // X Axis
-						if (diffX > 0) // +X Axis (Right)
+						// Random Chance (50%) to Resolve on either Axis (X or Y)
+						Math::InitRNG();
+						int moveWhere = Math::RandIntMinMax(1, 2);
+						if (diffX == 0) // No need to resolve on X
 						{
-							Vector3 newDirection = Vector3(1, 0, 0);
-							infoC->setDirection(newDirection);
-							Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
-							float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
-							infoC->setRotation(angle);
-
-							// Check For Blocks or Entities Infront
-							if (gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getTileID() == Grid::TILE_FLOOR)
+							moveWhere = 2;
+						}
+						else if (diffY == 0) // No need to resolve on Y
+						{
+							moveWhere = 1;
+						}
+						switch (moveWhere)
+						{
+						case 1: // X Axis
+							if (diffX > 0) // +X Axis (Right)
 							{
-								if (gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridEntity() != NULL)
+								Vector3 newDirection = Vector3(1, 0, 0);
+								infoC->setDirection(newDirection);
+								Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
+								float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
+								infoC->setRotation(angle);
+
+								// Check For Blocks or Entities Infront
+								if (gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getTileID() == Grid::TILE_FLOOR)
 								{
-									auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridEntity());
-									if (gridObject)
+									if (gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridEntity() != NULL)
 									{
-										if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_RIGHT, gridObject->getObjectType(), this->getParent()))
+										auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridEntity());
+										if (gridObject)
 										{
-											infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridPos());
-											gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->addGridEntity(this->getParent());
-											gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_RIGHT, gridObject->getObjectType(), this->getParent()))
+											{
+												infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridPos());
+												gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->addGridEntity(this->getParent());
+												gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											}
 										}
 									}
-								}
-								else
-								{
-									infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridPos());
-									gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->addGridEntity(this->getParent());
-									gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
-								}
-							}
-							// Check if within 1 block radius
-							if ((playerIndexX - aiIndexX == 1) && (playerIndexY - aiIndexY == 0))
-							{
-								auto gameC = entity->getComponent<GameplayComponent>();
-								if (gameC)
-								{
-									if (SoundManager::getSoundStatus())
+									else
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
+										infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->getGridPos());
+										gridMap->getGridMap()[aiIndexY][aiIndexX + 1]->addGridEntity(this->getParent());
+										gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
 									}
-									gameC->setRestartLevel(true);
+								}
+								// Check if within 1 block radius
+								if ((playerIndexX - aiIndexX == 1) && (playerIndexY - aiIndexY == 0))
+								{
+									auto gameC = entity->getComponent<GameplayComponent>();
+									if (gameC)
+									{
+										if (SoundManager::getSoundStatus())
+										{
+											SoundManager::playSound("Sounds//reset.wav", false);
+										}
+										gameC->setRestartLevel(true);
+									}
 								}
 							}
-						}
-						else // -X Axis (Left)
-						{
-							Vector3 newDirection = Vector3(-1, 0, 0);
-							infoC->setDirection(newDirection);
-							Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
-							float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
-							infoC->setRotation(angle);
-
-							if (gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getTileID() == Grid::TILE_FLOOR)
+							else // -X Axis (Left)
 							{
-								if (gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridEntity() != NULL)
+								Vector3 newDirection = Vector3(-1, 0, 0);
+								infoC->setDirection(newDirection);
+								Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
+								float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
+								infoC->setRotation(angle);
+
+								if (gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getTileID() == Grid::TILE_FLOOR)
 								{
-									auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridEntity());
-									if (gridObject)
+									if (gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridEntity() != NULL)
 									{
-										if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_LEFT, gridObject->getObjectType(), this->getParent()))
+										auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridEntity());
+										if (gridObject)
 										{
-											infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridPos());
-											gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->addGridEntity(this->getParent());
-											gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_LEFT, gridObject->getObjectType(), this->getParent()))
+											{
+												infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridPos());
+												gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->addGridEntity(this->getParent());
+												gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											}
 										}
 									}
-								}
-								else
-								{
-									infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridPos());
-									gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->addGridEntity(this->getParent());
-									gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
-								}
-							}
-							// Check if within 1 block radius
-							if ((aiIndexX - playerIndexX == 1) && (aiIndexY - playerIndexY == 0))
-							{
-								auto gameC = entity->getComponent<GameplayComponent>();
-								if (gameC)
-								{
-									if (SoundManager::getSoundStatus())
+									else
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
+										infoC->setPosition(gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->getGridPos());
+										gridMap->getGridMap()[aiIndexY][aiIndexX - 1]->addGridEntity(this->getParent());
+										gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
 									}
-									gameC->setRestartLevel(true);
+								}
+								// Check if within 1 block radius
+								if ((aiIndexX - playerIndexX == 1) && (aiIndexY - playerIndexY == 0))
+								{
+									auto gameC = entity->getComponent<GameplayComponent>();
+									if (gameC)
+									{
+										if (SoundManager::getSoundStatus())
+										{
+											SoundManager::playSound("Sounds//reset.wav", false);
+										}
+										gameC->setRestartLevel(true);
+									}
 								}
 							}
-						}
-						break;
-					case 2: // Y Axis
-						if (diffY > 0) // +Y Axis (Down)
-						{
-							Vector3 newDirection = Vector3(0, -1, 0);
-							infoC->setDirection(newDirection);
-							Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
-							float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
-							infoC->setRotation(angle);
-
-							if (gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getTileID() == Grid::TILE_FLOOR)
+							break;
+						case 2: // Y Axis
+							if (diffY > 0) // +Y Axis (Down)
 							{
-								if (gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridEntity() != NULL)
+								Vector3 newDirection = Vector3(0, -1, 0);
+								infoC->setDirection(newDirection);
+								Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
+								float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
+								infoC->setRotation(angle);
+
+								if (gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getTileID() == Grid::TILE_FLOOR)
 								{
-									auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridEntity());
-									if (gridObject)
+									if (gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridEntity() != NULL)
 									{
-										if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_DOWN, gridObject->getObjectType(), this->getParent()))
+										auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridEntity());
+										if (gridObject)
 										{
-											infoC->setPosition(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridPos());
-											gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->addGridEntity(this->getParent());
-											gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_DOWN, gridObject->getObjectType(), this->getParent()))
+											{
+												infoC->setPosition(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridPos());
+												gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->addGridEntity(this->getParent());
+												gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											}
 										}
 									}
-								}
-								else
-								{
-									infoC->setPosition(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridPos());
-									gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->addGridEntity(this->getParent());
-									gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
-								}
-							}
-							if ((playerIndexX - aiIndexX == 0) && (playerIndexY - aiIndexY == 1))
-							{
-								auto gameC = entity->getComponent<GameplayComponent>();
-								if (gameC)
-								{
-									if (SoundManager::getSoundStatus())
+									else
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
+										infoC->setPosition(gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->getGridPos());
+										gridMap->getGridMap()[aiIndexY + 1][aiIndexX]->addGridEntity(this->getParent());
+										gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
 									}
-									gameC->setRestartLevel(true);
+								}
+								if ((playerIndexX - aiIndexX == 0) && (playerIndexY - aiIndexY == 1))
+								{
+									auto gameC = entity->getComponent<GameplayComponent>();
+									if (gameC)
+									{
+										if (SoundManager::getSoundStatus())
+										{
+											SoundManager::playSound("Sounds//reset.wav", false);
+										}
+										gameC->setRestartLevel(true);
+									}
 								}
 							}
-						}
-						else //-Y Axis (Up)
-						{
-							Vector3 newDirection = Vector3(0, 1, 0);
-							infoC->setDirection(newDirection);
-							Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
-							float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
-							infoC->setRotation(angle);
-
-							if (gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getTileID() == Grid::TILE_FLOOR)
+							else //-Y Axis (Up)
 							{
-								if (gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridEntity() != NULL)
+								Vector3 newDirection = Vector3(0, 1, 0);
+								infoC->setDirection(newDirection);
+								Vector3 dirPos = infoC->getDirection() + infoC->getPosition();
+								float angle = Math::RadianToDegree(atan2(dirPos.x - infoC->getPosition().x, dirPos.y - infoC->getPosition().y));
+								infoC->setRotation(angle);
+
+								if (gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getTileID() == Grid::TILE_FLOOR)
 								{
-									auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridEntity());
-									if (gridObject)
+									if (gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridEntity() != NULL)
 									{
-										if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_UP, gridObject->getObjectType(), this->getParent()))
+										auto gridObject = dynamic_cast<EntityGridObject*>(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridEntity());
+										if (gridObject)
 										{
-											infoC->setPosition(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridPos());
-											gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->addGridEntity(this->getParent());
-											gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											if (gridMap->PushObjects(aiIndexX, aiIndexY, GridMap::DIRECTION_UP, gridObject->getObjectType(), this->getParent()))
+											{
+												infoC->setPosition(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridPos());
+												gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->addGridEntity(this->getParent());
+												gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
+											}
 										}
 									}
-								}
-								else
-								{
-									infoC->setPosition(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridPos());
-									gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->addGridEntity(this->getParent());
-									gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
-								}
-							}
-							if ((aiIndexX - playerIndexX == 0) && (aiIndexY - playerIndexY == 1))
-							{
-								auto gameC = entity->getComponent<GameplayComponent>();
-								if (gameC)
-								{
-									if (SoundManager::getSoundStatus())
+									else
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
+										infoC->setPosition(gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->getGridPos());
+										gridMap->getGridMap()[aiIndexY - 1][aiIndexX]->addGridEntity(this->getParent());
+										gridMap->getGridMap()[aiIndexY][aiIndexX]->removeEntity();
 									}
-									gameC->setRestartLevel(true);
+								}
+								if ((aiIndexX - playerIndexX == 0) && (aiIndexY - playerIndexY == 1))
+								{
+									auto gameC = entity->getComponent<GameplayComponent>();
+									if (gameC)
+									{
+										if (SoundManager::getSoundStatus())
+										{
+											SoundManager::playSound("Sounds//reset.wav", false);
+										}
+										gameC->setRestartLevel(true);
+									}
 								}
 							}
+							break;
 						}
-						break;
 					}
 				}
 			}
+			m_dMoveDelay = 0.0;
 		}
-		m_dMoveDelay = 0.0;
 	}
 }
 

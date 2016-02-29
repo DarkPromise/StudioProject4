@@ -27,7 +27,7 @@ static void error_callback(int error, const char* description)
 
 static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 {
-	std::cout << xOffset << "," << yOffset << std::endl;
+	//std::cout << xOffset << "," << yOffset << std::endl;
 }
 
 static void resize_callback(GLFWwindow* window, int width, int height)

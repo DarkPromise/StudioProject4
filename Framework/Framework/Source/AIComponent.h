@@ -7,6 +7,7 @@
 
 #define LOOK_DELAY 0.1
 #define MOVE_DELAY 0.25
+#define SIGHT_DELAY 1
 #define SWITCH_DELAY 0.5
 
 class AIComponent : public Component
@@ -74,6 +75,7 @@ private:
 
 	double m_dLookDelay;
 	double m_dMoveDelay;
+	double m_dSightDelay;
 
 	bool m_bPathing;
 
