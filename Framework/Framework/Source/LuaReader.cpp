@@ -243,7 +243,7 @@ void LuaReader::saveDoors(std::vector<int> entityDoorsX, std::vector<int> entity
 	file.close();
 }
 
-void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> entitySwitchesY)
+void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> entitySwitchesY, std::vector<int> entitySwitchesUseX, std::vector<int> entitySwitchesUseY)
 {
 	ofstream file;
 	file.open("Scripts//SaveSwitches.lua");
@@ -255,6 +255,14 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	for (int i = 0; i < entitySwitchesX.size(); i++)
 	{
 		file << "entitySwitchY" + std::to_string(i + 1) + "=\"" + std::to_string(entitySwitchesX[i]) + "\"," << std::endl;
+	}
+	for (int j = 0; j < entitySwitchesUseY.size(); j++)
+	{
+		file << "entitySwitchUseX" + std::to_string(j + 1) + "=\"" + std::to_string(entitySwitchesUseY[j]) + "\"," << std::endl;
+	}
+	for (int i = 0; i < entitySwitchesUseX.size(); i++)
+	{
+		file << "entitySwitchUseY" + std::to_string(i + 1) + "=\"" + std::to_string(entitySwitchesUseX[i]) + "\"," << std::endl;
 	}
 	file << "}" << std::endl;
 	file.close();

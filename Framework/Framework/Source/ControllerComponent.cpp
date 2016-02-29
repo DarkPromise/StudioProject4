@@ -366,11 +366,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 				
 				case EntityGridObject::OBJECT_SWITCH:
-					if (SoundManager::getSoundStatus())
-					{
-						SoundManager::playSound("Sounds//lever.wav", false);
-						SoundManager::playSound("Sounds//opendoor.wav", false);
-					}
 					currMap->getGridMap()[playerIndexY + 1][playerIndexX]->toggleObjects(currMap);
 				break;
 				
@@ -390,11 +385,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 				
 				case EntityGridObject::OBJECT_SWITCH:
-					if (SoundManager::getSoundStatus())
-					{
-						SoundManager::playSound("Sounds//lever.wav", false);
-						SoundManager::playSound("Sounds//opendoor.wav", false);
-					}
 					currMap->getGridMap()[playerIndexY - 1][playerIndexX]->toggleObjects(currMap);
 				break;
 				
@@ -414,11 +404,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 				
 				case EntityGridObject::OBJECT_SWITCH:
-					if (SoundManager::getSoundStatus())
-					{
-						SoundManager::playSound("Sounds//lever.wav", false);
-						SoundManager::playSound("Sounds//opendoor.wav", false);
-					}
 					currMap->getGridMap()[playerIndexY][playerIndexX + 1]->toggleObjects(currMap);
 				break;
 				
@@ -438,11 +423,6 @@ void ControllerComponent::Interact(GridMap * currMap)
 				break;
 				
 				case EntityGridObject::OBJECT_SWITCH:
-					if (SoundManager::getSoundStatus())
-					{
-						SoundManager::playSound("Sounds//lever.wav", false);
-						SoundManager::playSound("Sounds//opendoor.wav", false);
-					}
 					currMap->getGridMap()[playerIndexY][playerIndexX - 1]->toggleObjects(currMap);
 				break;
 				

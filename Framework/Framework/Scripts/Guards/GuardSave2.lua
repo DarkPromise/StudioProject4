@@ -2,8 +2,8 @@ Guard = {
 InformationComponent = {
 name = "Guard",
 position = {8,22},
-direction = {0,1,0},
-rotation = {0,0,0},
+direction = {0,-1,0},
+rotation = {1.8e+002,0,0},
 type = "NPC",
 },
 GraphicsComponent = {
@@ -22,11 +22,11 @@ aiSightLength = 5,
 },
 WaypointComponent = {
 numberOfPoints = 6,
-point2 = {6,22},
-point3 = {8,22},
+point2 = {8,25},
+point3 = {6,25},
 point4 = {8,25},
-point5 = {6,25},
-point6 = {8,25},
+point5 = {8,22},
+point6 = {6,22},
 point1 = {8,22},
 },
 }
