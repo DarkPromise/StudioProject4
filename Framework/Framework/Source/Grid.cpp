@@ -60,6 +60,16 @@ void Grid::addTile(int tileID)
 	}
 }
 
+void Grid::replaceMesh(Mesh * mesh, int index)
+{
+	auto graphicsC = m_cGridEntity->getComponent<GraphicsComponent>();
+	if (graphicsC)
+	{
+		delete graphicsC->getMesh(index);
+		graphicsC->getMeshList()[index] = mesh;
+	}
+}
+
 void Grid::replaceTile(int tileID, int index)
 {
 	if (m_cGridTiles[index] != NULL)
