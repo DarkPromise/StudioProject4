@@ -34,6 +34,33 @@ void StateTest::Init()
 	testMesh = MeshBuilder::GenerateQuad("Fade Out Quad", Color(0.f, 0.f, 0.f), 1.f);
 	m_meshList.push_back(testMesh);
 
+	testMesh = MeshBuilder::GenerateQuad("Legend_Box", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tiles//tile82.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Door", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tiles//tile109.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Door", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tiles//tile143.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Key", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tiles//tile_key.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Switch", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//Tiles//tile_switch.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Enemy", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//guard.tga");
+	m_meshList.push_back(testMesh);
+
+	testMesh = MeshBuilder::GenerateQuad("Legend_Detection", Color(1.f, 0.f, 0.f), 1.f);
+	m_meshList.push_back(testMesh);
+
 	// CAMERA
 	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
@@ -204,6 +231,17 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		else if (click3 && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
 		{
 			click3 = false;
+		}
+
+		// SHOW LEGEND
+		if (theView->getInputHandler()->IsKeyRepeating(GLFW_KEY_L))
+		{
+			showLegend = true;
+		}
+
+		else
+		{
+			showLegend = false;
 		}
 
 		// SHOW GAME SAVING
@@ -444,6 +482,29 @@ void StateTest::RenderBackground()
 	theView->modelStack.PopMatrix();
 }
 
+void StateTest::RenderFadeQuad()
+{
+	theView->Render2DMesh(m_meshList[2], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
+}
+
+void StateTest::RenderLegend()
+{
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "BOX:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.1f, (float)theView->getWindowHeight() * 0.1f);
+	theView->Render2DMesh(m_meshList[3], true, false, 42, 42, (float)theView->getWindowWidth() * 0.2f, (float)theView->getWindowHeight() * 0.13f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "SWITCH DOOR:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.25f, (float)theView->getWindowHeight() * 0.1f);
+	theView->Render2DMesh(m_meshList[4], true, false, 42, 42, (float)theView->getWindowWidth() * 0.49f, (float)theView->getWindowHeight() * 0.13f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY DOOR:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.54f, (float)theView->getWindowHeight() * 0.1f);
+	theView->Render2DMesh(m_meshList[5], true, false, 42, 42, (float)theView->getWindowWidth() * 0.73f, (float)theView->getWindowHeight() * 0.13f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "KEY:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.1f, (float)theView->getWindowHeight() * 0.2f);
+	theView->Render2DMesh(m_meshList[6], true, false, 42, 42, (float)theView->getWindowWidth() * 0.2f, (float)theView->getWindowHeight() * 0.225f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "SWITCH:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.24f, (float)theView->getWindowHeight() * 0.2f);
+	theView->Render2DMesh(m_meshList[7], true, false, 42, 42, (float)theView->getWindowWidth() * 0.39f, (float)theView->getWindowHeight() * 0.225f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "ENEMY:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.44f, (float)theView->getWindowHeight() * 0.2f);
+	theView->Render2DMesh(m_meshList[8], true, false, 42, 42, (float)theView->getWindowWidth() * 0.57f, (float)theView->getWindowHeight() * 0.225f);
+	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "ENEMY'S VISION:", Color(1.f, 0.f, 0.f), 43.f, (float)theView->getWindowWidth() * 0.63f, (float)theView->getWindowHeight() * 0.2f);
+	theView->Render2DMesh(m_meshList[9], true, false, 42, 42, (float)theView->getWindowWidth() * 0.91f, (float)theView->getWindowHeight() * 0.225f);
+}
+
 void StateTest::Draw(StateHandler * stateHandler)
 {
 	this->RenderBackground();
@@ -457,6 +518,10 @@ void StateTest::Draw(StateHandler * stateHandler)
 		RenderAI();
 		RenderPlayer();
 		RenderGUI();
+		if (showLegend)
+		{
+			RenderLegend();
+		}
 		theView->modelStack.PopMatrix();
 	}
 
@@ -474,11 +539,6 @@ void StateTest::Draw(StateHandler * stateHandler)
 	this->RenderFadeQuad();
 
 	theView->SwapBuffers();
-}
-
-void StateTest::RenderFadeQuad()
-{
-	theView->Render2DMesh(m_meshList[2], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 }
 
 void StateTest::gameSave(InformationComponent *infoC)

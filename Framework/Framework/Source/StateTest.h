@@ -22,6 +22,7 @@ public:
 		, state(STATE_PLAY)
 		, gameSaved(false)
 		, gameSavedTimer(0)
+		, showLegend(false)
 	{
 		this->theView = theView;
 		this->gameType = static_cast<GAMETYPE>(gameType);
@@ -58,6 +59,7 @@ public:
 	void RenderAI();
 	void RenderBackground();
 	void RenderFadeQuad();
+	void RenderLegend();
 
 	// Fade Functions
 	void FadeInEffect(double dt);
@@ -89,6 +91,7 @@ private:
 	float gameSavedTimer;
 	GAMETYPE gameType;
 	int levelSelected;
+	bool showLegend;
 
 	// Fading Effect
 	double m_dFadeDelay;
