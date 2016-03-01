@@ -89,8 +89,6 @@ void StateTest::Init()
 		break;
 	}
 
-	//highscore.ReadFromTextFile();
-
 	// Fade Effect
 	m_bStartFadeOut = true;
 	m_dFadeDelay = 0.0;

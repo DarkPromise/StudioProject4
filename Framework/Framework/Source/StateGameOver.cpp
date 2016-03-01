@@ -3,6 +3,7 @@
 #include "LoadTGA.h"
 #include "StateAGDevMenu.h"
 
+CRecord playerRecord;
 StateGameOver::~StateGameOver()
 {
 }
@@ -165,9 +166,9 @@ void StateGameOver::Resume()
 }
 
 void StateGameOver::Draw(StateHandler* stateHandler)
-{
-	RenderHighscore();
+{	
 	RenderBackground();	
+	RenderHighscore();
 	theView->SwapBuffers();
 }
 

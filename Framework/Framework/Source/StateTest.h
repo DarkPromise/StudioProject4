@@ -11,7 +11,7 @@
 #include "LuaReader.h"
 #include "SoundManager.h"
 #include "Highscore.h"
-
+extern 	CRecord playerRecord;
 class StateTest : public State
 {
 public:
@@ -87,8 +87,6 @@ private:
 	GAMESTATE state;
 	bool gameSaved;
 	float gameSavedTimer;
-	Highscore highscore;
-	CRecord playerRecord;
 	GAMETYPE gameType;
 	int levelSelected;
 

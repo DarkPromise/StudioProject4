@@ -47,7 +47,6 @@ private:
 	double m_dFadeDelay;
 	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
-	CRecord playerRecord;
 	Highscore highscore;
 	bool chara[32];
 	int currentLetter;
