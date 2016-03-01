@@ -81,10 +81,14 @@ void StateLevelSelect::Update(StateHandler * stateHandler, double dt)
 
 void StateLevelSelect::HandleEvents(StateHandler * stateHandler)
 {
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	if ((theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE)))
 	{
-		SoundManager::playSound("Sounds//return.ogg", false);
-		stateHandler->ChangeState(new StateMenu("AGDev GameMenu State", theView));
+		if (theView->getInputHandler()->getPressDelay() > PRESS_DELAY)
+		{
+			SoundManager::playSound("Sounds//return.ogg", false);
+			stateHandler->ChangeState(new StateMenu("AGDev GameMenu State", theView));
+			theView->getInputHandler()->setPressDelay(0.0);
+		}
 	}
 }
 

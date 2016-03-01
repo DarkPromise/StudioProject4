@@ -43,15 +43,15 @@ void StateMenu::Init()
 
 	// Create Gui Buttons
 	Gui * newGui;
-	newGui = new GuiButton("NewGame Button", "New Game", 0.5f, 0.55f, 48.f);
+	newGui = new GuiButton("New Game Button", "New Game", 0.5f, 0.55f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("NewGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("LoadGame Button", "Load Game", 0.5f, 0.65f, 48.f);
+	newGui = new GuiButton("Load Game Button", "Load Game", 0.5f, 0.65f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
-	newGui = new GuiButton("Levelselect Button", "Level select", 0.5f, 0.75f, 48.f);
+	newGui = new GuiButton("Level Select Button", "Level Select", 0.5f, 0.75f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("LoadGameBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
@@ -78,10 +78,14 @@ void StateMenu::Update(StateHandler * stateHandler, double dt)
 
 void StateMenu::HandleEvents(StateHandler * stateHandler)
 {
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	if ((theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE)))
 	{
-		SoundManager::playSound("Sounds//return.ogg", false);
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
+		if (theView->getInputHandler()->getPressDelay() > PRESS_DELAY)
+		{
+			SoundManager::playSound("Sounds//return.ogg", false);
+			stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
+			theView->getInputHandler()->setPressDelay(0.0);
+		}
 	}
 }
 
@@ -197,7 +201,7 @@ void StateMenu::UpdateSelection(StateHandler * stateHandler)
 
 void StateMenu::FadeInEffect(double dt)
 {
-	if (m_meshList[0]->alpha < 1)
+	if (m_meshList[0]->alpha < 2)
 	{
 		for (Mesh * mesh : m_meshList)
 		{
@@ -217,8 +221,8 @@ void StateMenu::FadeOutEffect(double dt, StateHandler * stateHandler)
 		if (m_meshList[0] && !runOnce)
 		{
 			runOnce = true;
-			m_meshList[1]->alpha = 1.f;
-			m_meshList[2]->alpha = 1.f;
+			m_meshList[1]->alpha = 2.f;
+			m_meshList[2]->alpha = 2.f;
 		}
 		mesh->alpha -= 2.f * dt;
 	}

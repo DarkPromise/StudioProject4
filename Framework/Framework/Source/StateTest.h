@@ -57,6 +57,11 @@ public:
 	void RenderGUI();
 	void RenderAI();
 	void RenderBackground();
+	void RenderFadeQuad();
+
+	// Fade Functions
+	void FadeInEffect(double dt);
+	void FadeOutEffect(double dt);
 
 	// Game Functions
 	void RestartLevel();
@@ -86,6 +91,13 @@ private:
 	CRecord playerRecord;
 	GAMETYPE gameType;
 	int levelSelected;
+
+	// Fading Effect
+	double m_dFadeDelay;
+	bool m_bStartFadeIn;
+	bool m_bStartFadeOut;
+	bool alpha;
+	bool runOnce;
 };
 
 #endif

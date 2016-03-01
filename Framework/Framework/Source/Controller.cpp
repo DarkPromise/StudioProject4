@@ -2,7 +2,6 @@
 
 #include "StateTest.h"
 #include "StateSplash.h"
-#include "StateMainmenu.h"
 
 Controller::Controller(Model * theModel, View * theView)
 : theModel(theModel)
@@ -69,6 +68,7 @@ void Controller::RunGameLoop()
 		if (m_dAccumulatedTime_ThreadOne > 0.01)
 		{
 			m_cInputHandler->MouseUpdate(theView, m_dAccumulatedTime_ThreadOne);
+			m_cInputHandler->KeyboardUpdate(theView, m_dAccumulatedTime_ThreadOne);
 
 			m_cStateHandler->HandleEvents();
 			m_cStateHandler->Update(m_dAccumulatedTime_ThreadOne);

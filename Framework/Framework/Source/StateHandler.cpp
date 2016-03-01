@@ -1,5 +1,6 @@
 #include "StateHandler.h"
 #include "State.h"
+#include "glfw3.h"
 
 StateHandler::StateHandler() 
 : m_bRunning(false)
@@ -88,6 +89,7 @@ void StateHandler::Cleanup()
 
 void StateHandler::Draw()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_stateList.back()->Draw(this);
 }
 

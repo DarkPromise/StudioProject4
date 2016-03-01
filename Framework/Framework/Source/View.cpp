@@ -38,15 +38,15 @@ static void resize_callback(GLFWwindow* window, int width, int height)
 BOOL View::InitGL()
 {
 	glShadeModel(GL_SMOOTH);
-	glClearColor(0.f, 0.f, 0.f, 0.1f); //Initialize Background Colour
+	glClearColor(0.f, 0.f, 0.f, 1.f); //Initialize Background Colour
 	glEnable(GL_DEPTH_TEST); //Enable Depth Test
 	glDepthFunc(GL_LEQUAL); //If the image is closer to camera, allow it to be ontop
 	glEnable(GL_CULL_FACE); //Allow culling of faces
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //Allows the interior of polygon to be filled
 	glEnable(GL_BLEND); //Allow blending of textures with alpha
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Alpha stuff
-	//glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB); //Perfect Blending
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); //Nicest Perspective that can be calculated
+	glfwSwapInterval(0);
 
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
@@ -267,8 +267,6 @@ void View::Update(double dt)
 		LoadPerspectiveCamera(90.f);
 		break;
 	}
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void View::SwapBuffers()
@@ -352,7 +350,7 @@ void View::Render2DMesh(Mesh *mesh, bool enableLight, bool enableFog, float size
 		return;
 
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, (float)m_viewPort[VIEWPORT_WIDTH], 0, (float)m_viewPort[VIEWPORT_HEIGHT], -10, 10);
+	ortho.SetToOrtho(0, (float)m_viewPort[VIEWPORT_WIDTH], 0, (float)m_viewPort[VIEWPORT_HEIGHT], -10, 100);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();
@@ -368,10 +366,10 @@ void View::Render2DMesh(Mesh *mesh, bool enableLight, bool enableFog, float size
 
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 
-	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-
 	// Alpha
 	glUniform1f(m_parameters[U_OBJECT_ALPHA], mesh->alpha);
+
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
 	for (int i = 0; i < MAX_TEXTURES; i++)
 	{

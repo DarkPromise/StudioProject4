@@ -221,9 +221,6 @@
     <ClCompile Include="Source\AxisAlignedBoundingBox.cpp">
       <Filter>Source Files\AABB</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateMainmenu.cpp">
-      <Filter>Source Files\State Handling\Game States</Filter>
-    </ClCompile>
     <ClCompile Include="Source\CharBuffer.cpp">
       <Filter>Source Files\Char Buffer</Filter>
     </ClCompile>
@@ -414,9 +411,6 @@
     </ClInclude>
     <ClInclude Include="Source\GuiManager.h">
       <Filter>Header Files\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMainmenu.h">
-      <Filter>Header Files\State Handling\Game States</Filter>
     </ClInclude>
     <ClInclude Include="Source\CharBuffer.h">
       <Filter>Header Files\Char Buffer</Filter>

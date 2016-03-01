@@ -3,6 +3,8 @@
 
 #pragma warning(disable:4018)
 
+#define PRESS_DELAY 0.25
+
 #include <iostream>
 
 class View;
@@ -47,8 +49,11 @@ public:
 
 	// Generic Functions
 	void MouseUpdate(View * theView, double dt);
+	void KeyboardUpdate(View * theView, double dt);
 	void setClickDelay(double delay);
 	double getClickDelay();
+	void setPressDelay(double delay);
+	double getPressDelay();
 
 	// Buffer
 	CharBuffer * addNewBuffer();
@@ -70,6 +75,7 @@ private:
 	bool m_bMouseEnabled;
 	bool m_bKeyboardEnabled;
 	double m_dClickDelay;
+	double m_dPressDelay;
 
 	bool m_bBufferMode;
 	std::vector<CharBuffer*> m_charBufferList;

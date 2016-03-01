@@ -31,6 +31,9 @@ void StateTest::Init()
 	testMesh->textureArray[0] = LoadTGA("Images//Gamebg.tga");
 	m_meshList.push_back(testMesh);
 
+	testMesh = MeshBuilder::GenerateQuad("Fade Out Quad", Color(0.f, 0.f, 0.f), 1.f);
+	m_meshList.push_back(testMesh);
+
 	// CAMERA
 	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
@@ -87,10 +90,19 @@ void StateTest::Init()
 	}
 
 	//highscore.ReadFromTextFile();
+
+	// Fade Effect
+	m_bStartFadeOut = true;
+	m_dFadeDelay = 0.0;
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
 {
+	if (m_bStartFadeOut)
+	{
+		this->FadeOutEffect(dt);
+	}
+
 	static bool click = false, click2 = false, click3 = false;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
@@ -280,10 +292,14 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 
 void StateTest::HandleEvents(StateHandler * stateHandler)
 {
-	if (theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE))
+	if ((theView->getInputHandler()->IsKeyPressed(GLFW_KEY_BACKSPACE)))
 	{
-		SoundManager::playSound("Sounds//return.ogg", false);
-		stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+		if (theView->getInputHandler()->getPressDelay() > PRESS_DELAY)
+		{
+			SoundManager::playSound("Sounds//return.ogg", false);
+			stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+			theView->getInputHandler()->setPressDelay(0.0);
+		}
 	}
 
 	if (state == GAMESTATE::STATE_GAMEOVER)
@@ -353,16 +369,6 @@ void StateTest::RenderPlayer()
 				theView->modelStack.PopMatrix();
 		}
 	}
-
-	/*auto collisionC = this->testEntity->getComponent<CollisionComponent>();
-	if (collisionC)
-	{
-	theView->modelStack.PushMatrix();
-	theView->modelStack.Translate(this->testEntity->getComponent<InformationComponent>()->getPosition().x, this->testEntity->getComponent<InformationComponent>()->getPosition().y, this->testEntity->getComponent<InformationComponent>()->getPosition().z);
-	theView->modelStack.Rotate(this->testEntity->getComponent<InformationComponent>()->getRotation().y, 0.f, 1.f, 0.f);
-	theView->RenderMesh(collisionC->getMesh(), false, false);
-	theView->modelStack.PopMatrix();
-	}*/
 }
 
 void StateTest::RenderGUI()
@@ -466,7 +472,15 @@ void StateTest::Draw(StateHandler * stateHandler)
 			}
 		}
 	}
+
+	this->RenderFadeQuad();
+
 	theView->SwapBuffers();
+}
+
+void StateTest::RenderFadeQuad()
+{
+	theView->Render2DMesh(m_meshList[2], false, false, (float)theView->getWindowWidth(), (float)theView->getWindowHeight(), (float)theView->getWindowWidth() * 0.5f, (float)theView->getWindowHeight() * 0.5f);
 }
 
 void StateTest::gameSave(InformationComponent *infoC)
@@ -2444,5 +2458,21 @@ void StateTest::RestartLevel()
 				break;
 			}
 		}
+	}
+}
+
+void StateTest::FadeInEffect(double dt)
+{
+	
+}
+
+void StateTest::FadeOutEffect(double dt)
+{
+	float newAlpha = Math::SmoothDamp(m_meshList[2]->alpha, -1.f, 10.f, 0.001f, 10.f, (float)dt);
+	m_meshList[2]->alpha = newAlpha;
+
+	if (m_meshList[2]->alpha < 0)
+	{
+		m_bStartFadeOut = false;
 	}
 }

@@ -7,7 +7,7 @@
 
 #define LOOK_DELAY 0.1
 #define MOVE_DELAY 0.25
-#define SIGHT_DELAY 1
+#define SIGHT_DELAY 0.3
 #define SWITCH_DELAY 0.5
 
 class AIComponent : public Component

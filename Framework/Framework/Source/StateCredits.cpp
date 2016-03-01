@@ -2,7 +2,6 @@
 #include "View.h"
 #include "StateAGDevMenu.h"
 #include "LoadTGA.h"
-#include "StateMainmenu.h"
 #include "SoundManager.h"
 
 StateCredits::~StateCredits()

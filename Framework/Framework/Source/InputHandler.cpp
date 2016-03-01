@@ -13,6 +13,7 @@ InputHandler::InputHandler()
 , m_bMouseEnabled(true)
 , m_bKeyboardEnabled(true)
 , m_dClickDelay(0.0)
+, m_dPressDelay(0.0)
 , m_bBufferMode(false)
 {
 	std::cout << "InputHandler Created" << std::endl;
@@ -212,6 +213,11 @@ void InputHandler::PressKey(int key, bool status)
 	}
 }
 
+void InputHandler::KeyboardUpdate(View * theView, double dt)
+{
+	m_dPressDelay += dt;
+}
+
 void InputHandler::MouseUpdate(View * theView, double dt)
 {
 	if (m_dClickDelay > 0.0)
@@ -286,6 +292,11 @@ void InputHandler::setClickDelay(double delay)
 	this->m_dClickDelay = delay;
 }
 
+void InputHandler::setPressDelay(double delay)
+{
+	this->m_dPressDelay = delay;
+}
+
 double InputHandler::getDeltaX() const
 {
 	return this->dX;
@@ -319,6 +330,11 @@ double InputHandler::getMouseY()
 double InputHandler::getClickDelay()
 {
 	return this->m_dClickDelay;
+}
+
+double InputHandler::getPressDelay()
+{
+	return this->m_dPressDelay;
 }
 
 void InputHandler::resetMousePosition(View * theView)

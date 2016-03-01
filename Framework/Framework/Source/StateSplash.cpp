@@ -28,7 +28,7 @@ void StateSplash::Init()
 	newMesh->textureArray[0] = LoadTGA("Images//Logo.tga");
 	m_meshList.push_back(newMesh);
 
-	m_bStartFadeOut = true;
+	m_bStartFadeOut = false;
 	m_dFadeDelay = 0.0;
 
 	SoundManager::playSound("Sounds//splash.wav", false);
@@ -41,10 +41,12 @@ void StateSplash::Update(StateHandler * stateHandler, double dt)
 
 	if (m_dFadeDelay > 1.5)
 	{
-		if (m_bStartFadeOut)
-		{
-			FadeOutEffect(dt, stateHandler);
-		}
+		m_bStartFadeOut = true;
+	}
+
+	if (m_bStartFadeOut)
+	{
+		FadeOutEffect(dt, stateHandler);
 	}
 
 	theView->Update(dt);
@@ -99,10 +101,11 @@ void StateSplash::FadeOutEffect(double dt, StateHandler * stateHandler)
 {	
 	for (Mesh * mesh : m_meshList)
 	{
-		mesh->alpha -= 1.f * dt;
+		float newAlpha = Math::SmoothDamp(mesh->alpha, -1.f, 10.f, 0.001f, 10.f, (float)dt);
+		mesh->alpha = newAlpha;
 	}
 	
-	if (m_meshList[0]->alpha < 0)
+	if (m_meshList[0]->alpha < 0.f)
 	{
 		stateHandler->ChangeState(new StateAGDevMenu("Menu State", theView, true));
 	}

@@ -214,6 +214,4 @@ void main(){
 		float fogFactor = getFogFactor(fogParam, fogDistance);
 		color = mix(color, vec4(fogParam.color, 1), fogFactor);
 	}
-
-
 }
