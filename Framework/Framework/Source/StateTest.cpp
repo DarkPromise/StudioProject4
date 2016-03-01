@@ -119,6 +119,12 @@ void StateTest::Init()
 	// Fade Effect
 	m_bStartFadeOut = true;
 	m_dFadeDelay = 0.0;
+
+	// MUSIC
+	if (SoundManager::getSoundStatus())
+	{
+		SoundManager::playSound("Sounds//gameBackground.ogg", true);
+	}
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -139,7 +145,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	{
 		if (gameC->getRestartLevel())
 		{
-			std::cout << "RESTART" << std::endl;
+			//std::cout << "RESTART" << std::endl;
 			gameC->setRestartLevel(false);
 			this->RestartLevel();
 			return;
@@ -223,6 +229,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		// RESET LEVEL MANUALLY
 		if (!click3 && theView->getInputHandler()->IsKeyPressed(GLFW_KEY_R))
 		{
+			SoundManager::playSound("Sounds//reset.wav", false);
 			click3 = true;
 			RestartLevel();
 			return;
@@ -332,6 +339,10 @@ void StateTest::HandleEvents(StateHandler * stateHandler)
 	{
 		if (theView->getInputHandler()->getPressDelay() > PRESS_DELAY)
 		{
+			if (SoundManager::getSoundStatus())
+			{
+				SoundManager::stopAllSounds();
+			}
 			SoundManager::playSound("Sounds//return.ogg", false);
 			stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
 			theView->getInputHandler()->setPressDelay(0.0);

@@ -23,7 +23,6 @@ public:
 	{
 		this->theView = theView;
 		this->alpha = alpha;
-		runOnce = false;
 	}
 	~StateAGDevMenu();
 
@@ -55,7 +54,7 @@ private:
 	bool m_bStartFadeIn;
 	bool m_bStartFadeOut;
 	bool alpha;
-	bool runOnce;
+	static bool runOnce;
 };
 
 #endif

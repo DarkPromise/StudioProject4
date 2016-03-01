@@ -9,6 +9,8 @@
 #include "StateMenu.h"
 #include "SoundManager.h"
 
+bool StateAGDevMenu::runOnce = false;
+
 StateAGDevMenu::~StateAGDevMenu()
 {
 
@@ -35,6 +37,7 @@ void StateAGDevMenu::Init()
 	m_meshList.push_back(newMesh);
 
 	newMesh = MeshBuilder::GenerateQuad("AGDev Menu BG", Color(1.f, 1.f, 1.f), 1.f);
+	newMesh->textureArray[0] = LoadTGA("Images//GameMenubg.tga");
 	//newMesh->alpha = 0.f;
 	m_meshList.push_back(newMesh);
 
@@ -219,6 +222,10 @@ void StateAGDevMenu::FadeInEffect(double dt)
 				runOnce = true;
 				m_meshList[1]->alpha = 0.f;
 				m_meshList[2]->alpha = 0.f;
+			}
+			if (!alpha && runOnce)
+			{
+				m_meshList[1]->alpha = 1.f;
 			}
 			mesh->alpha += 2.f * dt;
 		}
