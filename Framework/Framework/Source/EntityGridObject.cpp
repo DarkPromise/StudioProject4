@@ -8,12 +8,14 @@ EntityGridObject::EntityGridObject()
 , m_bToggled(false)
 , m_iIndexX(-1)
 , m_iIndexY(-1)
+, active(true)
 {
 
 }
 
 EntityGridObject::EntityGridObject(OBJECT_TYPE type)
 : m_eObjectType(type)
+, active(true)
 {
 	switch (m_eObjectType)
 	{
@@ -154,4 +156,14 @@ int EntityGridObject::get_m_iIndexX()
 int EntityGridObject::get_m_iIndexY()
 {
 	return m_iIndexY;
+}
+
+void EntityGridObject::setActive(bool active)
+{
+	this->active = active;
+}
+
+bool EntityGridObject::getActive()
+{
+	return active;
 }

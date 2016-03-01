@@ -184,8 +184,15 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	return newEntity;
 }
 
-void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey, float timing)
+void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey, float timing, Vector3 direction, Vector3 rotation)
 {
+	std::stringstream directionX, directionY, directionZ;
+	directionX.precision(1); directionY.precision(1); directionZ.precision(1);
+	directionX << direction.x; directionY << direction.y; directionZ << direction.z;
+	std::stringstream rotationX, rotationY, rotationZ;
+	rotationX.precision(3); rotationY.precision(3); rotationZ.precision(3);
+	rotationX << rotation.x; rotationY << rotation.y; rotationZ << rotation.z;
+
 	ofstream file;
 	file.open("Scripts//SavePlayer.lua");
 	file << "SavePlayer = {" << std::endl;
@@ -194,6 +201,8 @@ void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m
 	file << "level = \"" + std::to_string(level) + "\"," << std::endl;
 	file << "hasKey = \"" + std::to_string(m_bHasKey) + "\"," << std::endl;
 	file << "timing = \"" + std::to_string(timing) + "\"," << std::endl;
+	file << "direction = {" + directionX.str() + "," + directionY.str() + "," + directionZ.str() + "}," << std::endl;
+	file << "rotation = {" + rotationX.str() + "," + rotationY.str() + "," + rotationZ.str() + "}," << std::endl;
 	file << "}" << std::endl;
 	file.close();
 }
@@ -270,17 +279,17 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 
 void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int wayPointSize, std::vector<int> entityWaypointX, std::vector<int> entityWaypointY, int enemyListIndex, int currentLevel, int nextWaypointIndex)
 {
-	ofstream file;
 	std::stringstream positionX, positionY;
-	std::stringstream directionX, directionY, directionZ;
-	std::stringstream rotationX, rotationY, rotationZ;
 	positionX.precision(2); positionY.precision(2);
-	directionX.precision(2); directionY.precision(2); directionZ.precision(2);
-	rotationX.precision(2); rotationY.precision(2); rotationZ.precision(2);
 	positionX << position.x; positionY << position.y;
+	std::stringstream directionX, directionY, directionZ;
+	directionX.precision(2); directionY.precision(2); directionZ.precision(2);
 	directionX << direction.x; directionY << direction.y; directionZ << direction.z;
+	std::stringstream rotationX, rotationY, rotationZ;
+	rotationX.precision(2); rotationY.precision(2); rotationZ.precision(2);
 	rotationX << rotation.x; rotationY << rotation.y; rotationZ << rotation.z;
 
+	ofstream file;
 	if (currentLevel == 3)
 	{
 		file.open("Scripts//Guards//GuardSave8.lua");
@@ -324,17 +333,17 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 		{
 			nextWaypointIndex -= wayPointSize;
 		}
-		
+
 		if (i + 2 == wayPointSize + 1)
 		{
 			file << "point1 = {" + std::to_string(entityWaypointY[nextWaypointIndex + i]) + "," + std::to_string(entityWaypointX[nextWaypointIndex + i]) + "}," << std::endl;
 		}
-		
+
 		else
 		{
 			file << "point" + std::to_string(i + 2) + " = " + "{" + std::to_string(entityWaypointY[nextWaypointIndex + i]) + "," + std::to_string(entityWaypointX[nextWaypointIndex + i]) + "}," << std::endl;
 		}
-		
+
 	}
 	file << "}," << std::endl;
 

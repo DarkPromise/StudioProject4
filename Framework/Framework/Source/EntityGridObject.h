@@ -33,8 +33,10 @@ public:
 
 	void setIndexX(int x) { this->m_iIndexX = x; }
 	void setIndexY(int y) { this->m_iIndexY = y; }
+	void setActive(bool active);
 	int get_m_iIndexX();
 	int get_m_iIndexY();
+	bool getActive();
 private:
 	OBJECT_TYPE m_eObjectType;
 	std::vector<EntityGridObject*> m_cChildren;
@@ -42,6 +44,7 @@ private:
 	bool m_bToggled;
 	int m_iIndexX;
 	int m_iIndexY;
+	bool active;
 };
 
 #endif

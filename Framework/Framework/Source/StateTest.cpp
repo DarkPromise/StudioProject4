@@ -558,7 +558,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 					auto gridObject = dynamic_cast<EntityGridObject*>(testMap->getGridMap()[i][j]->getGridEntity());
 					if (gridObject)
 					{
-						//std::cout << "SIZE: " + std::to_string(gridObject->getChildren().size()) << std::endl;
+						//std::cout << "Check: " << std::boolalpha << gridObject->getActive() << std::endl;
 						for (int k = 0; k < gridObject->getChildren().size(); k++)
 						{
 							if (gridObject->getChildren()[k]->getObjectType() != EntityGridObject::OBJECT_DOOR)
@@ -635,7 +635,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 	// SAVING DATA INTO SCRIPTS
 	if (gameC)
 	{
-		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer);
+		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer, infoC->getDirection(), infoC->getRotation());
 		script.saveBoxes(entityBoxesX, entityBoxesY, totalBoxes);
 		script.saveDoors(entityDoorsX, entityDoorsY, entityDoorsOpenX, entityDoorsOpenY, totalCloseDoors, totalOpenDoors);
 		script.saveSwitches(entitySwitchesX, entitySwitchesY, entitySwitchesUseX, entitySwitchesUseY);
@@ -655,10 +655,14 @@ void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationCo
 	int savedLevel = Script.get<int>("SavePlayer.level");
 	int collected = Script.get<int>("SavePlayer.hasKey");
 	gameTimer = Script.get<float>("SavePlayer.timing");
+	Vector3 direction = Script.get<Vector3>("SavePlayer.direction");
+	Vector3 rotation = Script.get<Vector3>("SavePlayer.rotation");
 
 	if (gameC)
 	{
 		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
+		informationComponent->setDirection(direction);
+		informationComponent->setRotation(rotation);
 		testMap->addGridEntity(testEntity);
 		gameC->setCurrLevel(savedLevel);
 		if (collected == 1)

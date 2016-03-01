@@ -182,7 +182,7 @@ bool Grid::hasInteractableEntity()
 	if (m_cGridEntity)
 	{
 		auto gridObject = dynamic_cast<EntityGridObject*>(this->m_cGridEntity);
-		if (gridObject)
+		if (gridObject && gridObject->getActive())
 		{
 			switch (gridObject->getObjectType())
 			{
@@ -222,6 +222,7 @@ void Grid::toggleObjects(GridMap * currMap)
 			{
 			case EntityGridObject::OBJECT_SWITCH:
 				gridObject->toggleObject(currMap);
+				gridObject->setActive(false);
 				break;
 			}
 
