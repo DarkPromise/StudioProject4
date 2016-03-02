@@ -145,15 +145,6 @@ void StateAGDevOptions::UpdateSelection(StateHandler * stateHandler)
 
 				if (theView->getInputHandler()->getClickDelay() <= 0.0)
 				{
-					/*if (SoundManager::getSoundStatus())
-					{
-						m_guiList[ON_BUTTON]->highlightButton(true);
-					}
-					else if (!SoundManager::getSoundStatus())
-					{
-						m_guiList[OFF_BUTTON]->highlightButton(true);
-					}*/
-
 					if (theView->getInputHandler()->IsKeyPressed(GLFW_MOUSE_BUTTON_1))
 					{
 						switch (BUTTON(i))

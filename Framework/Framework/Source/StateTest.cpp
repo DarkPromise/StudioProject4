@@ -523,7 +523,6 @@ void StateTest::Draw(StateHandler * stateHandler)
 	{
 		theView->modelStack.PushMatrix();
 		theView->modelStack.Translate(0.f, -(float)testMap->getTileSize(), 0.f);
-		testMap->RenderGrids(theView, m_meshList[0], true);
 		testMap->RenderLevel(theView);
 		testMap->RenderGridEntities(theView);
 		RenderAI();

@@ -28,7 +28,10 @@ bool SoundManager::getSoundStatus()
 
 void SoundManager::playSound(const char * soundPath, bool loop)
 {
-	soundEngine->play2D(soundPath, loop);
+	if (m_soundStatus)
+	{
+		soundEngine->play2D(soundPath, loop);
+	}
 }
 
 void SoundManager::stopAllSounds()
