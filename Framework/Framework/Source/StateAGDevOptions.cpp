@@ -42,7 +42,7 @@ void StateAGDevOptions::Init()
 	
 	// Create Gui
 	Gui * newGui;
-	newGui = new GuiButton("Sound Button", "Game Sounds:", 0.42f, 0.76f, 48.f);
+	newGui = new GuiButton("Sound Button", "Sounds:", 0.463f, 0.76f, 48.f);
 	newGui->setMesh(MeshBuilder::GenerateBoundingBox("OnBB", newGui->getBoundingBox().Max, newGui->getBoundingBox().Min, Color(0.f, 0.f, 1.f)));
 	m_guiList.push_back(newGui);
 
