@@ -41,7 +41,6 @@ void HealthComponent::Update(double dt)
 
 }
 
-
 void HealthComponent::setHealth(float health)
 {
 	this->m_fHp = health;
@@ -61,7 +60,6 @@ float HealthComponent::getMaxHealth()
 {
 	return this->m_fMaxHp;
 }
-
 
 void HealthComponent::setHealthBar(bool status)
 {

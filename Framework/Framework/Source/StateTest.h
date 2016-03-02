@@ -69,6 +69,7 @@ public:
 	// Game Functions
 	void RestartLevel();
 	void SetGlobalDifficulty(int i);
+	int GetGlobalDifficulty();
 
 	// Saving 
 	void gameSave(InformationComponent *infoC);

@@ -123,7 +123,16 @@ void StateTest::Init()
 	// MUSIC
 	SoundManager::playSound("Sounds//gameBackground.ogg", true);
 
+	// GAME DIFFICULTY
 	this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
+	if (GetGlobalDifficulty() == 3)
+	{
+		auto playerHealth = testEntity->getComponent<HealthComponent>();
+		if (playerHealth)
+		{
+			playerHealth->setHealth(1);
+		}
+	}
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -433,6 +442,7 @@ void StateTest::RenderGUI()
 
 	// PLAYER HUD
 	auto gameC = testEntity->getComponent<GameplayComponent>();
+	auto playerHealth = testEntity->getComponent<HealthComponent>();
 	if (gameC)
 	{
 		std::ostringstream ss1;
@@ -455,7 +465,20 @@ void StateTest::RenderGUI()
 			theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "GAME SAVING..", Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.75f, (float)theView->getWindowHeight() * 0.f);
 		}
 
+		// CURRENT LEVEL
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "LEVEL: " + std::to_string(gameC->getCurrLevel()), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.825f, (float)theView->getWindowHeight() * 0.93f);
+
+		// PLAYER'S CURRENT HEALTH
+		if (playerHealth)
+		{
+			if (GetGlobalDifficulty() == 2 || GetGlobalDifficulty() == 3)
+			{
+				std::ostringstream ss;
+				ss.precision(1);
+				ss << "HEALTH: " << playerHealth->getHealth();
+				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.9f);				
+			}
+		}
 	}
 
 	// GAME PAUSE
@@ -2595,4 +2618,9 @@ void StateTest::SetGlobalDifficulty(int i)
 		}
 		break;
 	}
+}
+
+int StateTest::GetGlobalDifficulty()
+{
+	return StateAGDevOptions::difficulty;
 }

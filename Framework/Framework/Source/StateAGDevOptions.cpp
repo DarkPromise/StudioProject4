@@ -4,7 +4,7 @@
 #include "StateAGDevMenu.h"
 #include "SoundManager.h"
 
-int StateAGDevOptions::difficulty = 1;
+int StateAGDevOptions::difficulty = 2;
 
 StateAGDevOptions::~StateAGDevOptions()
 {
