@@ -126,11 +126,8 @@ void EntityGridObject::toggleObject(GridMap * currMap)
 		graphicsComponent->getMesh()->alpha = 1.f;
 		break;
 	case OBJECT_DOOR:
-		if (SoundManager::getSoundStatus())
-		{
-			SoundManager::playSound("Sounds//lever.wav", false);
-			SoundManager::playSound("Sounds//opendoor.wav", false);
-		}
+		SoundManager::playSound("Sounds//lever.wav", false);
+		SoundManager::playSound("Sounds//opendoor.wav", false);
 		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->setremoveDoor(true);
 		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->replaceTile(Grid::TILE_FLOOR,BACKGROUND_TILE);
 		currMap->getGridMap()[this->m_iIndexY][this->m_iIndexX]->deleteEntity();

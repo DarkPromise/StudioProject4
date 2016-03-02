@@ -437,19 +437,13 @@ void ControllerComponent::Interact(GridMap * currMap)
 		{
 			if (gameC->getHasKey())
 			{
-				if (SoundManager::getSoundStatus())
-				{
-					SoundManager::playSound("Sounds//levelclear.wav", false);
-				}
+				SoundManager::playSound("Sounds//levelclear.wav", false);
 				gameC->setLevelCleared(true);
 			}
 			
 			else
 			{
-				if (SoundManager::getSoundStatus())
-				{
-					SoundManager::playSound("Sounds//leveldenied.wav", false);
-				}
+				SoundManager::playSound("Sounds//leveldenied.wav", false);
 				gameC->setKeyShowTimer(3.0);
 			}
 		}

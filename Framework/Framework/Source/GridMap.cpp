@@ -173,10 +173,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//slide.wav", false);
-							}
+							SoundManager::playSound("Sounds//slide.wav", false);
 							m_cGridMap[pIndexY - 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity());
 							m_cGridMap[pIndexY - 1][pIndexX]->removeEntity();
 							return true;
@@ -189,10 +186,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY - 1][pIndexX]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//collect.wav", false);
-							}
+							SoundManager::playSound("Sounds//collect.wav", false);
 							m_cGridMap[pIndexY - 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -213,10 +207,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//slide.wav", false);
-							}
+							SoundManager::playSound("Sounds//slide.wav", false);
 							m_cGridMap[pIndexY + 2][pIndexX]->addGridEntity(m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity());
 							m_cGridMap[pIndexY + 1][pIndexX]->removeEntity();
 							return true;
@@ -229,10 +220,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY + 1][pIndexX]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//collect.wav", false);
-							}
+							SoundManager::playSound("Sounds//collect.wav", false);
 							m_cGridMap[pIndexY + 1][pIndexX]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -252,10 +240,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//slide.wav", false);
-							}
+							SoundManager::playSound("Sounds//slide.wav", false);
 							m_cGridMap[pIndexY][pIndexX - 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity());
 							m_cGridMap[pIndexY][pIndexX - 1]->removeEntity();
 							return true;
@@ -268,10 +253,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX - 1]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//collect.wav", false);
-							}
+							SoundManager::playSound("Sounds//collect.wav", false);
 							m_cGridMap[pIndexY][pIndexX - 1]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;
@@ -291,10 +273,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//slide.wav", false);
-							}
+							SoundManager::playSound("Sounds//slide.wav", false);
 							m_cGridMap[pIndexY][pIndexX + 2]->addGridEntity(m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity());
 							m_cGridMap[pIndexY][pIndexX + 1]->removeEntity();
 							return true;
@@ -307,10 +286,7 @@ bool GridMap::PushObjects(int pIndexX, int pIndexY, int direction, int EntityTyp
 					{
 						if (m_cGridMap[pIndexY][pIndexX + 1]->getGridEntity())
 						{
-							if (SoundManager::getSoundStatus())
-							{
-								SoundManager::playSound("Sounds//collect.wav", false);
-							}
+							SoundManager::playSound("Sounds//collect.wav", false);
 							m_cGridMap[pIndexY][pIndexX + 1]->deleteEntity();
 							gameC->setHasKey(true);
 							return true;

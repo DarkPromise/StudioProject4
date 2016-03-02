@@ -121,10 +121,7 @@ void StateTest::Init()
 	m_dFadeDelay = 0.0;
 
 	// MUSIC
-	if (SoundManager::getSoundStatus())
-	{
-		SoundManager::playSound("Sounds//gameBackground.ogg", true);
-	}
+	SoundManager::playSound("Sounds//gameBackground.ogg", true);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -339,12 +336,9 @@ void StateTest::HandleEvents(StateHandler * stateHandler)
 	{
 		if (theView->getInputHandler()->getPressDelay() > PRESS_DELAY)
 		{
-			if (SoundManager::getSoundStatus())
-			{
-				SoundManager::stopAllSounds();
-			}
+			SoundManager::stopAllSounds();
 			SoundManager::playSound("Sounds//return.ogg", false);
-			stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, true));
+			stateHandler->ChangeState(new StateAGDevMenu("AGDev Menu State", theView, false));
 			theView->getInputHandler()->setPressDelay(0.0);
 		}
 	}

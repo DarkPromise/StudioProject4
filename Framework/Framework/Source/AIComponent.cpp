@@ -226,10 +226,7 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 									((playerIndexX - aiIndexX == (i + 1)) && (aiIndexY - playerIndexY == 1)) || // Top Right
 									((playerIndexX - aiIndexX == (i + 1)) && (playerIndexY - aiIndexY == 1))) // Bottom Right
 								{
-									if (SoundManager::getSoundStatus())
-									{
-										SoundManager::playSound("Sounds//detected.ogg", false);
-									}
+									SoundManager::playSound("Sounds//detected.ogg", false);
 									this->m_eState = STATE_CHASE;
 									break;
 								}
@@ -281,10 +278,7 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 									((aiIndexX - playerIndexX == (i + 1)) && (playerIndexY - aiIndexY == 1)) || // Bottom Left
 									((aiIndexX - playerIndexX == (i + 1)) && (aiIndexY - playerIndexY == 1))) // Top Left
 								{
-									if (SoundManager::getSoundStatus())
-									{
-										SoundManager::playSound("Sounds//detected.ogg", false);
-									}
+									SoundManager::playSound("Sounds//detected.ogg", false);
 									this->m_eState = STATE_CHASE;
 									break;
 								}
@@ -339,10 +333,7 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 									((playerIndexX - aiIndexX == 1) && (aiIndexY - playerIndexY == (i + 1))) || // Top Right
 									((aiIndexX - playerIndexX == 1) && (aiIndexY - playerIndexY == (i + 1)))) // Top Left
 								{
-									if (SoundManager::getSoundStatus())
-									{
-										SoundManager::playSound("Sounds//detected.ogg", false);
-									}
+									SoundManager::playSound("Sounds//detected.ogg", false);
 									this->m_eState = STATE_CHASE;
 									break;
 								}
@@ -394,10 +385,7 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 									((aiIndexX - playerIndexX == 1) && (playerIndexY - aiIndexY == (i + 1))) || // Bottom Left
 									((playerIndexX - aiIndexX == 1) && (playerIndexY - aiIndexY == (i + 1)))) // Bottom Right
 								{
-									if (SoundManager::getSoundStatus())
-									{
-										SoundManager::playSound("Sounds//detected.ogg", false);
-									}
+									SoundManager::playSound("Sounds//detected.ogg", false);
 									this->m_eState = STATE_CHASE;
 									break;
 								}
@@ -785,10 +773,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										if (SoundManager::getSoundStatus())
-										{
-											SoundManager::playSound("Sounds//reset.wav", false);
-										}
+										SoundManager::playSound("Sounds//reset.wav", false);
 										gameC->setRestartLevel(true);
 									}
 								}
@@ -829,10 +814,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										if (SoundManager::getSoundStatus())
-										{
-											SoundManager::playSound("Sounds//reset.wav", false);
-										}
+										SoundManager::playSound("Sounds//reset.wav", false);
 										gameC->setRestartLevel(true);
 									}
 								}
@@ -874,10 +856,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										if (SoundManager::getSoundStatus())
-										{
-											SoundManager::playSound("Sounds//reset.wav", false);
-										}
+										SoundManager::playSound("Sounds//reset.wav", false);
 										gameC->setRestartLevel(true);
 									}
 								}
@@ -917,10 +896,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										if (SoundManager::getSoundStatus())
-										{
-											SoundManager::playSound("Sounds//reset.wav", false);
-										}
+										SoundManager::playSound("Sounds//reset.wav", false);
 										gameC->setRestartLevel(true);
 									}
 								}
