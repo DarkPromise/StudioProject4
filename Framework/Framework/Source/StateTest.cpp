@@ -142,7 +142,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	{
 		if (gameC->getRestartLevel())
 		{
-			//std::cout << "RESTART" << std::endl;
+			this->RestartFade();
 			gameC->setRestartLevel(false);
 			this->RestartLevel();
 			return;
@@ -152,12 +152,14 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if (gameC->getCurrLevel() == 4)
 			{
+				this->RestartFade();
 				state = STATE_GAMEOVER;
 				return;
 			}
 			
 			else
 			{
+				this->RestartFade();
 				gameC->incrementLevel();
 				gameC->setLevelCleared(false);
 				gameC->setHasKey(false);
@@ -2541,4 +2543,11 @@ void StateTest::FadeOutEffect(double dt)
 	{
 		m_bStartFadeOut = false;
 	}
+}
+
+void StateTest::RestartFade()
+{
+	m_meshList[2]->alpha = 1.f;
+	m_bStartFadeOut = true;
+	m_dFadeDelay = 0.0;
 }

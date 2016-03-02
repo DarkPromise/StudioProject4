@@ -62,6 +62,7 @@ public:
 	void RenderLegend();
 
 	// Fade Functions
+	void RestartFade();
 	void FadeInEffect(double dt);
 	void FadeOutEffect(double dt);
 
