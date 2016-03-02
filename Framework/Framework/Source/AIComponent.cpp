@@ -219,6 +219,10 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 										}
 										break;
 									case DIFFICULTY_HARD:
+										if (playerHealth)
+										{
+											playerHealth->setHealth(playerHealth->getHealth() - 1);
+										}
 										playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
 										break;
 									}

@@ -72,8 +72,8 @@ public:
 	int GetGlobalDifficulty();
 
 	// Saving 
-	void gameSave(InformationComponent *infoC);
-	void loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC);
+	void gameSave(GameplayComponent *gameC, InformationComponent *infoC, HealthComponent *playerHealth);
+	void loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC, HealthComponent *playerHealth);
 	void loadLevel1(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
 	void loadLevel2(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);
 	void loadLevel3(GridMap *testMap, GraphicsComponent *graphicsComponent, EntityGridObject *testGridObject, GameplayComponent *gameC, GAMETYPE gameType);

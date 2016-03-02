@@ -191,7 +191,7 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 	return newEntity;
 }
 
-void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey, float timing, Vector3 direction, Vector3 rotation)
+void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m_bHasKey, float timing, Vector3 direction, Vector3 rotation, int health)
 {
 	std::stringstream directionX, directionY, directionZ;
 	directionX.precision(1); directionY.precision(1); directionZ.precision(1);
@@ -210,6 +210,7 @@ void LuaReader::savePlayer(int playerIndexX, int playerIndexY, int level, bool m
 	file << "timing = \"" + std::to_string(timing) + "\"," << std::endl;
 	file << "direction = {" + directionX.str() + "," + directionY.str() + "," + directionZ.str() + "}," << std::endl;
 	file << "rotation = {" + rotationX.str() + "," + rotationY.str() + "," + rotationZ.str() + "}," << std::endl;
+	file << "health = \"" + std::to_string(health) + "\"," << std::endl;
 	file << "}" << std::endl;
 	file.close();
 }
@@ -284,7 +285,7 @@ void LuaReader::saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> 
 	file.close();
 }
 
-void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int wayPointSize, std::vector<int> entityWaypointX, std::vector<int> entityWaypointY, int enemyListIndex, int currentLevel, int nextWaypointIndex)
+void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int wayPointSize, std::vector<int> entityWaypointX, std::vector<int> entityWaypointY, int enemyListIndex, int currentLevel, int nextWaypointIndex, std::string difficulty)
 {
 	std::stringstream positionX, positionY;
 	positionX.precision(2); positionY.precision(2);
@@ -328,7 +329,7 @@ void LuaReader::saveEnemies(Vector3 position, Vector3 direction, Vector3 rotatio
 	file << "AIComponent = {" << std::endl;
 	file << "aiState = \"" + state + "\"," << std::endl;
 	file << "aiType = \"Guard\"," << std::endl;
-	file << "aiDifficulty = \"Normal\"," << std::endl;
+	file << "aiDifficulty = \"" + difficulty + "\"," << std::endl;
 	file << "aiSightLength = " + std::to_string(aiSightLength) + "," << std::endl;
 	file << "}," << std::endl;
 

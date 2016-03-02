@@ -61,6 +61,10 @@ void StateTest::Init()
 	testMesh = MeshBuilder::GenerateQuad("Legend_Detection", Color(1.f, 0.f, 0.f), 1.f);
 	m_meshList.push_back(testMesh);
 
+	testMesh = MeshBuilder::GenerateQuad("Health", Color(0.f, 0.f, 0.f), 1.f);
+	testMesh->textureArray[0] = LoadTGA("Images//health.tga");
+	m_meshList.push_back(testMesh);
+
 	// CAMERA
 	theCamera = new Camera();
 	theView->getInputHandler()->resetMousePosition(theView);
@@ -77,22 +81,20 @@ void StateTest::Init()
 	auto gameplayComponent = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
+	auto playerHealth = testEntity->getComponent<HealthComponent>();
 
 	switch (gameType)
 	{
 		case GAMETYPE_NEWGAME:
+			resetAllEntityCount();
 			if (levelSelected != 0)
 			{
 				gameC->setCurrLevel(levelSelected);
 			}
-			else
-			{
-				resetAllEntityCount();
-			}
 		break;
 
 		case GAMETYPE_LOADGAME:
-			loadPlayer(testMap, informationComponent, gameC);
+			loadPlayer(testMap, informationComponent, gameC, playerHealth);
 		break;
 	}
 
@@ -127,7 +129,6 @@ void StateTest::Init()
 	this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
 	if (GetGlobalDifficulty() == 3)
 	{
-		auto playerHealth = testEntity->getComponent<HealthComponent>();
 		if (playerHealth)
 		{
 			playerHealth->setHealth(1);
@@ -147,6 +148,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
+	auto playerHealth = testEntity->getComponent<HealthComponent>();
+	std::cout << gameC->getCurrLevel() << std::endl;
 
 	// LEVEL CLEARED
 	if (gameC)
@@ -216,7 +219,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			click = true;
 			gameSaved = true;
-			gameSave(infoC);
+			gameSave(gameC, infoC, playerHealth);
 		}
 
 		else if (click && !theView->getInputHandler()->IsKeyPressed(GLFW_KEY_S))
@@ -441,8 +444,7 @@ void StateTest::RenderGUI()
 	theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.95f);
 
 	// PLAYER HUD
-	auto gameC = testEntity->getComponent<GameplayComponent>();
-	auto playerHealth = testEntity->getComponent<HealthComponent>();
+	auto gameC = testEntity->getComponent<GameplayComponent>();	
 	if (gameC)
 	{
 		std::ostringstream ss1;
@@ -469,14 +471,24 @@ void StateTest::RenderGUI()
 		theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "LEVEL: " + std::to_string(gameC->getCurrLevel()), Color(1.f, 0.f, 0.f), 48.f, (float)theView->getWindowWidth() * 0.825f, (float)theView->getWindowHeight() * 0.93f);
 
 		// PLAYER'S CURRENT HEALTH
+		auto playerHealth = testEntity->getComponent<HealthComponent>();
 		if (playerHealth)
 		{
 			if (GetGlobalDifficulty() == 2 || GetGlobalDifficulty() == 3)
 			{
-				std::ostringstream ss;
-				ss.precision(1);
-				ss << "HEALTH: " << playerHealth->getHealth();
-				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], ss.str(), Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.9f);				
+				theView->RenderTextOnScreen(m_meshList[TEXT_FONT], "HEALTH: ", Color(1.f, 0.f, 0.f), 36.f, (float)theView->getWindowWidth() * 0.01f, (float)theView->getWindowHeight() * 0.88f);
+				if (playerHealth->getHealth() >= playerHealth->getMaxHealth() / 3)
+				{
+					theView->Render2DMesh(m_meshList[10], true, false, 42, 42, (float)theView->getWindowWidth() * 0.13f, (float)theView->getWindowHeight() * 0.905f);
+					if (playerHealth->getHealth() >= playerHealth->getMaxHealth() / 3 * 2)
+					{
+						theView->Render2DMesh(m_meshList[10], true, false, 42, 42, (float)theView->getWindowWidth() * 0.17f, (float)theView->getWindowHeight() * 0.905f);
+						if (playerHealth->getHealth() == playerHealth->getMaxHealth())
+						{
+							theView->Render2DMesh(m_meshList[10], true, false, 42, 42, (float)theView->getWindowWidth() * 0.21f, (float)theView->getWindowHeight() * 0.905f);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -572,7 +584,7 @@ void StateTest::Draw(StateHandler * stateHandler)
 	theView->SwapBuffers();
 }
 
-void StateTest::gameSave(InformationComponent *infoC)
+void StateTest::gameSave(GameplayComponent *gameC, InformationComponent *infoC, HealthComponent *playerHealth)
 {
 	// OPEN SCRIPT
 	LuaReader script("Scripts//SavePlayer.lua");
@@ -586,7 +598,6 @@ void StateTest::gameSave(InformationComponent *infoC)
 	float indexY = infoC->getPosition().y / (testMap->getMapHeight() * testMap->getTileSize()) * testMap->getMapHeight();
 	int playerIndexX = (int)indexX;
 	int playerIndexY = testMap->getMapHeight() - (int)indexY;
-	auto gameC = testEntity->getComponent<GameplayComponent>();
 	std::vector<int> entityBoxesX; std::vector<int> entityBoxesY;
 	std::vector<int> entityDoorsX; std::vector<int> entityDoorsY;
 	std::vector<int> entityDoorsOpenX; std::vector<int> entityDoorsOpenY;
@@ -713,7 +724,21 @@ void StateTest::gameSave(InformationComponent *infoC)
 							entityWaypointX.push_back(wayC->getWaypoints()[k]->indexX);
 							entityWaypointY.push_back(wayC->getWaypoints()[k]->indexY);
 						}
-						script.saveEnemies(position, direction, rotation, state, aiSightLength, wayC->getWaypoints().size(), entityWaypointX, entityWaypointY, i, gameC->getCurrLevel(), wayC->getNextWaypointIndex());
+						std::string difficulty = std::to_string(m_guardList[i]->getComponent<AIComponent>()->getDifficulty());
+						if (difficulty == "0")
+						{
+							difficulty = "Easy";
+						}
+						else if (difficulty == "1")
+						{
+							difficulty = "Normal";
+						}
+						else if (difficulty == "2")
+						{
+							difficulty = "Hard";
+						}
+						
+						script.saveEnemies(position, direction, rotation, state, aiSightLength, wayC->getWaypoints().size(), entityWaypointX, entityWaypointY, i, gameC->getCurrLevel(), wayC->getNextWaypointIndex(), difficulty);
 						entityWaypointX.clear(); entityWaypointY.clear();
 					}
 				}
@@ -724,7 +749,10 @@ void StateTest::gameSave(InformationComponent *infoC)
 	// SAVING DATA INTO SCRIPTS
 	if (gameC)
 	{
-		script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer, infoC->getDirection(), infoC->getRotation());
+		if (playerHealth)
+		{
+			script.savePlayer(playerIndexX, playerIndexY, gameC->getCurrLevel(), gameC->getHasKey(), gameTimer, infoC->getDirection(), infoC->getRotation(), playerHealth->getHealth());
+		}		
 		script.saveBoxes(entityBoxesX, entityBoxesY, totalBoxes);
 		script.saveDoors(entityDoorsX, entityDoorsY, entityDoorsOpenX, entityDoorsOpenY, totalCloseDoors, totalOpenDoors);
 		script.saveSwitches(entitySwitchesX, entitySwitchesY, entitySwitchesUseX, entitySwitchesUseY);
@@ -736,7 +764,7 @@ void StateTest::gameSave(InformationComponent *infoC)
 	}
 }
 
-void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC)
+void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationComponent, GameplayComponent *gameC, HealthComponent *playerHealth)
 {
 	LuaReader Script("Scripts//SavePlayer.lua");
 	int x = Script.get<int>("SavePlayer.playerGridX");
@@ -746,12 +774,14 @@ void StateTest::loadPlayer(GridMap *testMap, InformationComponent *informationCo
 	gameTimer = Script.get<float>("SavePlayer.timing");
 	Vector3 direction = Script.get<Vector3>("SavePlayer.direction");
 	Vector3 rotation = Script.get<Vector3>("SavePlayer.rotation");
+	int healthLeft = Script.get<int>("SavePlayer.health");
 
 	if (gameC)
 	{
 		informationComponent->setPosition(testMap->getGridMap()[y][x]->getGridPos());
 		informationComponent->setDirection(direction);
 		informationComponent->setRotation(rotation);
+		playerHealth->setHealth(healthLeft);
 		testMap->addGridEntity(testEntity);
 		gameC->setCurrLevel(savedLevel);
 		if (collected == 1)
@@ -2519,17 +2549,26 @@ void StateTest::RestartLevel()
 	LuaReader playerScript("Scripts//Player.lua");
 	testEntity = playerScript.createEntity("Player", theCamera, theView->getInputHandler(), testMap);
 	gameType = GAMETYPE_NEWGAME;
+	if (GetGlobalDifficulty() == 3)
+	{
+		auto playerHealth = testEntity->getComponent<HealthComponent>();
+		if (playerHealth)
+		{
+			playerHealth->setHealth(1);
+		}
+	}
 
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	if (gameC)
 	{
-		gameC->Reset();		
+		gameC->Reset();
+		
 		if (levelSelected != 0)
 		{
 			gameC->setCurrLevel(levelSelected);
 		}
-		
+
 		if (graphicsComponent)
 		{
 			switch (gameC->getCurrLevel())

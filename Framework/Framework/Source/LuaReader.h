@@ -101,11 +101,11 @@ public:
 	bool lua_gettostack(const std::string& variableName);
 	
 	// Save files
-	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey, float timing, Vector3 direction, Vector3 rotation);
+	void savePlayer(int playerIndex, int playerIndexY, int level, bool m_bHasKey, float timing, Vector3 direction, Vector3 rotation, int health);
 	void saveBoxes(std::vector<int> entityBoxesX, std::vector<int> entityBoxesY, int totalBoxes);
 	void saveDoors(std::vector<int> entityDoorsX, std::vector<int> entityDoorsY, std::vector<int> entityDoorsOpenX, std::vector<int> entityDoorsOpenY, int totalCloseDoors, int totalOpenDoors);
 	void saveSwitches(std::vector<int> entitySwitchesX, std::vector<int> entitySwitchesY, std::vector<int> entitySwitchesUseX, std::vector<int> entitySwitchesUseY);
-	void saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int wayPointSize, std::vector<int> entityWaypointX, std::vector<int> entityWaypointY, int enemyListIndex, int currentLevel, int nextWaypointIndex);
+	void saveEnemies(Vector3 position, Vector3 direction, Vector3 rotation, std::string state, int aiSightLength, int wayPointSize, std::vector<int> entityWaypointX, std::vector<int> entityWaypointY, int enemyListIndex, int currentLevel, int nextWaypointIndex, std::string difficulty);
 
 	// Print Error & Reason
 	void printError(const std::string & variableName, const std::string reason);
