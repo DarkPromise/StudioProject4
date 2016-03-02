@@ -180,6 +180,13 @@ Entity * LuaReader::createEntity(const std::string & entityType, Camera * camera
 			waypointComponent->CreateComponent(waypointTable,entityType, gridMap);
 			newEntity->addComponent(waypointComponent);
 		}
+		else if (componentName == "HealthComponent")
+		{
+			LuaRef healthTable = componentTable[componentName];
+			auto * healthComponent = new HealthComponent();
+			healthComponent->CreateComponent(healthTable, entityType);
+			newEntity->addComponent(healthComponent);
+		}
 	}
 	return newEntity;
 }

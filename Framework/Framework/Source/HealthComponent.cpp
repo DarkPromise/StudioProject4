@@ -1,4 +1,5 @@
 #include "HealthComponent.h"
+#include "LuaReader.h"
 
 HealthComponent::HealthComponent()
 : m_fHp(0.f)
@@ -14,7 +15,25 @@ HealthComponent::~HealthComponent()
 
 void HealthComponent::CreateComponent(luabridge::LuaRef& tableInfo, std::string name)
 {
+	auto minHp = tableInfo["minHp"];
+	if (minHp.isNumber())
+	{
+		this->setHealth(minHp);
+	}
+	else
+	{
+		std::cout << "HealthComponent.minHp for " + name + " is not a number!" << std::endl;
+	}
 
+	auto maxHp = tableInfo["maxHp"];
+	if (maxHp.isNumber())
+	{
+		this->setMaxHealth(maxHp);
+	}
+	else
+	{
+		std::cout << "HealthComponent.maxHp for " + name + " is not a number!" << std::endl;
+	}
 }
 
 void HealthComponent::Update(double dt)

@@ -9,6 +9,7 @@ Highscore::Highscore()
 
 Highscore::~Highscore()
 {
+	std::cout << "Called" << std::endl;
 	std::ofstream myFile("Data//highscore.txt");
 	int i = 0;
 	if (myFile.is_open())

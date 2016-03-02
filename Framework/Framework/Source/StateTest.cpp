@@ -122,6 +122,8 @@ void StateTest::Init()
 
 	// MUSIC
 	SoundManager::playSound("Sounds//gameBackground.ogg", true);
+
+	this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
 }
 
 void StateTest::Update(StateHandler * stateHandler, double dt)
@@ -2550,4 +2552,47 @@ void StateTest::RestartFade()
 	m_meshList[2]->alpha = 1.f;
 	m_bStartFadeOut = true;
 	m_dFadeDelay = 0.0;
+}
+
+void StateTest::SetGlobalDifficulty(int i)
+{
+	switch (i)
+	{
+	case 1:
+		for (int i = 0; i < m_guardList.size(); i++)
+		{
+			if (m_guardList[i]->getComponent<AIComponent>())
+			{
+				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_EASY);
+			}
+		}
+		break;
+	case 2:
+		for (int i = 0; i < m_guardList.size(); i++)
+		{
+			if (m_guardList[i]->getComponent<AIComponent>())
+			{
+				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_NORMAL);
+			}
+		}
+		break;
+	case 3:
+		for (int i = 0; i < m_guardList.size(); i++)
+		{
+			if (m_guardList[i]->getComponent<AIComponent>())
+			{
+				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_HARD);
+			}
+		}
+		break;
+	default:
+		for (int i = 0; i < m_guardList.size(); i++)
+		{
+			if (m_guardList[i]->getComponent<AIComponent>())
+			{
+				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_NORMAL);
+			}
+		}
+		break;
+	}
 }

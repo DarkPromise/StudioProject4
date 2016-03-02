@@ -33,4 +33,8 @@ HealthComponent = {
     currLevel = 1,
     hasKey = "false",
   },
+ HealthComponent = {
+    minHp= 3,
+    maxHp = 3,  
+  },
 }

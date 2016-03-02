@@ -178,6 +178,7 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 	{
 		auto infoC = this->getParent()->getComponent<InformationComponent>();
 		auto playerInfo = entity->getComponent<InformationComponent>();
+		auto playerHealth = entity->getComponent<HealthComponent>();
 		if (infoC)
 		{
 			float indexX = infoC->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
@@ -203,7 +204,24 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 							{
 								if (playerInfo->getParent()->getComponent<GameplayComponent>())
 								{
-									playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+									switch (this->m_eDifficulty)
+									{
+									case DIFFICULTY_EASY:
+										break;
+									case DIFFICULTY_NORMAL:
+										if (playerHealth)
+										{
+											playerHealth->setHealth(playerHealth->getHealth() - 1);
+											if (playerHealth->getHealth() <= 0)
+											{
+												playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+											}
+										}
+										break;
+									case DIFFICULTY_HARD:
+										playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+										break;
+									}
 								}
 								else
 								{
@@ -255,7 +273,24 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 							{
 								if (playerInfo->getParent()->getComponent<GameplayComponent>())
 								{
-									playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+									switch (this->m_eDifficulty)
+									{
+									case DIFFICULTY_EASY:
+										break;
+									case DIFFICULTY_NORMAL:
+										if (playerHealth)
+										{
+											playerHealth->setHealth(playerHealth->getHealth() - 1);
+											if (playerHealth->getHealth() <= 0)
+											{
+												playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+											}
+										}
+										break;
+									case DIFFICULTY_HARD:
+										playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+										break;
+									}
 								}
 								else
 								{
@@ -310,7 +345,24 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 							{
 								if (playerInfo->getParent()->getComponent<GameplayComponent>())
 								{
-									playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+									switch (this->m_eDifficulty)
+									{
+									case DIFFICULTY_EASY:
+										break;
+									case DIFFICULTY_NORMAL:
+										if (playerHealth)
+										{
+											playerHealth->setHealth(playerHealth->getHealth() - 1);
+											if (playerHealth->getHealth() <= 0)
+											{
+												playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+											}
+										}
+										break;
+									case DIFFICULTY_HARD:
+										playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+										break;
+									}
 								}
 								else
 								{
@@ -362,7 +414,24 @@ void AIComponent::FindNearbyEntity(GridMap * gridMap, Entity * entity)
 							{
 								if (playerInfo->getParent()->getComponent<GameplayComponent>())
 								{
-									playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+									switch (this->m_eDifficulty)
+									{
+									case DIFFICULTY_EASY:
+										break;
+									case DIFFICULTY_NORMAL:
+										if (playerHealth)
+										{
+											playerHealth->setHealth(playerHealth->getHealth() - 1);
+											if (playerHealth->getHealth() <= 0)
+											{
+												playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+											}
+										}
+										break;
+									case DIFFICULTY_HARD:
+										playerInfo->getParent()->getComponent<GameplayComponent>()->setRestartLevel(true);
+										break;
+									}
 								}
 								else
 								{
@@ -684,6 +753,7 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 		{
 			auto infoC = this->getParent()->getComponent<InformationComponent>();
 			auto playerInfo = entity->getComponent<InformationComponent>();
+			auto playerHealth = entity->getComponent<HealthComponent>();
 			if (infoC)
 			{
 				float indexX = infoC->getPosition().x / (gridMap->getMapWidth() * gridMap->getTileSize()) * gridMap->getMapWidth();
@@ -773,8 +843,26 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
-										gameC->setRestartLevel(true);
+										switch (this->m_eDifficulty)
+										{
+										case DIFFICULTY_EASY:
+											break;
+										case DIFFICULTY_NORMAL:
+											if (playerHealth)
+											{
+												playerHealth->setHealth(playerHealth->getHealth() - 1);
+												if (playerHealth->getHealth() <= 0)
+												{
+													SoundManager::playSound("Sounds//reset.wav", false);
+													gameC->setRestartLevel(true);
+												}
+											}
+											break;
+										case DIFFICULTY_HARD:
+											SoundManager::playSound("Sounds//reset.wav", false);
+											gameC->setRestartLevel(true);
+											break;
+										}
 									}
 								}
 							}
@@ -814,8 +902,26 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
-										gameC->setRestartLevel(true);
+										switch (this->m_eDifficulty)
+										{
+										case DIFFICULTY_EASY:
+											break;
+										case DIFFICULTY_NORMAL:
+											if (playerHealth)
+											{
+												playerHealth->setHealth(playerHealth->getHealth() - 1);
+												if (playerHealth->getHealth() <= 0)
+												{
+													SoundManager::playSound("Sounds//reset.wav", false);
+													gameC->setRestartLevel(true);
+												}
+											}
+											break;
+										case DIFFICULTY_HARD:
+											SoundManager::playSound("Sounds//reset.wav", false);
+											gameC->setRestartLevel(true);
+											break;
+										}
 									}
 								}
 							}
@@ -856,8 +962,26 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
-										gameC->setRestartLevel(true);
+										switch (this->m_eDifficulty)
+										{
+										case DIFFICULTY_EASY:
+											break;
+										case DIFFICULTY_NORMAL:
+											if (playerHealth)
+											{
+												playerHealth->setHealth(playerHealth->getHealth() - 1);
+												if (playerHealth->getHealth() <= 0)
+												{
+													SoundManager::playSound("Sounds//reset.wav", false);
+													gameC->setRestartLevel(true);
+												}
+											}
+											break;
+										case DIFFICULTY_HARD:
+											SoundManager::playSound("Sounds//reset.wav", false);
+											gameC->setRestartLevel(true);
+											break;
+										}
 									}
 								}
 							}
@@ -896,8 +1020,26 @@ void AIComponent::ChaseEntity(GridMap * gridMap, Entity * entity, double dt)
 									auto gameC = entity->getComponent<GameplayComponent>();
 									if (gameC)
 									{
-										SoundManager::playSound("Sounds//reset.wav", false);
-										gameC->setRestartLevel(true);
+										switch (this->m_eDifficulty)
+										{
+										case DIFFICULTY_EASY:
+											break;
+										case DIFFICULTY_NORMAL:
+											if (playerHealth)
+											{
+												playerHealth->setHealth(playerHealth->getHealth() - 1);
+												if (playerHealth->getHealth() <= 0)
+												{
+													SoundManager::playSound("Sounds//reset.wav", false);
+													gameC->setRestartLevel(true);
+												}
+											}
+											break;
+										case DIFFICULTY_HARD:
+											SoundManager::playSound("Sounds//reset.wav", false);
+											gameC->setRestartLevel(true);
+											break;
+										}
 									}
 								}
 							}
