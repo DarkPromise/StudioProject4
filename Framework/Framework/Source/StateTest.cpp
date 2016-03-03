@@ -144,6 +144,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	}
 
 	static bool click = false, click2 = false, click3 = false;
+	static bool blink = true;
 	auto controlC = testEntity->getComponent<ControllerComponent>();
 	auto infoC = testEntity->getComponent<InformationComponent>();
 	auto gameC = testEntity->getComponent<GameplayComponent>();
@@ -156,6 +157,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	{
 		if (gameC->getRestartLevel())
 		{
+			blink = true;
 			this->RestartFade();
 			gameC->setRestartLevel(false);
 			this->RestartLevel();
@@ -166,6 +168,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			if (gameC->getCurrLevel() == 4)
 			{
+				blink = true;
 				this->RestartFade();
 				state = STATE_GAMEOVER;
 				return;
@@ -173,6 +176,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 			
 			else
 			{
+				blink = true;
 				this->RestartFade();
 				gameC->incrementLevel();
 				gameC->setLevelCleared(false);
@@ -297,10 +301,29 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		{
 			for (int i = 0; i < graphicsComponent->getMeshList().size(); i++)
 			{
-				graphicsComponent->getMesh(i)->alpha += dt;
-				if (graphicsComponent->getMesh(i)->alpha > 2)
+				if (blink)
 				{
-					graphicsComponent->getMesh(i)->alpha = 0.f;
+					if (graphicsComponent->getMesh(i)->alpha > 0)
+					{
+						graphicsComponent->getMesh(i)->alpha -= dt;
+						if (graphicsComponent->getMesh(i)->alpha <= 0)
+						{
+							blink = false;
+							graphicsComponent->getMesh(i)->alpha = 0;
+						}
+					}
+				}
+				else
+				{
+					if (graphicsComponent->getMesh(i)->alpha < 1)
+					{
+						graphicsComponent->getMesh(i)->alpha += dt;
+						if (graphicsComponent->getMesh(i)->alpha >= 1)
+						{
+							blink = true;
+							graphicsComponent->getMesh(i)->alpha = 1.f;
+						}
+					}
 				}
 			}
 		}
@@ -2598,7 +2621,7 @@ void StateTest::RestartLevel()
 
 void StateTest::FadeInEffect(double dt)
 {
-	
+
 }
 
 void StateTest::FadeOutEffect(double dt)
