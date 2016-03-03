@@ -200,6 +200,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 					break;
 				}
 			}
+			return;
 		}
 	}
 
