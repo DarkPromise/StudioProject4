@@ -8,6 +8,8 @@
 
 #include <windows.h> // For Windows
 
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"") 
+
 #include <glew.h>
 #include <glfw3.h>
 #include <GL\GL.h>

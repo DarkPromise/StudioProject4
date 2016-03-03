@@ -151,8 +151,6 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto playerHealth = testEntity->getComponent<HealthComponent>();
 
-	std::cout << StateAGDevOptions::difficulty << std::endl;
-
 	// LEVEL CLEARED
 	if (gameC)
 	{
