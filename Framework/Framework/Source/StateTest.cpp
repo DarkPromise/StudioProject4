@@ -150,7 +150,8 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto playerHealth = testEntity->getComponent<HealthComponent>();
-	//std::cout << gameC->getCurrLevel() << std::endl;
+
+	std::cout << StateAGDevOptions::difficulty << std::endl;
 
 	// LEVEL CLEARED
 	if (gameC)
@@ -2617,6 +2618,8 @@ void StateTest::RestartLevel()
 			}
 		}
 	}
+
+	this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
 }
 
 void StateTest::FadeInEffect(double dt)
