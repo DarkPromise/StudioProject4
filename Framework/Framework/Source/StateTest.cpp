@@ -2541,6 +2541,13 @@ void StateTest::resetAllEntityCount()
 
 void StateTest::RestartLevel()
 {
+	int currLevel = 0;
+	auto gameComponent = testEntity->getComponent<GameplayComponent>();
+	if (gameComponent)
+	{
+		currLevel = gameComponent->getCurrLevel();
+	}
+
 	testMap->ResetData();
 	testMap->Init(xSize, ySize);
 
@@ -2563,11 +2570,7 @@ void StateTest::RestartLevel()
 	if (gameC)
 	{
 		gameC->Reset();
-		
-		if (levelSelected != 0)
-		{
-			gameC->setCurrLevel(levelSelected);
-		}
+		gameC->setCurrLevel(currLevel);
 
 		if (graphicsComponent)
 		{
