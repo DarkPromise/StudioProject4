@@ -149,7 +149,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 	auto gameC = testEntity->getComponent<GameplayComponent>();
 	auto graphicsComponent = testEntity->getComponent<GraphicsComponent>();
 	auto playerHealth = testEntity->getComponent<HealthComponent>();
-	std::cout << gameC->getCurrLevel() << std::endl;
+	//std::cout << gameC->getCurrLevel() << std::endl;
 
 	// LEVEL CLEARED
 	if (gameC)
