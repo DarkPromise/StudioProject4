@@ -2568,6 +2568,7 @@ void StateTest::RestartLevel()
 		currLevel = gameComponent->getCurrLevel();
 	}
 
+	testMap->removeGridEntity(testEntity);
 	testMap->ResetData();
 	testMap->Init(xSize, ySize);
 
