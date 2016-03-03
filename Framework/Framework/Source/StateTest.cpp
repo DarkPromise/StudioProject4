@@ -199,6 +199,7 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 						loadLevel4(testMap, graphicsComponent, testGridObject, gameC, gameType);
 					break;
 				}
+				this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
 			}
 			return;
 		}
@@ -2616,7 +2617,6 @@ void StateTest::RestartLevel()
 			}
 		}
 	}
-
 	this->SetGlobalDifficulty(StateAGDevOptions::difficulty);
 }
 
@@ -2650,7 +2650,8 @@ void StateTest::SetGlobalDifficulty(int i)
 	case 1:
 		for (int i = 0; i < m_guardList.size(); i++)
 		{
-			if (m_guardList[i]->getComponent<AIComponent>())
+			auto * aiComponent = m_guardList[i]->getComponent<AIComponent>();
+			if (aiComponent)
 			{
 				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_EASY);
 			}
@@ -2659,7 +2660,8 @@ void StateTest::SetGlobalDifficulty(int i)
 	case 2:
 		for (int i = 0; i < m_guardList.size(); i++)
 		{
-			if (m_guardList[i]->getComponent<AIComponent>())
+			auto * aiComponent = m_guardList[i]->getComponent<AIComponent>();
+			if (aiComponent)
 			{
 				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_NORMAL);
 			}
@@ -2668,16 +2670,18 @@ void StateTest::SetGlobalDifficulty(int i)
 	case 3:
 		for (int i = 0; i < m_guardList.size(); i++)
 		{
-			if (m_guardList[i]->getComponent<AIComponent>())
+			auto * aiComponent = m_guardList[i]->getComponent<AIComponent>();
+			if (aiComponent)
 			{
-				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_HARD);
+				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_NORMAL);
 			}
 		}
 		break;
 	default:
 		for (int i = 0; i < m_guardList.size(); i++)
 		{
-			if (m_guardList[i]->getComponent<AIComponent>())
+			auto * aiComponent = m_guardList[i]->getComponent<AIComponent>();
+			if (aiComponent)
 			{
 				m_guardList[i]->getComponent<AIComponent>()->setDifficulty(AIComponent::DIFFICULTY_NORMAL);
 			}
