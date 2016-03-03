@@ -1,10 +1,10 @@
 SavePlayer = {
-playerGridX = "28",
-playerGridY = "10",
-level = "3",
-hasKey = "0",
-timing = "6.592158",
+playerGridX = "10",
+playerGridY = "16",
+level = "1",
+hasKey = "1",
+timing = "28.659441",
 direction = {1,0,0},
 rotation = {0,0,0},
-health = "1",
+health = "3",
 }
