@@ -165,19 +165,17 @@ void StateTest::Update(StateHandler * stateHandler, double dt)
 		
 		else if (gameC->getLevelCleared())
 		{
-			if (gameC->getCurrLevel() == 4)
-			{
-				blink = true;
-				this->RestartFade();
-				state = STATE_GAMEOVER;
-				return;
-			}
-			
-			else
 			{
 				blink = true;
 				this->RestartFade();
 				gameC->incrementLevel();
+				if (gameC->getCurrLevel() == 5)
+				{
+					this->RestartFade();
+					state = STATE_GAMEOVER;
+					std::cout << "GameOver" << std::endl;
+					return;
+				}
 				gameC->setLevelCleared(false);
 				gameC->setHasKey(false);
 				resetAllEntityCount();
