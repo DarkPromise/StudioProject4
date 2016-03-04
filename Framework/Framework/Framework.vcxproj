@@ -54,6 +54,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include\LuaWrapper;$(SolutionDir)\Dependencies\include\irrKlang;$(SolutionDir)\Dependencies\include\LuaBridge;$(SolutionDir)\Dependencies\include\Lua;$(SolutionDir)\Dependencies\include\GL;$(SolutionDir)\Dependencies\include\GLFW;$(SolutionDir)\Common\Source</AdditionalIncludeDirectories>
+      <AdditionalOptions>/GR %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,6 +75,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include\LuaWrapper;$(SolutionDir)\Dependencies\include\irrKlang;$(SolutionDir)\Dependencies\include\LuaBridge;$(SolutionDir)\Dependencies\include\Lua;$(SolutionDir)\Dependencies\include\GL;$(SolutionDir)\Dependencies\include\GLFW;$(SolutionDir)\Common\Source</AdditionalIncludeDirectories>
+      <AdditionalOptions>/GR %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

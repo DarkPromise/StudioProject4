@@ -37,13 +37,17 @@ public:
 		T * result;
 		for (int i = 0; i < m_componentList.size(); i++)
 		{
-			if (result = dynamic_cast<T*>(m_componentList[i]))
+			if (m_componentList[i] != NULL)
 			{
-				return result;
+				result = dynamic_cast<T*>(m_componentList[i]);
+				if (result)
+				{
+					return result;
+				}
 			}
 		}
 		//std::cout << "Component does not exist" << std::endl;
-		return nullptr;
+		return NULL;
 	}
 
 public:
